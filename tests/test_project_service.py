@@ -10,6 +10,11 @@ from construction_intelligence_mcp.models.project import (
     ProjectSearchRequest,
     ProjectSummary,
 )
+from construction_intelligence_mcp.models.scope import (
+    MarketSector,
+    ScopeClassification,
+    ScopeConfidence,
+)
 from construction_intelligence_mcp.services.project_service import ProjectService
 
 
@@ -131,6 +136,13 @@ def test_fetch_project_returns_complete_business_object_or_none(database: Path) 
 
     assert isinstance(project, ProjectDetail)
     assert project.project_id == "P-1"
+    assert project.project_type == "Bridge"
+    assert project.primary_scope == "Bridge Replacement"
+    assert project.classified_scope is not None
+    assert project.classified_scope.primary_scope == ScopeClassification.BRIDGE_REPLACEMENT
+    assert project.classified_scope.market_sector == MarketSector.BRIDGE
+    assert project.classified_scope.confidence == ScopeConfidence.HIGH
+    assert "replace bridge" in project.classified_scope.matched_keywords
     assert project.raw_record["extra_source_field"] == "complete detail"
     assert service.fetch_project("not-found") is None
 
