@@ -8,8 +8,12 @@ from pathlib import Path
 from fastmcp import FastMCP
 
 from construction_intelligence_mcp.models.opportunity import OpportunitySearchRequest
+from construction_intelligence_mcp.adapters.contractor_history import ContractorHistoryRepository
 from construction_intelligence_mcp.models.project import ProjectSearchRequest
 from construction_intelligence_mcp.services.opportunity_service import OpportunityService
+from construction_intelligence_mcp.services.contractor_intelligence_service import (
+    ContractorIntelligenceService,
+)
 from construction_intelligence_mcp.services.market_service import MarketService
 from construction_intelligence_mcp.services.project_intelligence_service import (
     ProjectIntelligenceService,
@@ -40,12 +44,22 @@ def _opportunity_service() -> OpportunityService:
     return OpportunityService(_service())
 
 
+def _contractor_service() -> ContractorIntelligenceService:
+    project_service = _service()
+    return ContractorIntelligenceService(
+        project_service, ContractorHistoryRepository(project_service.adapter.database)
+    )
+
+
 def _project_intelligence_service() -> ProjectIntelligenceService:
     project_service = _service()
     return ProjectIntelligenceService(
         project_service,
         MarketService(project_service),
         OpportunityService(project_service),
+        ContractorIntelligenceService(
+            project_service, ContractorHistoryRepository(project_service.adapter.database)
+        ),
     )
 
 
@@ -97,6 +111,13 @@ def fetch_project_intelligence(project_id: str) -> dict | None:
     """Fetch all governed intelligence currently known for one project."""
     intelligence = _project_intelligence_service().fetch_project_intelligence(project_id)
     return None if intelligence is None else intelligence.model_dump(mode="json")
+
+
+@mcp.tool
+def fetch_contractor_context(project_id: str) -> dict | None:
+    """Fetch governed, evidence-backed historical contractor context for a project."""
+    context = _contractor_service().fetch_contractor_context(project_id)
+    return None if context is None else context.model_dump(mode="json")
 
 
 @mcp.tool

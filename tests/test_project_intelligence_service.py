@@ -9,6 +9,10 @@ from construction_intelligence_mcp.models.market import (
     WorkTypeMarketSummary,
 )
 from construction_intelligence_mcp.models.opportunity import Opportunity
+from construction_intelligence_mcp.models.contractor import (
+    ContractorConfidence,
+    ContractorContext,
+)
 from construction_intelligence_mcp.models.project import ProjectDetail
 from construction_intelligence_mcp.models.project_intelligence import ProjectIntelligence
 from construction_intelligence_mcp.services.project_intelligence_service import (
@@ -49,9 +53,7 @@ def governed_market() -> MarketSummary:
         districts_included=[7],
         overall=metrics,
         by_district=[
-            DistrictMarketSummary(
-                district=7, project_count=1, total_programmed_value=42_000_000
-            )
+            DistrictMarketSummary(district=7, project_count=1, total_programmed_value=42_000_000)
         ],
         by_work_type=[
             WorkTypeMarketSummary(
@@ -102,6 +104,14 @@ class StubOpportunityService:
         return self.opportunity
 
 
+class StubContractorService:
+    def __init__(self, context: ContractorContext) -> None:
+        self.context = context
+
+    def fetch_contractor_context(self, project_id: str) -> ContractorContext | None:
+        return self.context if project_id == self.context.project_id else None
+
+
 def test_existing_project_composes_all_available_intelligence() -> None:
     project = governed_project()
     market_service = StubMarketService(governed_market())
@@ -115,10 +125,12 @@ def test_existing_project_composes_all_available_intelligence() -> None:
         source_confidence="high",
     )
     opportunity_service = StubOpportunityService(opportunity)
+    contractor_context = ContractorContext(project_id="P-1", confidence=ContractorConfidence.NONE)
     service = ProjectIntelligenceService(
         StubProjectService(project),  # type: ignore[arg-type]
         market_service,  # type: ignore[arg-type]
         opportunity_service,  # type: ignore[arg-type]
+        StubContractorService(contractor_context),  # type: ignore[arg-type]
     )
 
     result = service.fetch_project_intelligence("P-1")
@@ -142,6 +154,7 @@ def test_existing_project_composes_all_available_intelligence() -> None:
     assert result.market.market_outlook is market_service.market
     assert result.market.market_trend is None
     assert result.opportunity is opportunity
+    assert result.contractor_context is contractor_context
     assert opportunity_service.opportunity_id == "project-opportunity:P-1"
     assert market_service.request.districts == [7]
     assert result.executive_signals == []

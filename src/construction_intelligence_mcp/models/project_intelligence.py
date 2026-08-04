@@ -5,6 +5,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
+from construction_intelligence_mcp.models.contractor import ContractorContext
 from construction_intelligence_mcp.models.market import (
     DistrictMarketSummary,
     MarketSummary,
@@ -45,6 +46,7 @@ class ProjectIntelligence(BaseModel):
     classification: ProjectScope
     market: ProjectMarketIntelligence
     opportunity: Opportunity | None = None
+    contractor_context: ContractorContext | None = None
     executive_signals: list[dict[str, Any]] = Field(default_factory=list)
     contractor_signals: list[dict[str, Any]] = Field(default_factory=list)
     cost_signals: list[dict[str, Any]] = Field(default_factory=list)
