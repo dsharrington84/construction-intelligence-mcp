@@ -115,7 +115,9 @@ def test_unknown_scope_always_returns_complete_governed_result() -> None:
 def test_confidence_is_based_on_keyword_strength_and_evidence(
     description: str | None, confidence: ScopeConfidence
 ) -> None:
-    assert ProjectScopeClassifier().classify(project(description=description)).confidence == confidence
+    assert (
+        ProjectScopeClassifier().classify(project(description=description)).confidence == confidence
+    )
 
 
 def test_keyword_matching_is_case_and_punctuation_insensitive_but_word_bounded() -> None:

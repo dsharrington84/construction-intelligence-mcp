@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 from datetime import date
-from typing import Any
-
 from pydantic import BaseModel, Field
 
 from construction_intelligence_mcp.models.market import (
@@ -12,6 +10,7 @@ from construction_intelligence_mcp.models.market import (
 )
 from construction_intelligence_mcp.models.opportunity import Opportunity
 from construction_intelligence_mcp.models.scope import ProjectScope
+from construction_intelligence_mcp.models.strategic_context import StrategicContext
 
 
 class IntelligenceProject(BaseModel):
@@ -45,6 +44,7 @@ class ProjectIntelligence(BaseModel):
     classification: ProjectScope
     market: ProjectMarketIntelligence
     opportunity: Opportunity | None = None
-    executive_signals: list[dict[str, Any]] = Field(default_factory=list)
-    contractor_signals: list[dict[str, Any]] = Field(default_factory=list)
-    cost_signals: list[dict[str, Any]] = Field(default_factory=list)
+    strategic_context: StrategicContext
+    executive_signals: list[dict] = Field(default_factory=list)
+    contractor_signals: list[dict] = Field(default_factory=list)
+    cost_signals: list[dict] = Field(default_factory=list)
