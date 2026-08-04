@@ -5,6 +5,8 @@ from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
+from construction_intelligence_mcp.models.scope import ProjectScope
+
 
 class ProjectSearchRequest(BaseModel):
     districts: list[int] | None = None
@@ -34,7 +36,9 @@ class ProjectSummary(BaseModel):
     county: str | None = None
     route: str | None = None
     location: str | None = None
+    project_type: str | None = None
     primary_scope: str
+    classified_scope: ProjectScope | None = None
     programmed_value: float | None = None
     advertisement_date: date | None = None
     advertisement_fiscal_year: int | None = None

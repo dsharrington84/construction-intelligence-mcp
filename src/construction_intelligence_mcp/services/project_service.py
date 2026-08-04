@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import re
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -11,6 +10,7 @@ from construction_intelligence_mcp.models.project import (
     ProjectSearchRequest,
     ProjectSummary,
 )
+from construction_intelligence_mcp.services.project_scope_classifier import ProjectScopeClassifier
 
 STATE_TABLE = "ci_market_state"
 
@@ -34,39 +34,12 @@ _FIELD_CANDIDATES: dict[str, tuple[str, ...]] = {
     "advertisement_fiscal_year": ("advertisement_fiscal_year", "fiscal_year"),
 }
 
-_SCOPE_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
-    (
-        "Bridge Rehabilitation",
-        ("bridge rehab", "rehabilitate bridge", "deck replacement", "seismic retrofit"),
-    ),
-    ("Bridge Replacement", ("replace bridge", "bridge replacement", "new bridge")),
-    (
-        "Pavement Rehabilitation",
-        ("rehabilitate pavement", "pavement rehab", "cold plane", "overlay", "resurface"),
-    ),
-    (
-        "Roadway Reconstruction",
-        ("reconstruct roadway", "roadway reconstruction", "full depth", "widen roadway"),
-    ),
-    ("Interchange Improvements", ("interchange", "ramp improvement", "ramp widening")),
-    ("Drainage Improvements", ("drainage", "culvert", "stormwater", "storm drain")),
-    ("Safety Improvements", ("safety improvement", "median barrier", "guardrail", "rumble strip")),
-    (
-        "Traffic / ITS / Electrical",
-        ("traffic signal", "lighting", "electrical", "its", "intelligent transportation"),
-    ),
-    (
-        "Complete Streets / Active Transportation",
-        ("complete streets", "bike lane", "bicycle", "pedestrian", "sidewalk"),
-    ),
-)
-
-
 class ProjectService:
     """Business-facing access to canonical project intelligence."""
 
     def __init__(self, database: str | Path) -> None:
         self.adapter = DuckDBAdapter(database)
+        self.scope_classifier = ProjectScopeClassifier()
         self.source_table = self.adapter.resolve_table(STATE_TABLE)
         if self.source_table is None:
             raise RuntimeError(
@@ -213,9 +186,6 @@ class ProjectService:
         description = self._clean(row.get("description"))
         title = self._clean(row.get("title")) or description or f"Project {project_id}"
         raw_project_type = self._clean(row.get("raw_project_type"))
-        primary_scope = self._classify_scope(
-            " ".join(filter(None, [title, description, raw_project_type]))
-        )
         value = self._float_or_none(row.get("programmed_value"))
         district = self._int_or_none(row.get("district"))
         reasons = ["Advertises within selected window"]
@@ -223,10 +193,7 @@ class ProjectService:
             reasons.append(f"Southern California District {district}")
         if value is not None and value >= 25_000_000:
             reasons.append("Large programmed value")
-        if primary_scope != "Unclassified Project":
-            reasons.append(primary_scope)
-
-        return ProjectSummary(
+        project = ProjectSummary(
             project_id=project_id,
             title=title,
             description=description,
@@ -234,25 +201,20 @@ class ProjectService:
             county=self._clean(row.get("county")),
             route=self._clean(row.get("route")),
             location=self._clean(row.get("location")),
-            primary_scope=primary_scope,
+            project_type=raw_project_type,
+            primary_scope="Other",
             programmed_value=value,
             advertisement_date=self._date_or_none(row.get("advertisement_date")),
             advertisement_fiscal_year=self._int_or_none(row.get("advertisement_fiscal_year")),
             why_it_surfaced=reasons,
             source_fields=self.resolved_fields,
         )
-
-    @staticmethod
-    def _classify_scope(text: str) -> str:
-        normalized = re.sub(r"\s+", " ", text.lower()).strip()
-        for label, terms in _SCOPE_RULES:
-            if any(term in normalized for term in terms):
-                return label
-        if "pavement" in normalized:
-            return "Pavement"
-        if "bridge" in normalized:
-            return "Bridge"
-        return "Unclassified Project"
+        classification = self.scope_classifier.classify(project)
+        project.primary_scope = classification.primary_scope.value
+        project.classified_scope = classification
+        if classification.confidence.value != "UNKNOWN":
+            project.why_it_surfaced.append(classification.primary_scope.value)
+        return project
 
     @staticmethod
     def _clean(value: Any) -> str | None:
