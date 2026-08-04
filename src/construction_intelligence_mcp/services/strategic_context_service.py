@@ -131,6 +131,8 @@ class StrategicContextService:
         scope_values = {
             project.primary_scope,
             project.project_type,
+            project.asset_class,
+            project.source_asset_title,
             project.classified_scope.primary_scope.value if project.classified_scope else None,
             project.classified_scope.secondary_scope.value
             if project.classified_scope and project.classified_scope.secondary_scope

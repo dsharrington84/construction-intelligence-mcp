@@ -1,7 +1,7 @@
 """Business models for Construction Intelligence Services."""
 
-from .opportunity import Opportunity, OpportunitySearchRequest
 from .market import MarketSummary, MarketSummaryRequest
+from .opportunity import Opportunity, OpportunitySearchRequest
 from .project import ProjectDetail, ProjectSearchRequest, ProjectSummary
 from .project_intelligence import (
     IntelligenceProject,
@@ -17,11 +17,11 @@ __all__ = [
     "Opportunity",
     "OpportunitySearchRequest",
     "ProjectDetail",
+    "IntelligenceProject",
     "ProjectIntelligence",
     "ProjectMarketIntelligence",
     "ProjectSearchRequest",
     "ProjectSummary",
-    "IntelligenceProject",
     "ProjectScope",
     "StrategicContext",
     "StrategicEvidence",

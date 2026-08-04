@@ -64,7 +64,7 @@ class MarketService:
             "Prior-period change is unavailable in Market Service V1.",
             "Projects without an advertisement date or fiscal year are excluded.",
             "Advertisement fiscal year is treated as a calendar-year proxy when the exact date "
-            "is unavailable.",
+            + "is unavailable.",
         ]
         if limit_reached:
             limitations.append(
@@ -78,7 +78,7 @@ class MarketService:
                 label="Next 12 months",
                 date_basis=(
                     "Exact advertisement date; advertisement fiscal year is a calendar-year proxy "
-                    "when no exact date is available."
+                    + "when no exact date is available."
                 ),
                 prior_period_change=None,
             ),

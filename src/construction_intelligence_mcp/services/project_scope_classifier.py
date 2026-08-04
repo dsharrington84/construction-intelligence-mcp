@@ -173,6 +173,8 @@ class ProjectScopeClassifier:
             project.title,
             project.description,
             project.project_type,
+            project.asset_class,
+            project.source_asset_title,
             project.location,
             project.route,
             project.county,

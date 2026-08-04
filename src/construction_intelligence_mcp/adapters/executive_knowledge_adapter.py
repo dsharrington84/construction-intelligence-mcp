@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import re
-from typing import Any
+from typing import Any, ClassVar
 
 from pydantic import BaseModel, Field
 
@@ -40,11 +40,13 @@ class ExecutiveKnowledgeRecord(BaseModel):
 class ExecutiveKnowledgeAdapter:
     """Schema-adaptive, read-only access to certified executive knowledge."""
 
-    RELATION_PREFIX = "ci_executive_knowledge_section_"
-    FALLBACK_RELATIONS = ("ci_executive_knowledge_section_refined",)
-    ELIGIBLE_STATUSES = frozenset({"USABLE", "USABLE_WITH_LIMITATION", "CONTEXT_ONLY"})
-    EXCLUDED_STATUSES = frozenset({"REVIEW_REQUIRED", "EXCLUDED"})
-    REQUIRED = {
+    RELATION_PREFIX: ClassVar[str] = "ci_executive_knowledge_section_"
+    FALLBACK_RELATIONS: ClassVar[tuple[str, ...]] = ("ci_executive_knowledge_section_refined",)
+    ELIGIBLE_STATUSES: ClassVar[frozenset[str]] = frozenset(
+        {"USABLE", "USABLE_WITH_LIMITATION", "CONTEXT_ONLY"}
+    )
+    EXCLUDED_STATUSES: ClassVar[frozenset[str]] = frozenset({"REVIEW_REQUIRED", "EXCLUDED"})
+    REQUIRED: ClassVar[dict[str, tuple[str, ...]]] = {
         "evidence_id": (
             "evidence_id",
             "executive_knowledge_section_id",
@@ -79,7 +81,7 @@ class ExecutiveKnowledgeAdapter:
         ),
         "refined_status": ("refined_status", "refinement_status", "usability_status", "status"),
     }
-    OPTIONAL = {
+    OPTIONAL: ClassVar[dict[str, tuple[str, ...]]] = {
         "source_version": ("source_version", "document_version", "version_label"),
         "source_year": ("source_year", "document_year", "publication_year", "plan_year"),
         "source_heading": ("source_heading", "section_heading", "heading", "section_title"),

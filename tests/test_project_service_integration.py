@@ -21,13 +21,15 @@ def test_actual_schema_search_filters_and_fetch_round_trip() -> None:
 
     assert service.source_table.endswith('"ci_market_state"')
     assert service.resolved_fields["project_id"]
-    assert service.resolved_fields["description"]
+    assert service.resolved_fields["title"] == "project_name"
     assert all(project.district in {7, 8, 11, 12} for project in projects)
     assert all(project.project_id and project.title for project in projects)
     if projects:
         fetched = service.fetch_project(projects[0].project_id)
         assert isinstance(fetched, ProjectDetail)
         assert fetched.raw_record
+        if service.resolved_fields["description"] is None:
+            assert fetched.description is None
 
 
 def test_actual_schema_supports_every_search_filter() -> None:

@@ -149,3 +149,17 @@ def test_context_only_cannot_create_direct_match_and_excluded_statuses_are_ignor
     assert result is not None
     assert result.evidence == []
     assert result.source_confidence == SourceConfidence.NONE
+
+
+def test_project_without_description_can_match_governed_asset_class() -> None:
+    item = project()
+    item.description = None
+    item.asset_class = "Bridge"
+    result = service(
+        [finding("asset", asset_categories=["Bridge"], objectives=["Preserve bridge assets"])],
+        item,
+    ).fetch_strategic_context("P-1")
+
+    assert result is not None
+    assert result.objectives[0].value == "Preserve bridge assets"
+    assert result.evidence[0].evidence_strength == "SUPPORTING"
