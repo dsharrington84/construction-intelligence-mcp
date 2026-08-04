@@ -1,9 +1,13 @@
 # 005 — Project Detail Service V1
 
-**Status:** BLOCKED by 001 and 003  
+**Status:** SUPERSEDED (Executive context contract only)
 **Repository:** `dsharrington84/construction-intelligence-mcp`
 
 ## Objective
+
+> The original Executive-context assumption is superseded by
+> `docs/architecture/005-strategic-context-v2-contract.md`. This file remains the historical
+> Project Detail V1 design record; it is not a certified Executive Evidence Contract.
 
 Create the governed project-detail object that will support Opportunity Review and future contractor and cost intelligence.
 

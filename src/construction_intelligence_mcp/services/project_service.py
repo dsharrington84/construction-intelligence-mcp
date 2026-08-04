@@ -34,6 +34,7 @@ _FIELD_CANDIDATES: dict[str, tuple[str, ...]] = {
     "advertisement_fiscal_year": ("advertisement_fiscal_year", "fiscal_year"),
 }
 
+
 class ProjectService:
     """Business-facing access to canonical project intelligence."""
 

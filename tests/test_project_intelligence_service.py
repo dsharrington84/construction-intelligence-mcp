@@ -49,9 +49,7 @@ def governed_market() -> MarketSummary:
         districts_included=[7],
         overall=metrics,
         by_district=[
-            DistrictMarketSummary(
-                district=7, project_count=1, total_programmed_value=42_000_000
-            )
+            DistrictMarketSummary(district=7, project_count=1, total_programmed_value=42_000_000)
         ],
         by_work_type=[
             WorkTypeMarketSummary(
@@ -144,7 +142,6 @@ def test_existing_project_composes_all_available_intelligence() -> None:
     assert result.opportunity is opportunity
     assert opportunity_service.opportunity_id == "project-opportunity:P-1"
     assert market_service.request.districts == [7]
-    assert result.executive_signals == []
     assert result.contractor_signals == []
     assert result.cost_signals == []
 

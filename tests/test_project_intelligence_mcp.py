@@ -33,5 +33,5 @@ def test_fetch_project_intelligence_mcp_response(monkeypatch) -> None:
     assert response is not None
     assert response["project"]["project_id"] == "P-1"
     assert response["classification"]["primary_scope"] == "Bridge Replacement"
-    assert response["executive_signals"] == []
+    assert response["strategic_context"] is None
     assert fetch_project_intelligence("missing") is None

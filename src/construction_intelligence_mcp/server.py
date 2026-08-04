@@ -7,6 +7,9 @@ from pathlib import Path
 
 from fastmcp import FastMCP
 
+from construction_intelligence_mcp.adapters.executive_knowledge_adapter import (
+    ExecutiveKnowledgeAdapter,
+)
 from construction_intelligence_mcp.models.opportunity import OpportunitySearchRequest
 from construction_intelligence_mcp.models.project import ProjectSearchRequest
 from construction_intelligence_mcp.services.opportunity_service import OpportunityService
@@ -15,6 +18,7 @@ from construction_intelligence_mcp.services.project_intelligence_service import 
     ProjectIntelligenceService,
 )
 from construction_intelligence_mcp.services.project_service import ProjectService
+from construction_intelligence_mcp.services.strategic_context_service import StrategicContextService
 
 DEFAULT_DATABASE = Path(
     "/mnt/c/Users/dshar/Desktop/Caltrans_Pricing_Data/database/caltrans_pricing.duckdb"
@@ -42,11 +46,18 @@ def _opportunity_service() -> OpportunityService:
 
 def _project_intelligence_service() -> ProjectIntelligenceService:
     project_service = _service()
+    strategic_context_service = _strategic_context_service()
     return ProjectIntelligenceService(
         project_service,
         MarketService(project_service),
         OpportunityService(project_service),
+        strategic_context_service,
     )
+
+
+def _strategic_context_service() -> StrategicContextService:
+    adapter = ExecutiveKnowledgeAdapter()
+    return StrategicContextService(adapter.list_evidence)
 
 
 def smoke_test() -> None:
@@ -97,6 +108,16 @@ def fetch_project_intelligence(project_id: str) -> dict | None:
     """Fetch all governed intelligence currently known for one project."""
     intelligence = _project_intelligence_service().fetch_project_intelligence(project_id)
     return None if intelligence is None else intelligence.model_dump(mode="json")
+
+
+@mcp.tool
+def fetch_strategic_context(project_id: str) -> dict | None:
+    """Fetch governed Executive evidence aligned to one project."""
+    project = _service().fetch_project(project_id)
+    if project is None:
+        return None
+    context = _strategic_context_service().fetch_strategic_context(project)
+    return context.model_dump(mode="json")
 
 
 @mcp.tool
