@@ -3,6 +3,7 @@
 from .opportunity import Opportunity, OpportunitySearchRequest
 from .market import MarketSummary, MarketSummaryRequest
 from .project import ProjectDetail, ProjectSearchRequest, ProjectSummary
+from .project_intelligence import IntelligenceProject, ProjectIntelligence, ProjectMarketIntelligence
 from .scope import ProjectScope
 
 __all__ = [
@@ -11,7 +12,10 @@ __all__ = [
     "Opportunity",
     "OpportunitySearchRequest",
     "ProjectDetail",
+    "ProjectIntelligence",
+    "ProjectMarketIntelligence",
     "ProjectSearchRequest",
     "ProjectSummary",
+    "IntelligenceProject",
     "ProjectScope",
 ]
