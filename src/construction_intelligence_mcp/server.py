@@ -7,7 +7,9 @@ from pathlib import Path
 
 from fastmcp import FastMCP
 
+from construction_intelligence_mcp.models.opportunity import OpportunitySearchRequest
 from construction_intelligence_mcp.models.project import ProjectSearchRequest
+from construction_intelligence_mcp.services.opportunity_service import OpportunityService
 from construction_intelligence_mcp.services.project_service import ProjectService
 
 DEFAULT_DATABASE = Path(
@@ -17,9 +19,9 @@ DEFAULT_DATABASE = Path(
 mcp = FastMCP(
     name="Construction Intelligence",
     instructions=(
-        "Search and fetch governed construction project intelligence. "
-        "Use search_projects to discover candidate projects and fetch_project "
-        "to retrieve one complete project record."
+        "Search and fetch governed construction project and opportunity intelligence. "
+        "Use opportunity tools for explainable potential pursuits and project tools "
+        "for canonical project records."
     ),
 )
 
@@ -28,6 +30,10 @@ def _service() -> ProjectService:
     configured = os.environ.get("CI_DATABASE")
     database = Path(configured) if configured else DEFAULT_DATABASE
     return ProjectService(database)
+
+
+def _opportunity_service() -> OpportunityService:
+    return OpportunityService(_service())
 
 
 def smoke_test() -> None:
@@ -71,6 +77,39 @@ def fetch_project(project_id: str) -> dict | None:
     """Fetch one canonical project by project identifier."""
     project = _service().fetch_project(project_id)
     return None if project is None else project.model_dump(mode="json")
+
+
+@mcp.tool
+def search_opportunities(
+    districts: list[int] | None = None,
+    scope: str | None = None,
+    advertisement_start: str | None = None,
+    advertisement_end: str | None = None,
+    minimum_programmed_value: float | None = None,
+    text: str | None = None,
+    limit: int = 100,
+) -> list[dict]:
+    """Search explainable potential-pursuit opportunities."""
+    request_data = {
+        "scope": scope,
+        "advertisement_start": advertisement_start,
+        "advertisement_end": advertisement_end,
+        "minimum_programmed_value": minimum_programmed_value,
+        "text": text,
+        "limit": limit,
+    }
+    if districts is not None:
+        request_data["districts"] = districts
+    request = OpportunitySearchRequest.model_validate(request_data)
+    opportunities = _opportunity_service().search_opportunities(request)
+    return [opportunity.model_dump(mode="json") for opportunity in opportunities]
+
+
+@mcp.tool
+def fetch_opportunity(opportunity_id: str) -> dict | None:
+    """Fetch one potential-pursuit opportunity by opportunity identifier."""
+    opportunity = _opportunity_service().fetch_opportunity(opportunity_id)
+    return None if opportunity is None else opportunity.model_dump(mode="json")
 
 
 def main() -> None:
