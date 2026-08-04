@@ -45,6 +45,8 @@ class ExecutiveKnowledgeAdapter:
         "history",
         "archive",
         "staging",
+        "candidate",
+        "exception",
         "quarantine",
         "temporary",
     )
@@ -134,11 +136,13 @@ class ExecutiveKnowledgeAdapter:
         self.adapter = adapter
         self.inspected_relations: dict[str, dict[str, str | None]] = {}
         self._records_cache: list[ExecutiveKnowledgeRecord] | None = None
+        self._diagnostics_cache: dict[str, Any] | None = None
+        self.candidate_path_diagnostics: list[dict[str, Any]] = []
         self.unmatched_refined_section_count = 0
         self.duplicate_evidence_id_count = 0
         with adapter.connect() as connection:
             schemas = self._discover_schemas(connection)
-        self._select_assembly(schemas)
+            self._select_assembly(connection, schemas)
 
     def fetch_records(self) -> list[ExecutiveKnowledgeRecord]:
         if self._records_cache is not None:
@@ -162,6 +166,12 @@ class ExecutiveKnowledgeAdapter:
         self.unmatched_refined_section_count = unmatched
         self.duplicate_evidence_id_count = duplicates
         self._records_cache = [records[key] for key in sorted(records)]
+        self.unmatched_refined_section_count = int(
+            self.selected_path_metrics["unmatched_refined_rows"]
+        )
+        self.selected_path_metrics["rows_converted_to_records"] = len(records)
+        self.selected_path_metrics["rows_removed_as_duplicate_evidence_ids"] = duplicates
+        self._diagnostics_cache = None
         return list(self._records_cache)
 
     def eligible_record_counts_by_status(self) -> dict[str, int]:
@@ -173,7 +183,10 @@ class ExecutiveKnowledgeAdapter:
 
     @property
     def diagnostics(self) -> dict[str, Any]:
-        return {
+        if self._diagnostics_cache is not None:
+            return dict(self._diagnostics_cache)
+        self.fetch_records()
+        self._diagnostics_cache = {
             "selected_refined_relation": self.source_relation,
             "selected_base_section_relation": self.base_section_relation,
             "selected_source_document_relation": self.source_document_relation,
@@ -182,7 +195,10 @@ class ExecutiveKnowledgeAdapter:
             "eligible_record_counts_by_status": self.eligible_record_counts_by_status(),
             "unmatched_refined_section_count": self.unmatched_refined_section_count,
             "duplicate_evidence_id_count": self.duplicate_evidence_id_count,
+            "selected_path_metrics": dict(self.selected_path_metrics),
+            "candidate_paths": [dict(item) for item in self.candidate_path_diagnostics],
         }
+        return dict(self._diagnostics_cache)
 
     def _discover_schemas(self, connection: Any) -> dict[str, set[str]]:
         rows = connection.execute(
@@ -201,7 +217,7 @@ class ExecutiveKnowledgeAdapter:
             schemas.setdefault(relation, set()).add(str(column))
         return schemas
 
-    def _select_assembly(self, schemas: dict[str, set[str]]) -> None:
+    def _select_assembly(self, connection: Any, schemas: dict[str, set[str]]) -> None:
         for relation, columns in schemas.items():
             concepts = self._relation_concepts(columns)
             if any(concepts.values()):
@@ -214,18 +230,26 @@ class ExecutiveKnowledgeAdapter:
             fields = self._resolve_named_fields(columns, self.REFINED_REQUIRED)
             if all(fields.values()):
                 refined_candidates.append((self._relation_rank(name), relation, fields))
-        refined = self._unique_best(refined_candidates, "refined section")
-        if refined is None:
+        if not refined_candidates:
             raise RuntimeError(self._assembly_failure("no compatible refined-section relation"))
-        _, self.source_relation, refined_fields = refined
-
-        paths = self._assembly_paths(self.source_relation, refined_fields, schemas)
+        paths = []
+        for refined_rank, refined_relation, refined_fields in refined_candidates:
+            structural_paths = self._assembly_paths(refined_relation, refined_fields, schemas)
+            for _, path in structural_paths:
+                path["refined_relation"] = refined_relation
+                metrics = self._validate_path(connection, refined_relation, path)
+                path["metrics"] = metrics
+                diagnostic = self._path_diagnostic(refined_relation, path, metrics)
+                self.candidate_path_diagnostics.append(diagnostic)
+                if diagnostic["rejection_reason"] is None:
+                    paths.append((self._validated_path_rank(refined_rank, path, metrics), path))
         selected = self._unique_best(paths, "governed assembly path")
         if selected is None:
             raise RuntimeError(
                 self._assembly_failure("no governed base-content and source-document join path")
             )
         _, path = selected
+        self.source_relation = path["refined_relation"]
         self.base_section_relation = path["base_relation"]
         self.source_document_relation = path["document_relation"]
         self.join_keys = path["join_keys"]
@@ -234,6 +258,7 @@ class ExecutiveKnowledgeAdapter:
             concept: field for concept, (_, field) in self._field_sources.items()
         }
         self.lineage_fields = path["lineage_fields"]
+        self.selected_path_metrics = path["metrics"]
 
     def _assembly_paths(
         self,
@@ -310,8 +335,9 @@ class ExecutiveKnowledgeAdapter:
         sources: dict[str, tuple[str, str]] = {
             concept: ("r", field) for concept, field in refined_fields.items() if field is not None
         }
-        sources["governed_finding"] = ("b", content)
-        sources["source_document"] = ("d" if document_relation else "b", document_name)
+        base_alias = "r" if base_relation == refined_relation else "b"
+        sources["governed_finding"] = (base_alias, content)
+        sources["source_document"] = ("d" if document_relation else base_alias, document_name)
         aliases = {"r": refined_relation, "b": base_relation}
         if document_relation:
             aliases["d"] = document_relation
@@ -352,6 +378,173 @@ class ExecutiveKnowledgeAdapter:
             "lineage_fields": lineage,
         }
 
+    def _validate_path(
+        self, connection: Any, refined_relation: str, path: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Measure real governed-key overlap without materializing assembled rows."""
+        fields = path["field_sources"]
+        evidence = self._quote(fields["evidence_id"][1])
+        status = self._quote(fields["refined_status"][1])
+        content_alias, content_field = fields["governed_finding"]
+        document_alias, document_field = fields["source_document"]
+        eligible = ", ".join(f"'{value}'" for value in sorted(self.ELIGIBLE_STATUSES))
+        joins = self._join_sql(path)
+        where = f"TRIM(UPPER(CAST(r.{status} AS VARCHAR))) IN ({eligible})"
+        joined_from = f"{refined_relation} r {joins}"
+        base_key_alias = "b" if path["base_relation"] != refined_relation else "r"
+        section_join = path["join_keys"][0] if path["join_keys"] else None
+        base_key = self._quote(section_join[3]) if section_join else evidence
+        if section_join:
+            refined_join_field = self._quote(section_join[1])
+            matched_physical_sql = (
+                f"(SELECT COUNT(*) FROM {refined_relation} rx WHERE "
+                f"TRIM(UPPER(CAST(rx.{status} AS VARCHAR))) IN ({eligible}) AND EXISTS "
+                f"(SELECT 1 FROM {path['base_relation']} bx WHERE "
+                f"rx.{refined_join_field} = bx.{base_key}))"
+            )
+        else:
+            matched_physical_sql = (
+                f"(SELECT COUNT(*) FROM {refined_relation} rx WHERE "
+                f"TRIM(UPPER(CAST(rx.{status} AS VARCHAR))) IN ({eligible}))"
+            )
+        document_present = (
+            f"{document_alias}.{self._quote(document_field)} IS NOT NULL AND "
+            f"TRIM(CAST({document_alias}.{self._quote(document_field)} AS VARCHAR)) <> ''"
+        )
+        content_present = (
+            f"{content_alias}.{self._quote(content_field)} IS NOT NULL AND "
+            f"TRIM(CAST({content_alias}.{self._quote(content_field)} AS VARCHAR)) <> ''"
+        )
+        query = f"""
+            SELECT
+              (SELECT COUNT(*) FROM {refined_relation}) AS refined_total_rows,
+              (SELECT COUNT(*) FROM {refined_relation} r WHERE {where}) AS eligible_refined_rows,
+              (SELECT COUNT(DISTINCT r.{evidence}) FROM {refined_relation} r WHERE {where})
+                AS distinct_eligible_evidence_ids,
+              {matched_physical_sql} AS matched_eligible_physical_rows,
+              COUNT(*) FILTER (WHERE {base_key_alias}.{base_key} IS NOT NULL) AS joined_rows,
+              COUNT(DISTINCT r.{evidence}) FILTER (WHERE {base_key_alias}.{base_key} IS NOT NULL)
+                AS matched_refined_rows,
+              COUNT(DISTINCT r.{evidence}) FILTER (WHERE {content_present})
+                AS non_null_governed_content_rows,
+              COUNT(DISTINCT r.{evidence}) FILTER (WHERE {document_present})
+                AS non_null_source_document_rows,
+              COUNT(DISTINCT r.{evidence}) FILTER (
+                WHERE {content_present} AND {document_present}
+              ) AS rows_surviving_required_fields
+            FROM {joined_from}
+            WHERE {where}
+        """
+        row = connection.execute(query).fetchone()
+        names = [str(column[0]) for column in connection.description]
+        metrics = dict(zip(names, row, strict=True))
+        matched = int(metrics["matched_refined_rows"] or 0)
+        eligible_count = int(metrics["eligible_refined_rows"] or 0)
+        joined = int(metrics["joined_rows"] or 0)
+        metrics["unmatched_refined_rows"] = max(eligible_count - matched, 0)
+        metrics["match_percentage"] = (matched / eligible_count * 100) if eligible_count else 0.0
+        matched_physical = int(metrics["matched_eligible_physical_rows"] or 0)
+        metrics["duplicate_multiplication_count"] = max(joined - matched_physical, 0)
+        metrics["duplicate_multiplication_factor"] = (
+            joined / matched_physical if matched_physical else 0.0
+        )
+        metrics["refined_status_distribution"] = self._status_distribution(
+            connection, refined_relation, fields["refined_status"][1]
+        )
+        return metrics
+
+    def _join_sql(self, path: dict[str, Any]) -> str:
+        clauses = []
+        if path["base_relation"] != path["refined_relation"]:
+            left_alias, left_field, right_alias, right_field = path["join_keys"][0]
+            clauses.append(
+                f"LEFT JOIN {path['base_relation']} b ON "
+                f"{left_alias}.{self._quote(left_field)} = "
+                f"{right_alias}.{self._quote(right_field)}"
+            )
+        if path["document_relation"]:
+            left_alias, left_field, right_alias, right_field = path["join_keys"][-1]
+            clauses.append(
+                f"LEFT JOIN {path['document_relation']} d ON "
+                f"{left_alias}.{self._quote(left_field)} = "
+                f"{right_alias}.{self._quote(right_field)}"
+            )
+        return " ".join(clauses)
+
+    def _status_distribution(
+        self, connection: Any, relation: str, status_field: str
+    ) -> dict[str, int]:
+        status = self._quote(status_field)
+        rows = connection.execute(
+            f"SELECT TRIM(UPPER(CAST({status} AS VARCHAR))) status, COUNT(*) "
+            f"FROM {relation} GROUP BY 1 ORDER BY 1"
+        ).fetchall()
+        return {str(value or "(missing)"): int(count) for value, count in rows}
+
+    def _path_diagnostic(
+        self, refined_relation: str, path: dict[str, Any], metrics: dict[str, Any]
+    ) -> dict[str, Any]:
+        rejection = None
+        if not metrics["matched_refined_rows"]:
+            rejection = "zero eligible lineage overlap"
+        elif not metrics["non_null_governed_content_rows"]:
+            rejection = "zero matched rows with governed content"
+        elif not metrics["non_null_source_document_rows"]:
+            rejection = "zero matched rows with governed source-document identity"
+        elif metrics["duplicate_multiplication_count"]:
+            rejection = "many-to-many lineage join multiplies eligible evidence rows"
+        return {
+            "refined_relation": refined_relation,
+            "base_relation": path["base_relation"],
+            "document_relation": path["document_relation"],
+            "join_keys": list(path["join_keys"]),
+            "relation_classification": {
+                "refined": self._relation_classification(refined_relation),
+                "base": self._relation_classification(path["base_relation"]),
+                "document": self._relation_classification(path["document_relation"]),
+            },
+            **metrics,
+            "rejection_reason": rejection,
+        }
+
+    @classmethod
+    def _relation_classification(cls, relation: str | None) -> str:
+        if relation is None:
+            return "inline"
+        name = cls._relation_name(relation)
+        for token in ("certified", "current", "candidate", "exception", "refined"):
+            if token in name:
+                return token
+        return "canonical"
+
+    @staticmethod
+    def _validated_path_rank(
+        refined_rank: tuple[int, int], path: dict[str, Any], metrics: dict[str, Any]
+    ) -> tuple[Any, ...]:
+        base_rank = ExecutiveKnowledgeAdapter._relation_rank(
+            ExecutiveKnowledgeAdapter._relation_name(path["base_relation"])
+        )
+        document_rank = (
+            ExecutiveKnowledgeAdapter._relation_rank(
+                ExecutiveKnowledgeAdapter._relation_name(path["document_relation"])
+            )
+            if path["document_relation"]
+            else (4, 0)
+        )
+        return (
+            refined_rank[0],
+            base_rank[0],
+            document_rank[0],
+            metrics["matched_refined_rows"],
+            metrics["match_percentage"],
+            metrics["non_null_governed_content_rows"],
+            metrics["non_null_source_document_rows"],
+            -metrics["duplicate_multiplication_count"],
+            refined_rank[1],
+            base_rank[1],
+            document_rank[1],
+        )
+
     def _fetch_assembled_rows(self, connection: Any) -> list[dict[str, Any]]:
         projections = [
             f"{alias}.{self._quote(field)} AS {self._quote(concept)}"
@@ -378,7 +571,10 @@ class ExecutiveKnowledgeAdapter:
         status_alias, status_field = self._field_sources["refined_status"]
         eligible_statuses = sorted(self.ELIGIBLE_STATUSES)
         placeholders = ", ".join("?" for _ in eligible_statuses)
-        sql += f" WHERE UPPER(CAST({status_alias}.{self._quote(status_field)} AS VARCHAR)) IN ({placeholders})"
+        sql += (
+            f" WHERE TRIM(UPPER(CAST({status_alias}.{self._quote(status_field)} AS VARCHAR))) "
+            f"IN ({placeholders})"
+        )
         evidence_alias, evidence_field = self._field_sources["evidence_id"]
         sql += f" ORDER BY CAST({evidence_alias}.{self._quote(evidence_field)} AS VARCHAR)"
         cursor = connection.execute(sql, eligible_statuses)
@@ -542,11 +738,18 @@ class ExecutiveKnowledgeAdapter:
                 f"{relation}: resolved [{', '.join(resolved) or 'none'}]; "
                 f"missing [{', '.join(missing) or 'none'}]"
             )
+        rejected_paths = "; ".join(
+            f"{item['refined_relation']} -> {item['base_relation']}: "
+            f"{item['rejection_reason']} (matched={item['matched_refined_rows']}, "
+            f"content={item['non_null_governed_content_rows']})"
+            for item in self.candidate_path_diagnostics
+        )
         return (
             f"No governed executive evidence assembly path: {reason}. "
             f"Inspected refined candidates: {'; '.join(details) or 'none'}. "
             "Required joins: refined source-section lineage to governed base content, then "
-            "base source-asset/document lineage to governed document identity."
+            "base source-asset/document lineage to governed document identity. "
+            f"Rejected paths: {rejected_paths or 'none'}."
         )
 
     @staticmethod

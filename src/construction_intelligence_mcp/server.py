@@ -87,9 +87,22 @@ def smoke_test() -> None:
         + json.dumps(executive_adapter.lineage_fields, sort_keys=True)
     )
     status_counts = executive_adapter.eligible_record_counts_by_status()
+    diagnostics = executive_adapter.diagnostics
+    metrics = diagnostics["selected_path_metrics"]
     print(f"Eligible executive records by refined status: {json.dumps(status_counts)}")
-    print(f"Unmatched executive lineage count: {executive_adapter.unmatched_refined_section_count}")
-    print(f"Duplicate executive evidence count: {executive_adapter.duplicate_evidence_id_count}")
+    print(f"Refined status distribution: {json.dumps(metrics['refined_status_distribution'])}")
+    print(f"Eligible refined rows: {metrics['eligible_refined_rows']}")
+    print(f"Matched refined rows: {metrics['matched_refined_rows']}")
+    print(f"Unmatched refined rows: {metrics['unmatched_refined_rows']}")
+    print(f"Eligible lineage match percentage: {metrics['match_percentage']:.2f}%")
+    print(f"Non-null governed-content rows: {metrics['non_null_governed_content_rows']}")
+    print(f"Non-null source-document rows: {metrics['non_null_source_document_rows']}")
+    print(f"Final executive record count: {metrics['rows_converted_to_records']}")
+    print(f"Duplicate multiplication count: {metrics['duplicate_multiplication_count']}")
+    rejected = [
+        path for path in diagnostics["candidate_paths"] if path["rejection_reason"] is not None
+    ]
+    print(f"Rejected executive path summaries: {json.dumps(rejected, default=str)}")
     print(f"Total Southern California projects: {service.count_projects(districts)}")
     print("Five sample projects:")
     for project in samples:

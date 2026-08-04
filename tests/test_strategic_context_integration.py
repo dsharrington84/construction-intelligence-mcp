@@ -42,6 +42,7 @@ def test_actual_executive_source_and_southern_california_context(
     )
     records = executive_adapter.fetch_records()
     assert records
+    assert executive_adapter.diagnostics["selected_path_metrics"]["match_percentage"] > 0
     assert all(
         record.refined_status in ExecutiveKnowledgeAdapter.ELIGIBLE_STATUSES for record in records
     )

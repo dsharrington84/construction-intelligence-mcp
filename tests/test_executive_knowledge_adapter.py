@@ -204,3 +204,101 @@ def test_discovery_uses_one_connection_for_all_candidate_schemas(tmp_path: Path)
     assert adapter.connection_count == 1
     executive.fetch_records()
     assert adapter.connection_count == 2
+
+
+def test_zero_overlap_newer_path_is_rejected_for_valid_lower_version(tmp_path: Path) -> None:
+    database = tmp_path / "overlap.duckdb"
+    create_normalized_warehouse(database)
+    connection = duckdb.connect(str(database))
+    connection.execute(
+        "CREATE TABLE ci_executive_knowledge_section_refined_v9 AS "
+        "SELECT refined_section_key, 'OTHER-' || source_section_key source_section_key, "
+        "refined_status, programs, districts, geographic_applicability "
+        "FROM ci_executive_knowledge_section_refined_v4"
+    )
+    connection.close()
+
+    adapter = ExecutiveKnowledgeAdapter(DuckDBAdapter(database))
+
+    assert adapter.source_relation.endswith('"ci_executive_knowledge_section_refined_v4"')
+    rejected = [
+        path
+        for path in adapter.candidate_path_diagnostics
+        if path["refined_relation"].endswith('"ci_executive_knowledge_section_refined_v9"')
+    ]
+    assert rejected
+    assert {path["rejection_reason"] for path in rejected} == {"zero eligible lineage overlap"}
+
+
+def test_candidate_relation_is_not_treated_as_governed_base_content(tmp_path: Path) -> None:
+    database = tmp_path / "candidate.duckdb"
+    create_normalized_warehouse(database)
+    connection = duckdb.connect(str(database))
+    connection.execute(
+        "CREATE TABLE ci_executive_semantic_candidate_v20 AS "
+        "SELECT section_key, section_text, source_asset_id, "
+        "'Candidate label' source_asset_title "
+        "FROM ci_executive_knowledge_section_source"
+    )
+    connection.close()
+
+    adapter = ExecutiveKnowledgeAdapter(DuckDBAdapter(database))
+
+    assert "candidate" not in adapter.base_section_relation
+    assert not any(
+        "candidate" in path["base_relation"] for path in adapter.candidate_path_diagnostics
+    )
+
+
+def test_many_to_many_path_is_rejected_for_governed_many_to_one_path(tmp_path: Path) -> None:
+    database = tmp_path / "multiplication.duckdb"
+    create_normalized_warehouse(database)
+    connection = duckdb.connect(str(database))
+    connection.execute(
+        "CREATE TABLE ci_executive_knowledge_section_current AS "
+        "SELECT * FROM ci_executive_knowledge_section_source"
+    )
+    connection.execute(
+        "INSERT INTO ci_executive_knowledge_section_current "
+        "SELECT * FROM ci_executive_knowledge_section_source WHERE section_key = 'S-1'"
+    )
+    connection.close()
+
+    adapter = ExecutiveKnowledgeAdapter(DuckDBAdapter(database))
+
+    assert adapter.base_section_relation.endswith('"ci_executive_knowledge_section_source"')
+    multiplied = [
+        path
+        for path in adapter.candidate_path_diagnostics
+        if path["base_relation"].endswith('"ci_executive_knowledge_section_current"')
+    ]
+    assert multiplied
+    assert all("many-to-many" in path["rejection_reason"] for path in multiplied)
+
+
+def test_status_normalization_and_diagnostics_reconcile(tmp_path: Path) -> None:
+    database = tmp_path / "diagnostics.duckdb"
+    create_normalized_warehouse(database)
+    connection = duckdb.connect(str(database))
+    connection.execute(
+        "UPDATE ci_executive_knowledge_section_refined_v4 "
+        "SET refined_status = ' usable ' WHERE refined_section_key = 'E-1'"
+    )
+    connection.execute(
+        "INSERT INTO ci_executive_knowledge_section_refined_v4 VALUES "
+        "('E-X', 'NOT-THERE', 'USABLE', NULL, NULL, NULL)"
+    )
+    connection.close()
+
+    adapter = ExecutiveKnowledgeAdapter(DuckDBAdapter(database))
+    records = adapter.fetch_records()
+    metrics = adapter.diagnostics["selected_path_metrics"]
+
+    assert "E-1" in {record.evidence_id for record in records}
+    assert metrics["eligible_refined_rows"] == 4
+    assert metrics["matched_refined_rows"] == 3
+    assert metrics["unmatched_refined_rows"] == 1
+    assert metrics["rows_surviving_required_fields"] == 3
+    assert metrics["rows_converted_to_records"] == 3
+    assert metrics["rows_removed_as_duplicate_evidence_ids"] == 0
+    assert adapter.diagnostics == adapter.diagnostics
