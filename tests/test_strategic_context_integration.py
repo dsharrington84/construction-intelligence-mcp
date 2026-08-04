@@ -29,6 +29,11 @@ def test_actual_executive_source_and_southern_california_context(
     executive_adapter = ExecutiveKnowledgeAdapter(project_service.adapter)
 
     assert executive_adapter.source_relation is not None
+    assert executive_adapter.source_relation in executive_adapter.inspected_relations
+    assert all(
+        executive_adapter.resolved_fields[concept] is not None
+        for concept in ExecutiveKnowledgeAdapter.REQUIRED
+    )
     records = executive_adapter.fetch_records()
     assert records
     assert all(

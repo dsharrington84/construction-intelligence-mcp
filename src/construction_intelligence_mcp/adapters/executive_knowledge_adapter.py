@@ -292,7 +292,7 @@ class ExecutiveKnowledgeAdapter:
                 f"{relation}: resolved [{', '.join(resolved) or 'none'}]; "
                 f"missing [{', '.join(missing) or 'none'}]"
             )
-        return "No schema-compatible refined executive relation. Inspected: " + "; ".join(
+        return "No schema-compatible executive knowledge relation. Inspected: " + "; ".join(
             diagnostics
         )
 
