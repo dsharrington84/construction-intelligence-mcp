@@ -8,8 +8,10 @@ from pathlib import Path
 from fastmcp import FastMCP
 
 from construction_intelligence_mcp.models.opportunity import OpportunitySearchRequest
+from construction_intelligence_mcp.models.portfolio import PortfolioRequest
 from construction_intelligence_mcp.models.project import ProjectSearchRequest
 from construction_intelligence_mcp.services.opportunity_service import OpportunityService
+from construction_intelligence_mcp.services.portfolio_service import PortfolioService
 from construction_intelligence_mcp.services.market_service import MarketService
 from construction_intelligence_mcp.services.project_intelligence_service import (
     ProjectIntelligenceService,
@@ -47,6 +49,10 @@ def _project_intelligence_service() -> ProjectIntelligenceService:
         MarketService(project_service),
         OpportunityService(project_service),
     )
+
+
+def _portfolio_service() -> PortfolioService:
+    return PortfolioService(_opportunity_service())
 
 
 def smoke_test() -> None:
@@ -130,6 +136,15 @@ def fetch_opportunity(opportunity_id: str) -> dict | None:
     """Fetch one potential-pursuit opportunity by opportunity identifier."""
     opportunity = _opportunity_service().fetch_opportunity(opportunity_id)
     return None if opportunity is None else opportunity.model_dump(mode="json")
+
+
+@mcp.tool
+def fetch_portfolio(opportunity_ids: list[str] | None = None) -> dict:
+    """Aggregate selected opportunities into an explainable pursuit portfolio."""
+    portfolio = _portfolio_service().fetch_portfolio(
+        PortfolioRequest(opportunity_ids=opportunity_ids or [])
+    )
+    return portfolio.model_dump(mode="json")
 
 
 def main() -> None:
