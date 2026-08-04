@@ -32,7 +32,13 @@ def test_actual_executive_source_and_southern_california_context(
     assert executive_adapter.source_relation in executive_adapter.inspected_relations
     assert all(
         executive_adapter.resolved_fields[concept] is not None
-        for concept in ExecutiveKnowledgeAdapter.REQUIRED
+        for concept in (
+            "evidence_id",
+            "source_document",
+            "source_section_id",
+            "governed_finding",
+            "refined_status",
+        )
     )
     records = executive_adapter.fetch_records()
     assert records
@@ -43,6 +49,8 @@ def test_actual_executive_source_and_southern_california_context(
         record.refined_status in ExecutiveKnowledgeAdapter.EXCLUDED_STATUSES for record in records
     )
     assert executive_adapter.lineage_fields
+    assert executive_adapter.unmatched_refined_section_count >= 0
+    assert executive_adapter.duplicate_evidence_id_count >= 0
 
     projects = project_service.search_projects(
         ProjectSearchRequest(districts=[7, 8, 11, 12], limit=5)

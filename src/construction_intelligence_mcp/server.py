@@ -75,13 +75,21 @@ def smoke_test() -> None:
     print(f"Resolved source table: {service.source_table}")
     print(f"Resolved project identifier field: {fields['project_id']}")
     print(f"Resolved description field: {fields['description']}")
-    print(f"Resolved executive relation: {executive_adapter.source_relation or '(none)'}")
+    print(f"Resolved refined executive relation: {executive_adapter.source_relation}")
+    print(f"Resolved base executive section relation: {executive_adapter.base_section_relation}")
+    print(
+        "Resolved source document/source asset relation: "
+        f"{executive_adapter.source_document_relation or '(inline base section identity)'}"
+    )
+    print(f"Executive join keys: {json.dumps(executive_adapter.join_keys)}")
     print(
         "Resolved executive lineage fields: "
-        + (", ".join(executive_adapter.lineage_fields) or "(none)")
+        + json.dumps(executive_adapter.lineage_fields, sort_keys=True)
     )
     status_counts = executive_adapter.eligible_record_counts_by_status()
     print(f"Eligible executive records by refined status: {json.dumps(status_counts)}")
+    print(f"Unmatched executive lineage count: {executive_adapter.unmatched_refined_section_count}")
+    print(f"Duplicate executive evidence count: {executive_adapter.duplicate_evidence_id_count}")
     print(f"Total Southern California projects: {service.count_projects(districts)}")
     print("Five sample projects:")
     for project in samples:
