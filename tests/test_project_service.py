@@ -1,42 +1,162 @@
+from datetime import date
 from pathlib import Path
 
+import duckdb
 import pytest
+from pydantic import ValidationError
 
-from construction_intelligence_mcp.models.project import ProjectSearchRequest
+from construction_intelligence_mcp.models.project import (
+    ProjectDetail,
+    ProjectSearchRequest,
+    ProjectSummary,
+)
 from construction_intelligence_mcp.services.project_service import ProjectService
 
-DATABASE = Path(
-    "/mnt/c/Users/dshar/Desktop/Caltrans_Pricing_Data/database/caltrans_pricing.duckdb"
-)
 
-pytestmark = pytest.mark.skipif(not DATABASE.is_file(), reason="Local DuckDB is unavailable")
+@pytest.fixture
+def database(tmp_path: Path) -> Path:
+    path = tmp_path / "projects.duckdb"
+    connection = duckdb.connect(str(path))
+    connection.execute(
+        """
+        CREATE TABLE ci_market_state (
+            market_state_id VARCHAR,
+            project_description VARCHAR,
+            district VARCHAR,
+            county VARCHAR,
+            route VARCHAR,
+            location VARCHAR,
+            project_type VARCHAR,
+            programmed_amount DOUBLE,
+            advertisement_date DATE,
+            advertisement_fiscal_year VARCHAR,
+            extra_source_field VARCHAR
+        )
+        """
+    )
+    connection.executemany(
+        "INSERT INTO ci_market_state VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [
+            (
+                "P-1",
+                "Replace bridge at Pine Creek",
+                "07",
+                "Los Angeles",
+                "5",
+                "Pine Creek",
+                "Bridge",
+                50_000_000,
+                date(2026, 1, 1),
+                "FY 2026",
+                "complete detail",
+            ),
+            (
+                "P-2",
+                "Cold plane and overlay pavement",
+                "District 8",
+                "San Bernardino",
+                "10",
+                "Main Street",
+                "Roadway",
+                10_000_000,
+                date(2026, 6, 30),
+                "2026/27",
+                "second detail",
+            ),
+            (
+                "P-3",
+                "Install drainage culvert",
+                "11",
+                "San Diego",
+                "805",
+                "Mission Valley",
+                "Drainage",
+                5_000_000,
+                date(2027, 1, 1),
+                "2027",
+                "third detail",
+            ),
+            (
+                "P-4",
+                "Northern signal work",
+                "4",
+                "Alameda",
+                "80",
+                "Oakland",
+                "Electrical",
+                1_000_000,
+                date(2026, 3, 1),
+                "2026",
+                "fourth detail",
+            ),
+        ],
+    )
+    connection.close()
+    return path
 
 
-def test_search_projects_returns_business_models() -> None:
-    service = ProjectService(DATABASE)
-    projects = service.search_projects(ProjectSearchRequest(limit=5))
+def test_search_projects_returns_business_models(database: Path) -> None:
+    projects = ProjectService(database).search_projects(ProjectSearchRequest(limit=2))
 
-    assert len(projects) == 5
-    assert all(project.project_id for project in projects)
-    assert all(project.title for project in projects)
-    assert all(project.primary_scope for project in projects)
+    assert len(projects) == 2
+    assert all(isinstance(project, ProjectSummary) for project in projects)
+    assert not any(hasattr(project, "columns") for project in projects)
 
 
-def test_search_projects_filters_southern_california() -> None:
-    service = ProjectService(DATABASE)
-    projects = service.search_projects(
-        ProjectSearchRequest(districts=[7, 8, 11, 12], limit=25)
+def test_search_projects_supports_all_filters(database: Path) -> None:
+    projects = ProjectService(database).search_projects(
+        ProjectSearchRequest(
+            districts=[8, 7, 7],
+            advertisement_start=date(2026, 1, 1),
+            advertisement_end=date(2026, 6, 30),
+            minimum_programmed_value=10_000_000,
+            text="pavement",
+            limit=5,
+        )
     )
 
-    assert projects
-    assert all(project.district in {7, 8, 11, 12} for project in projects)
+    assert [project.project_id for project in projects] == ["P-2"]
 
 
-def test_fetch_project_round_trip() -> None:
-    service = ProjectService(DATABASE)
-    project = service.search_projects(ProjectSearchRequest(limit=1))[0]
-    fetched = service.fetch_project(project.project_id)
+@pytest.mark.parametrize("limit", [0, 1001])
+def test_search_projects_validates_limit(limit: int) -> None:
+    with pytest.raises(ValidationError):
+        ProjectSearchRequest(limit=limit)
 
-    assert fetched is not None
-    assert fetched.project_id == project.project_id
-    assert fetched.raw_record
+
+def test_fetch_project_returns_complete_business_object_or_none(database: Path) -> None:
+    service = ProjectService(database)
+
+    project = service.fetch_project("P-1")
+
+    assert isinstance(project, ProjectDetail)
+    assert project.project_id == "P-1"
+    assert project.raw_record["extra_source_field"] == "complete detail"
+    assert service.fetch_project("not-found") is None
+
+
+def test_count_projects_by_district(database: Path) -> None:
+    assert ProjectService(database).count_projects([7, 8, 11, 12]) == 3
+
+
+def test_missing_database_error_is_actionable(tmp_path: Path) -> None:
+    with pytest.raises(FileNotFoundError, match="Set CI_DATABASE"):
+        ProjectService(tmp_path / "missing.duckdb")
+
+
+def test_missing_canonical_table_error_is_actionable(tmp_path: Path) -> None:
+    path = tmp_path / "empty.duckdb"
+    duckdb.connect(str(path)).close()
+
+    with pytest.raises(RuntimeError, match="Missing canonical table 'ci_market_state'"):
+        ProjectService(path)
+
+
+def test_unresolved_required_fields_error_lists_columns(tmp_path: Path) -> None:
+    path = tmp_path / "invalid.duckdb"
+    connection = duckdb.connect(str(path))
+    connection.execute("CREATE TABLE ci_market_state (unrelated VARCHAR)")
+    connection.close()
+
+    with pytest.raises(RuntimeError, match="unresolved required fields: project_id, description"):
+        ProjectService(path)
