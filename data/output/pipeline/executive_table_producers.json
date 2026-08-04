@@ -1,0 +1,10 @@
+{
+  "conclusion": "No Executive warehouse producer exists in this repository.",
+  "metadata": {
+    "evidence_limit": "Only files present in the scanned repository are represented.",
+    "method": "static_source_scan",
+    "read_only": true,
+    "scope_root": "/workspace/construction-intelligence-mcp"
+  },
+  "production_relation_writes": []
+}

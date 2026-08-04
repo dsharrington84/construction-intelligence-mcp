@@ -1,0 +1,1999 @@
+{
+  "concept_occurrences": {
+    "artifact_id": [
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 101
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 44
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 60
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_reverse_engineer_executive_warehouse.py",
+        "line": 23
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_reverse_engineer_executive_warehouse.py",
+        "line": 25
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_reverse_engineer_executive_warehouse.py",
+        "line": 43
+      }
+    ],
+    "district": [
+      {
+        "classification": "documentation",
+        "file": "AGENTS.md",
+        "line": 84
+      },
+      {
+        "classification": "documentation",
+        "file": "AGENTS.md",
+        "line": 127
+      },
+      {
+        "classification": "documentation",
+        "file": "AGENTS.md",
+        "line": 233
+      },
+      {
+        "classification": "documentation",
+        "file": "README.md",
+        "line": 44
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/001-opportunity-service-v1.md",
+        "line": 26
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/001-opportunity-service-v1.md",
+        "line": 42
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/001-opportunity-service-v1.md",
+        "line": 46
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/002-market-service-v1.md",
+        "line": 8
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/002-market-service-v1.md",
+        "line": 21
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/002-market-service-v1.md",
+        "line": 33
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/002-market-service-v1.md",
+        "line": 41
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/003-project-scope-classifier-v1.md",
+        "line": 32
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/004-opportunity-pipeline-prototype-v1.md",
+        "line": 20
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/004-opportunity-pipeline-prototype-v1.md",
+        "line": 32
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/004-opportunity-pipeline-prototype-v1.md",
+        "line": 38
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/005-project-detail-service-v1.md",
+        "line": 14
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/005-project-detail-service-v1.md",
+        "line": 19
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/006-contractor-intelligence-service-v1.md",
+        "line": 11
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/006-contractor-intelligence-service-v1.md",
+        "line": 38
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/006-contractor-intelligence-service-v1.md",
+        "line": 51
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/006-contractor-intelligence-service-v1.md",
+        "line": 68
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/006-contractor-intelligence-service-v1.md",
+        "line": 87
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/006-contractor-intelligence-service-v1.md",
+        "line": 88
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/006-contractor-intelligence-service-v1.md",
+        "line": 89
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/006-contractor-intelligence-service-v1.md",
+        "line": 127
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/007-cost-intelligence-service-v1.md",
+        "line": 61
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/007-cost-intelligence-service-v1.md",
+        "line": 62
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/007-cost-intelligence-service-v1.md",
+        "line": 68
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/007-cost-intelligence-service-v1.md",
+        "line": 79
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/007-cost-intelligence-service-v1.md",
+        "line": 115
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 101
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 140
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/warehouse/010A-executive-lineage-graph.md",
+        "line": 24
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "line": 44
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 50
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 63
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 7
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 14
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 16
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 18
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 20
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 22
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 24
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 36
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 37
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 65
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 67
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/opportunity.py",
+        "line": 8
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/opportunity.py",
+        "line": 12
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/opportunity.py",
+        "line": 20
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/opportunity.py",
+        "line": 22
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/opportunity.py",
+        "line": 24
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/opportunity.py",
+        "line": 26
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/opportunity.py",
+        "line": 52
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/project.py",
+        "line": 12
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/project.py",
+        "line": 19
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/project.py",
+        "line": 21
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/project.py",
+        "line": 25
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/project.py",
+        "line": 27
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/project.py",
+        "line": 35
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/project_intelligence.py",
+        "line": 9
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/project_intelligence.py",
+        "line": 23
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/project_intelligence.py",
+        "line": 35
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 55
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 56
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 61
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 69
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 78
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 104
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 121
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 122
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 8
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 31
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 38
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 51
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 52
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 53
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 85
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 87
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 126
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 127
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 131
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 132
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 133
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 21
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 42
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 46
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 91
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 105
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 106
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 124
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 150
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+        "line": 41
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+        "line": 42
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+        "line": 54
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+        "line": 57
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+        "line": 58
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 27
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 75
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 76
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 77
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 79
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 81
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 129
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 130
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 131
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 132
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 133
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 137
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 138
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 141
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 144
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 160
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 162
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 190
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 192
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 193
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 200
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 11
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 20
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 40
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 41
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 42
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 43
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 44
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 45
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 53
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 59
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 60
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 63
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 70
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 73
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 78
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 95
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 99
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 102
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 105
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 14
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 25
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 26
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 27
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 54
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 57
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 63
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 66
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 92
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 111
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 153
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 158
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 4
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 25
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 49
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 51
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 52
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 53
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 112
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 131
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 140
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 146
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service.py",
+        "line": 30
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service.py",
+        "line": 61
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service.py",
+        "line": 114
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service.py",
+        "line": 150
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service_integration.py",
+        "line": 20
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service_integration.py",
+        "line": 25
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service_integration.py",
+        "line": 38
+      }
+    ],
+    "expected_outcome": [
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 101
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 68
+      }
+    ],
+    "governed_finding": [
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 13
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 99
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 148
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/warehouse/010A-executive-lineage-graph.md",
+        "line": 23
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "line": 82
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 56
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_reverse_engineer_executive_pipeline.py",
+        "line": 23
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_reverse_engineer_executive_pipeline.py",
+        "line": 29
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_reverse_engineer_executive_pipeline.py",
+        "line": 35
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_reverse_engineer_executive_pipeline.py",
+        "line": 43
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_reverse_engineer_executive_warehouse.py",
+        "line": 23
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_reverse_engineer_executive_warehouse.py",
+        "line": 41
+      }
+    ],
+    "knowledge_record_id": [
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 102
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 48
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 61
+      }
+    ],
+    "objective": [
+      {
+        "classification": "documentation",
+        "file": "AGENTS.md",
+        "line": 24
+      },
+      {
+        "classification": "documentation",
+        "file": "AGENTS.md",
+        "line": 195
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/001-opportunity-service-v1.md",
+        "line": 6
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/002-market-service-v1.md",
+        "line": 6
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/003-project-scope-classifier-v1.md",
+        "line": 6
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/004-opportunity-pipeline-prototype-v1.md",
+        "line": 6
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/005-project-detail-service-v1.md",
+        "line": 6
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/006-contractor-intelligence-service-v1.md",
+        "line": 3
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/007-cost-intelligence-service-v1.md",
+        "line": 3
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 100
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 139
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "line": 44
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 37
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 65
+      }
+    ],
+    "policy_driver": [
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 100
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 67
+      }
+    ],
+    "program": [
+      {
+        "classification": "documentation",
+        "file": "AGENTS.md",
+        "line": 87
+      },
+      {
+        "classification": "documentation",
+        "file": "AGENTS.md",
+        "line": 129
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/001-opportunity-service-v1.md",
+        "line": 30
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/002-market-service-v1.md",
+        "line": 24
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/002-market-service-v1.md",
+        "line": 43
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/003-project-scope-classifier-v1.md",
+        "line": 31
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/003-project-scope-classifier-v1.md",
+        "line": 32
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/004-opportunity-pipeline-prototype-v1.md",
+        "line": 23
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/004-opportunity-pipeline-prototype-v1.md",
+        "line": 31
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/005-project-detail-service-v1.md",
+        "line": 16
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/005-project-detail-service-v1.md",
+        "line": 18
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 100
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 139
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/warehouse/010A-executive-lineage-graph.md",
+        "line": 24
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "line": 44
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 41
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 51
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 64
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 30
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 53
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 54
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/market.py",
+        "line": 55
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/opportunity.py",
+        "line": 16
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/opportunity.py",
+        "line": 57
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/project.py",
+        "line": 15
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/project.py",
+        "line": 42
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/project_intelligence.py",
+        "line": 29
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 72
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 81
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 108
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 117
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 59
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 90
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 91
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 92
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 115
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 119
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 24
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 50
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 51
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 52
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 96
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 109
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 111
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 128
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 143
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 145
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 154
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 32
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 83
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 84
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 86
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 110
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 164
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 165
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 189
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 195
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 206
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 22
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 55
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 60
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 62
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 87
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 88
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 89
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 29
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 94
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 113
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 129
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 30
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 40
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 53
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 60
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 64
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 65
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 66
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 137
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service.py",
+        "line": 35
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service.py",
+        "line": 117
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service_integration.py",
+        "line": 41
+      }
+    ],
+    "project_id": [
+      {
+        "classification": "documentation",
+        "file": "AGENTS.md",
+        "line": 82
+      },
+      {
+        "classification": "documentation",
+        "file": "AGENTS.md",
+        "line": 132
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/001-opportunity-service-v1.md",
+        "line": 24
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/001-opportunity-service-v1.md",
+        "line": 53
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/006-contractor-intelligence-service-v1.md",
+        "line": 18
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/006-contractor-intelligence-service-v1.md",
+        "line": 34
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/006-contractor-intelligence-service-v1.md",
+        "line": 119
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/006-contractor-intelligence-service-v1.md",
+        "line": 121
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/007-cost-intelligence-service-v1.md",
+        "line": 18
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/007-cost-intelligence-service-v1.md",
+        "line": 36
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/007-cost-intelligence-service-v1.md",
+        "line": 107
+      },
+      {
+        "classification": "documentation",
+        "file": "backlog/007-cost-intelligence-service-v1.md",
+        "line": 109
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 101
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 49
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 62
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/opportunity.py",
+        "line": 50
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/project.py",
+        "line": 32
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/models/project_intelligence.py",
+        "line": 20
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 59
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 89
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 91
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 96
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/server.py",
+        "line": 98
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/market_service.py",
+        "line": 110
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 36
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 37
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 39
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 88
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 89
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+        "line": 145
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+        "line": 31
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+        "line": 32
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+        "line": 37
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+        "line": 47
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 18
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 54
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 110
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 118
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 119
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 122
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 185
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 187
+      },
+      {
+        "classification": "production_candidate",
+        "file": "src/construction_intelligence_mcp/services/project_service.py",
+        "line": 197
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 9
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 18
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_market_service.py",
+        "line": 19
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 12
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 22
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 23
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 44
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 45
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 80
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 83
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 106
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 121
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 139
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_opportunity_service.py",
+        "line": 149
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_mcp.py",
+        "line": 14
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_mcp.py",
+        "line": 15
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_mcp.py",
+        "line": 34
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 22
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 79
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 80
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 110
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_intelligence_service.py",
+        "line": 128
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_scope_classifier.py",
+        "line": 25
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service.py",
+        "line": 123
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service.py",
+        "line": 138
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service.py",
+        "line": 173
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service_integration.py",
+        "line": 23
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service_integration.py",
+        "line": 26
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_project_service_integration.py",
+        "line": 28
+      }
+    ],
+    "region": [
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 101
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 140
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 29
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 52
+      }
+    ],
+    "section": [
+      {
+        "classification": "documentation",
+        "file": "backlog/005-project-detail-service-v1.md",
+        "line": 27
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-dag.md",
+        "line": 21
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-erd.md",
+        "line": 16
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 21
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 63
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 102
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 140
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 147
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/warehouse/010A-executive-lineage-graph.md",
+        "line": 23
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/warehouse/010A-executive-warehouse-erd.md",
+        "line": 21
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "line": 43
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "line": 76
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "line": 77
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 25
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 46
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 47
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 58
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 59
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_reverse_engineer_executive_pipeline.py",
+        "line": 20
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_reverse_engineer_executive_pipeline.py",
+        "line": 28
+      }
+    ],
+    "source_document": [
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 100
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 53
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 57
+      },
+      {
+        "classification": "test_fixture",
+        "file": "tests/test_reverse_engineer_executive_warehouse.py",
+        "line": 25
+      }
+    ],
+    "source_heading": [
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 100
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 58
+      }
+    ],
+    "theme": [
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 100
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "line": 139
+      },
+      {
+        "classification": "documentation",
+        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "line": 44
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 38
+      },
+      {
+        "classification": "production_candidate",
+        "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+        "line": 66
+      }
+    ]
+  },
+  "governed_finding_conclusion": "not_generated_in_repository",
+  "metadata": {
+    "evidence_limit": "Only files present in the scanned repository are represented.",
+    "method": "static_source_scan",
+    "read_only": true,
+    "scope_root": "/workspace/construction-intelligence-mcp"
+  }
+}
