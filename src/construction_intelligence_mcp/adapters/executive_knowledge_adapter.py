@@ -127,10 +127,9 @@ class ExecutiveKnowledgeAdapter:
         candidates = [
             relation
             for relation in adapter.find_tables(self.RELATION_PREFIX)
-            if "refined" in relation[1].casefold()
-            and not any(
+            if not any(
                 token in relation[1].casefold()
-                for token in ("history", "archive", "staging", "quarantine")
+                for token in ("history", "archive", "staging", "quarantine", "temporary")
             )
         ]
         self.inspected_relations: dict[str, dict[str, str | None]] = {}
@@ -230,24 +229,56 @@ class ExecutiveKnowledgeAdapter:
     def _relation_rank(cls, name: str) -> tuple[int, int]:
         normalized = name.casefold()
         if "current" in normalized or "certified" in normalized:
-            return 2, cls._relation_version(normalized)
+            return 3, cls._relation_version(normalized)
+        if "refined" in normalized and cls._relation_version(normalized) < 0:
+            return 2, -1
         if cls._relation_version(normalized) >= 0:
             return 1, cls._relation_version(normalized)
-        documented_fallback = int(normalized in cls.FALLBACK_RELATIONS)
-        return documented_fallback, -1
+        return 0, -1
 
     @classmethod
     def _resolve_fields(cls, columns: set[str]) -> dict[str, str | None]:
-        return {
-            concept: next((candidate for candidate in candidates if candidate in columns), None)
-            for concept, candidates in {**cls.REQUIRED, **cls.OPTIONAL}.items()
+        resolved = {}
+        for concept, candidates in {**cls.REQUIRED, **cls.OPTIONAL}.items():
+            exact = next((candidate for candidate in candidates if candidate in columns), None)
+            resolved[concept] = exact or cls._semantic_column(concept, columns)
+        return resolved
+
+    @staticmethod
+    def _semantic_column(concept: str, columns: set[str]) -> str | None:
+        """Resolve governed warehouse naming variants by constrained semantic tokens."""
+        token_rules = {
+            "evidence_id": lambda name: (
+                "section" in name
+                and (name.endswith("_id") or name.endswith("_key") or name.endswith("_uid"))
+            ),
+            "source_document": lambda name: (
+                "document" in name
+                and any(token in name for token in ("id", "title", "name", "key", "uid"))
+            ),
+            "source_section_id": lambda name: (
+                "section" in name
+                and any(token in name for token in ("lineage", "source", "parent"))
+                and any(token in name for token in ("id", "key", "uid"))
+            ),
+            "governed_finding": lambda name: (
+                any(token in name for token in ("governed", "refined"))
+                and any(token in name for token in ("finding", "content", "text", "summary"))
+            ),
+            "refined_status": lambda name: (
+                "status" in name
+                and any(token in name for token in ("refined", "refinement", "usable", "usability"))
+            ),
         }
+        rule = token_rules.get(concept)
+        if rule is None:
+            return None
+        return next((column for column in sorted(columns) if rule(column.casefold())), None)
 
     def _incompatible_relations_message(self) -> str:
         if not self.inspected_relations:
             return (
-                "No refined executive knowledge relations were found with prefix "
-                f"'{self.RELATION_PREFIX}'."
+                f"No executive knowledge relations were found with prefix '{self.RELATION_PREFIX}'."
             )
         diagnostics = []
         for relation, fields in sorted(self.inspected_relations.items()):

@@ -99,7 +99,7 @@ def test_compatible_current_relation_outranks_versioned_relation(tmp_path: Path)
     connection = duckdb.connect(str(database))
     connection.execute(
         """
-        CREATE TABLE ci_executive_knowledge_section_refined_current AS
+        CREATE TABLE ci_executive_knowledge_section_certified AS
         SELECT * FROM ci_executive_knowledge_section_refined_v12
         """
     )
@@ -107,7 +107,49 @@ def test_compatible_current_relation_outranks_versioned_relation(tmp_path: Path)
 
     adapter = ExecutiveKnowledgeAdapter(DuckDBAdapter(database))
 
-    assert adapter.source_relation == '"main"."ci_executive_knowledge_section_refined_current"'
+    assert adapter.source_relation == '"main"."ci_executive_knowledge_section_certified"'
+
+
+def test_unversioned_refined_relation_outranks_compatible_version(tmp_path: Path) -> None:
+    database = tmp_path / "refined.duckdb"
+    create_refined_relation(database, 20)
+    connection = duckdb.connect(str(database))
+    connection.execute(
+        """
+        CREATE TABLE ci_executive_knowledge_section_refined AS
+        SELECT * FROM ci_executive_knowledge_section_refined_v20
+        """
+    )
+    connection.close()
+
+    adapter = ExecutiveKnowledgeAdapter(DuckDBAdapter(database))
+
+    assert adapter.source_relation == '"main"."ci_executive_knowledge_section_refined"'
+
+
+def test_semantic_column_resolution_supports_governed_schema_variants(tmp_path: Path) -> None:
+    database = tmp_path / "semantic.duckdb"
+    connection = duckdb.connect(str(database))
+    connection.execute(
+        """
+        CREATE TABLE ci_executive_knowledge_section_current (
+            governed_section_uid VARCHAR,
+            executive_document_key VARCHAR,
+            source_parent_section_key VARCHAR,
+            refined_narrative_content VARCHAR,
+            quality_refinement_status VARCHAR
+        )
+        """
+    )
+    connection.close()
+
+    adapter = ExecutiveKnowledgeAdapter(DuckDBAdapter(database))
+
+    assert adapter.resolved_fields["evidence_id"] == "governed_section_uid"
+    assert adapter.resolved_fields["source_document"] == "executive_document_key"
+    assert adapter.resolved_fields["source_section_id"] == "source_parent_section_key"
+    assert adapter.resolved_fields["governed_finding"] == "refined_narrative_content"
+    assert adapter.resolved_fields["refined_status"] == "quality_refinement_status"
 
 
 def test_failure_diagnostics_list_every_inspected_relation_and_missing_concepts(
