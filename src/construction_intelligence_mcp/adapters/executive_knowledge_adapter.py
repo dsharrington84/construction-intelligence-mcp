@@ -53,6 +53,8 @@ class ExecutiveKnowledgeAdapter:
             "executive_knowledge_section_refined_id",
             "knowledge_section_id",
             "section_refined_id",
+            "section_uid",
+            "refined_section_id",
             "section_id",
         ),
         "source_document": (
@@ -61,6 +63,11 @@ class ExecutiveKnowledgeAdapter:
             "document_title",
             "document_name",
             "source_file_name",
+            "source_document_id",
+            "document_id",
+            "document_uid",
+            "executive_document_id",
+            "executive_knowledge_document_id",
         ),
         "source_section_id": (
             "source_section_id",
@@ -68,6 +75,9 @@ class ExecutiveKnowledgeAdapter:
             "section_key",
             "section_id",
             "section_lineage_id",
+            "source_section_lineage_id",
+            "parent_section_id",
+            "source_section_id_raw",
             "lineage_id",
         ),
         "governed_finding": (
@@ -78,6 +88,12 @@ class ExecutiveKnowledgeAdapter:
             "refined_content",
             "section_summary",
             "concise_finding",
+            "governed_content",
+            "refined_text",
+            "refined_section_text",
+            "section_content_refined",
+            "section_text_refined",
+            "refined_source_content",
         ),
         "refined_status": ("refined_status", "refinement_status", "usability_status", "status"),
     }
@@ -117,41 +133,30 @@ class ExecutiveKnowledgeAdapter:
                 for token in ("history", "archive", "staging", "quarantine")
             )
         ]
-        current = max(candidates, key=lambda item: self._relation_rank(item[1]), default=None)
-        self.source_relation = (
-            self._qualified(*current)
-            if current
-            else next(
-                (
-                    relation
-                    for name in self.FALLBACK_RELATIONS
-                    if (relation := adapter.resolve_table(name))
-                ),
-                None,
+        self.inspected_relations: dict[str, dict[str, str | None]] = {}
+        compatible: list[tuple[tuple[int, int], str, set[str], dict[str, str | None]]] = []
+        for schema, name in candidates:
+            relation = self._qualified(schema, name)
+            columns = set(adapter.columns(relation))
+            fields = self._resolve_fields(columns)
+            self.inspected_relations[relation] = fields
+            if all(fields[concept] is not None for concept in self.REQUIRED):
+                compatible.append((self._relation_rank(name), relation, columns, fields))
+
+        if not compatible:
+            raise RuntimeError(self._incompatible_relations_message())
+
+        _, self.source_relation, columns, self.resolved_fields = max(
+            compatible, key=lambda item: item[0]
+        )
+        self.lineage_fields = sorted(
+            column
+            for column in columns
+            if any(
+                token in column.casefold()
+                for token in ("source", "lineage", "document", "section", "page")
             )
         )
-        self.resolved_fields: dict[str, str | None] = {}
-        self.lineage_fields: list[str] = []
-        if self.source_relation is not None:
-            columns = set(adapter.columns(self.source_relation))
-            for concept, candidates in {**self.REQUIRED, **self.OPTIONAL}.items():
-                self.resolved_fields[concept] = next(
-                    (candidate for candidate in candidates if candidate in columns), None
-                )
-            missing = [name for name in self.REQUIRED if self.resolved_fields[name] is None]
-            if missing:
-                raise RuntimeError(
-                    f"Certified executive relation '{self.source_relation}' has unresolved "
-                    f"required fields: {', '.join(missing)}."
-                )
-            self.lineage_fields = sorted(
-                column
-                for column in columns
-                if any(
-                    token in column.casefold()
-                    for token in ("source", "lineage", "document", "section", "page")
-                )
-            )
 
     def fetch_records(self) -> list[ExecutiveKnowledgeRecord]:
         if self.source_relation is None:
@@ -224,8 +229,41 @@ class ExecutiveKnowledgeAdapter:
     @classmethod
     def _relation_rank(cls, name: str) -> tuple[int, int]:
         normalized = name.casefold()
-        governed_alias = int("current" in normalized or "certified" in normalized)
-        return governed_alias, cls._relation_version(normalized)
+        if "current" in normalized or "certified" in normalized:
+            return 2, cls._relation_version(normalized)
+        if cls._relation_version(normalized) >= 0:
+            return 1, cls._relation_version(normalized)
+        documented_fallback = int(normalized in cls.FALLBACK_RELATIONS)
+        return documented_fallback, -1
+
+    @classmethod
+    def _resolve_fields(cls, columns: set[str]) -> dict[str, str | None]:
+        return {
+            concept: next((candidate for candidate in candidates if candidate in columns), None)
+            for concept, candidates in {**cls.REQUIRED, **cls.OPTIONAL}.items()
+        }
+
+    def _incompatible_relations_message(self) -> str:
+        if not self.inspected_relations:
+            return (
+                "No refined executive knowledge relations were found with prefix "
+                f"'{self.RELATION_PREFIX}'."
+            )
+        diagnostics = []
+        for relation, fields in sorted(self.inspected_relations.items()):
+            resolved = [
+                f"{concept}={field}"
+                for concept, field in fields.items()
+                if concept in self.REQUIRED and field is not None
+            ]
+            missing = [concept for concept in self.REQUIRED if fields.get(concept) is None]
+            diagnostics.append(
+                f"{relation}: resolved [{', '.join(resolved) or 'none'}]; "
+                f"missing [{', '.join(missing) or 'none'}]"
+            )
+        return "No schema-compatible refined executive relation. Inspected: " + "; ".join(
+            diagnostics
+        )
 
     def _qualified(self, schema: str, name: str) -> str:
         return f"{self.adapter.quote_identifier(schema)}.{self.adapter.quote_identifier(name)}"

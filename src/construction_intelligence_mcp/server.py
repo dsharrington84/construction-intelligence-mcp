@@ -12,8 +12,8 @@ from construction_intelligence_mcp.adapters.executive_knowledge_adapter import (
 )
 from construction_intelligence_mcp.models.opportunity import OpportunitySearchRequest
 from construction_intelligence_mcp.models.project import ProjectSearchRequest
-from construction_intelligence_mcp.services.opportunity_service import OpportunityService
 from construction_intelligence_mcp.services.market_service import MarketService
+from construction_intelligence_mcp.services.opportunity_service import OpportunityService
 from construction_intelligence_mcp.services.project_intelligence_service import (
     ProjectIntelligenceService,
 )

@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import duckdb
+import pytest
 
 from construction_intelligence_mcp.adapters.duckdb_adapter import DuckDBAdapter
 from construction_intelligence_mcp.adapters.executive_knowledge_adapter import (
@@ -63,3 +64,78 @@ def test_resolves_newest_refined_relation_and_actual_status_contract(tmp_path: P
         "USABLE": 1,
         "USABLE_WITH_LIMITATION": 1,
     }
+
+
+def test_incompatible_higher_version_is_skipped_for_compatible_lower_version(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "versions.duckdb"
+    create_refined_relation(database, 3)
+    connection = duckdb.connect(str(database))
+    connection.execute(
+        """
+        CREATE TABLE ci_executive_knowledge_section_refined_v17 (
+            section_id VARCHAR,
+            refinement_status VARCHAR,
+            unrelated_payload VARCHAR
+        )
+        """
+    )
+    connection.close()
+
+    adapter = ExecutiveKnowledgeAdapter(DuckDBAdapter(database))
+
+    assert adapter.source_relation == '"main"."ci_executive_knowledge_section_refined_v3"'
+    incompatible = adapter.inspected_relations[
+        '"main"."ci_executive_knowledge_section_refined_v17"'
+    ]
+    assert incompatible["source_document"] is None
+    assert incompatible["governed_finding"] is None
+
+
+def test_compatible_current_relation_outranks_versioned_relation(tmp_path: Path) -> None:
+    database = tmp_path / "current.duckdb"
+    create_refined_relation(database, 12)
+    connection = duckdb.connect(str(database))
+    connection.execute(
+        """
+        CREATE TABLE ci_executive_knowledge_section_refined_current AS
+        SELECT * FROM ci_executive_knowledge_section_refined_v12
+        """
+    )
+    connection.close()
+
+    adapter = ExecutiveKnowledgeAdapter(DuckDBAdapter(database))
+
+    assert adapter.source_relation == '"main"."ci_executive_knowledge_section_refined_current"'
+
+
+def test_failure_diagnostics_list_every_inspected_relation_and_missing_concepts(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "incompatible.duckdb"
+    connection = duckdb.connect(str(database))
+    connection.execute(
+        """
+        CREATE TABLE ci_executive_knowledge_section_refined_v17 (
+            section_id VARCHAR,
+            refinement_status VARCHAR
+        );
+        CREATE TABLE ci_executive_knowledge_section_refined_v18 (
+            document_title VARCHAR,
+            refined_text VARCHAR
+        );
+        """
+    )
+    connection.close()
+
+    with pytest.raises(RuntimeError) as error:
+        ExecutiveKnowledgeAdapter(DuckDBAdapter(database))
+
+    message = str(error.value)
+    assert "ci_executive_knowledge_section_refined_v17" in message
+    assert "ci_executive_knowledge_section_refined_v18" in message
+    assert "source_document" in message
+    assert "source_section_id" in message
+    assert "governed_finding" in message
+    assert "refined_status" in message

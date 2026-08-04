@@ -11,11 +11,11 @@ from construction_intelligence_mcp.models.market import (
 from construction_intelligence_mcp.models.opportunity import Opportunity
 from construction_intelligence_mcp.models.project import ProjectDetail
 from construction_intelligence_mcp.models.project_intelligence import ProjectIntelligence
+from construction_intelligence_mcp.models.strategic_context import StrategicContext
 from construction_intelligence_mcp.services.project_intelligence_service import (
     ProjectIntelligenceService,
 )
 from construction_intelligence_mcp.services.project_scope_classifier import ProjectScopeClassifier
-from construction_intelligence_mcp.models.strategic_context import StrategicContext
 
 
 def governed_project() -> ProjectDetail:

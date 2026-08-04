@@ -1,10 +1,10 @@
-from construction_intelligence_mcp.models.project_intelligence import ProjectIntelligence
-from construction_intelligence_mcp.server import fetch_project_intelligence
-
 from test_project_intelligence_service import (
     governed_market,
     governed_project,
 )
+
+from construction_intelligence_mcp.models.project_intelligence import ProjectIntelligence
+from construction_intelligence_mcp.server import fetch_project_intelligence
 
 
 class StubIntelligenceService:

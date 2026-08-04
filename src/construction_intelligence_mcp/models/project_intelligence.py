@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import date
+
 from pydantic import BaseModel, Field
 
 from construction_intelligence_mcp.models.market import (

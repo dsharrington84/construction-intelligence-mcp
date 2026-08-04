@@ -12,17 +12,17 @@ from .scope import ProjectScope
 from .strategic_context import StrategicContext, StrategicEvidence
 
 __all__ = [
+    "IntelligenceProject",
     "MarketSummary",
     "MarketSummaryRequest",
     "Opportunity",
     "OpportunitySearchRequest",
     "ProjectDetail",
-    "IntelligenceProject",
     "ProjectIntelligence",
     "ProjectMarketIntelligence",
+    "ProjectScope",
     "ProjectSearchRequest",
     "ProjectSummary",
-    "ProjectScope",
     "StrategicContext",
     "StrategicEvidence",
 ]
