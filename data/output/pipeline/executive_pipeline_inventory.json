@@ -1,0 +1,1016 @@
+{
+  "inspected_files": [
+    "AGENTS.md",
+    "README.md",
+    "backlog/001-opportunity-service-v1.md",
+    "backlog/002-market-service-v1.md",
+    "backlog/003-project-scope-classifier-v1.md",
+    "backlog/004-opportunity-pipeline-prototype-v1.md",
+    "backlog/005-project-detail-service-v1.md",
+    "backlog/006-contractor-intelligence-service-v1.md",
+    "backlog/007-cost-intelligence-service-v1.md",
+    "backlog/README.md",
+    "docs/pipeline/010B-executive-processing-dag.md",
+    "docs/pipeline/010B-executive-processing-erd.md",
+    "docs/pipeline/010B-executive-processing-pipeline.md",
+    "docs/warehouse/010A-executive-lineage-graph.md",
+    "docs/warehouse/010A-executive-warehouse-erd.md",
+    "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+    "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+    "src/construction_intelligence_mcp/__init__.py",
+    "src/construction_intelligence_mcp/adapters/__init__.py",
+    "src/construction_intelligence_mcp/adapters/duckdb_adapter.py",
+    "src/construction_intelligence_mcp/models/__init__.py",
+    "src/construction_intelligence_mcp/models/market.py",
+    "src/construction_intelligence_mcp/models/opportunity.py",
+    "src/construction_intelligence_mcp/models/project.py",
+    "src/construction_intelligence_mcp/models/project_intelligence.py",
+    "src/construction_intelligence_mcp/models/scope.py",
+    "src/construction_intelligence_mcp/server.py",
+    "src/construction_intelligence_mcp/services/__init__.py",
+    "src/construction_intelligence_mcp/services/market_service.py",
+    "src/construction_intelligence_mcp/services/opportunity_service.py",
+    "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+    "src/construction_intelligence_mcp/services/project_scope_classifier.py",
+    "src/construction_intelligence_mcp/services/project_service.py",
+    "tests/test_market_service.py",
+    "tests/test_opportunity_service.py",
+    "tests/test_project_intelligence_mcp.py",
+    "tests/test_project_intelligence_service.py",
+    "tests/test_project_scope_classifier.py",
+    "tests/test_project_service.py",
+    "tests/test_project_service_integration.py",
+    "tests/test_reverse_engineer_executive_pipeline.py",
+    "tests/test_reverse_engineer_executive_warehouse.py"
+  ],
+  "metadata": {
+    "evidence_limit": "Only files present in the scanned repository are represented.",
+    "method": "static_source_scan",
+    "read_only": true,
+    "scope_root": "/workspace/construction-intelligence-mcp"
+  },
+  "relation_reads": [
+    {
+      "classification": "documentation",
+      "file": "AGENTS.md",
+      "line": 185,
+      "relation": "the"
+    },
+    {
+      "classification": "documentation",
+      "file": "README.md",
+      "line": 4,
+      "relation": "DuckDB"
+    },
+    {
+      "classification": "documentation",
+      "file": "backlog/002-market-service-v1.md",
+      "line": 35,
+      "relation": "prior"
+    },
+    {
+      "classification": "documentation",
+      "file": "backlog/003-project-scope-classifier-v1.md",
+      "line": 8,
+      "relation": "preserved"
+    },
+    {
+      "classification": "documentation",
+      "file": "backlog/003-project-scope-classifier-v1.md",
+      "line": 32,
+      "relation": "programmed"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/pipeline/010B-executive-processing-dag.md",
+      "line": 11,
+      "relation": "inventory"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/pipeline/010B-executive-processing-erd.md",
+      "line": 14,
+      "relation": "production"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/pipeline/010B-executive-processing-erd.md",
+      "line": 32,
+      "relation": "the"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "line": 12,
+      "relation": "this"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "line": 15,
+      "relation": "source"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "line": 16,
+      "relation": "an"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "line": 28,
+      "relation": "production"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "line": 48,
+      "relation": "inventory"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "line": 59,
+      "relation": "catalog"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "line": 127,
+      "relation": "this"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "line": 132,
+      "relation": "from"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "line": 148,
+      "relation": "a"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/warehouse/010A-executive-lineage-graph.md",
+      "line": 16,
+      "relation": "has"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/warehouse/010A-executive-warehouse-erd.md",
+      "line": 15,
+      "relation": "inventory"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+      "line": 26,
+      "relation": "candidates"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+      "line": 51,
+      "relation": "value"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+      "line": 54,
+      "relation": "Matrix"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+      "line": 56,
+      "relation": "inventory"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+      "line": 62,
+      "relation": "coverage"
+    },
+    {
+      "classification": "documentation",
+      "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+      "line": 62,
+      "relation": "the"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+      "line": 6,
+      "relation": "naming"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+      "line": 9,
+      "relation": "__future__"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+      "line": 16,
+      "relation": "pathlib"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+      "line": 17,
+      "relation": "typing"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+      "line": 103,
+      "relation": "information_schema.tables"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+      "line": 104,
+      "relation": "information_schema.columns"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+      "line": 214,
+      "relation": "l"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+      "line": 214,
+      "relation": "r"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+      "line": 218,
+      "relation": "l"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "scripts/warehouse/reverse_engineer_executive_warehouse.py",
+      "line": 218,
+      "relation": "r"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/adapters/duckdb_adapter.py",
+      "line": 1,
+      "relation": "__future__"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/adapters/duckdb_adapter.py",
+      "line": 3,
+      "relation": "contextlib"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/adapters/duckdb_adapter.py",
+      "line": 4,
+      "relation": "pathlib"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/adapters/duckdb_adapter.py",
+      "line": 5,
+      "relation": "typing"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/adapters/duckdb_adapter.py",
+      "line": 34,
+      "relation": "information_schema.tables"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/__init__.py",
+      "line": 3,
+      "relation": ".opportunity"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/__init__.py",
+      "line": 4,
+      "relation": ".market"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/__init__.py",
+      "line": 5,
+      "relation": ".project"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/__init__.py",
+      "line": 6,
+      "relation": ".project_intelligence"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/__init__.py",
+      "line": 7,
+      "relation": ".scope"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/market.py",
+      "line": 1,
+      "relation": "__future__"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/market.py",
+      "line": 3,
+      "relation": "datetime"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/market.py",
+      "line": 5,
+      "relation": "pydantic"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/opportunity.py",
+      "line": 1,
+      "relation": "__future__"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/opportunity.py",
+      "line": 3,
+      "relation": "datetime"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/opportunity.py",
+      "line": 4,
+      "relation": "typing"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/opportunity.py",
+      "line": 6,
+      "relation": "pydantic"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/project.py",
+      "line": 1,
+      "relation": "__future__"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/project.py",
+      "line": 3,
+      "relation": "datetime"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/project.py",
+      "line": 4,
+      "relation": "typing"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/project.py",
+      "line": 6,
+      "relation": "pydantic"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/project.py",
+      "line": 8,
+      "relation": "construction_intelligence_mcp.models.scope"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/project_intelligence.py",
+      "line": 1,
+      "relation": "__future__"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/project_intelligence.py",
+      "line": 3,
+      "relation": "datetime"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/project_intelligence.py",
+      "line": 4,
+      "relation": "typing"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/project_intelligence.py",
+      "line": 6,
+      "relation": "pydantic"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/project_intelligence.py",
+      "line": 8,
+      "relation": "construction_intelligence_mcp.models.market"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/project_intelligence.py",
+      "line": 13,
+      "relation": "construction_intelligence_mcp.models.opportunity"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/project_intelligence.py",
+      "line": 14,
+      "relation": "construction_intelligence_mcp.models.scope"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/project_intelligence.py",
+      "line": 33,
+      "relation": "governed"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/scope.py",
+      "line": 1,
+      "relation": "__future__"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/scope.py",
+      "line": 3,
+      "relation": "enum"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/models/scope.py",
+      "line": 5,
+      "relation": "pydantic"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/server.py",
+      "line": 1,
+      "relation": "__future__"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/server.py",
+      "line": 6,
+      "relation": "pathlib"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/server.py",
+      "line": 8,
+      "relation": "fastmcp"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/server.py",
+      "line": 10,
+      "relation": "construction_intelligence_mcp.models.opportunity"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/server.py",
+      "line": 11,
+      "relation": "construction_intelligence_mcp.models.project"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/server.py",
+      "line": 12,
+      "relation": "construction_intelligence_mcp.services.opportunity_service"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/server.py",
+      "line": 13,
+      "relation": "construction_intelligence_mcp.services.market_service"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/server.py",
+      "line": 14,
+      "relation": "construction_intelligence_mcp.services.project_intelligence_service"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/server.py",
+      "line": 17,
+      "relation": "construction_intelligence_mcp.services.project_service"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/__init__.py",
+      "line": 3,
+      "relation": ".market_service"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/__init__.py",
+      "line": 4,
+      "relation": ".opportunity_service"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/__init__.py",
+      "line": 5,
+      "relation": ".project_service"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/__init__.py",
+      "line": 6,
+      "relation": ".project_intelligence_service"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/__init__.py",
+      "line": 7,
+      "relation": ".project_scope_classifier"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/market_service.py",
+      "line": 1,
+      "relation": "__future__"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/market_service.py",
+      "line": 3,
+      "relation": "collections"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/market_service.py",
+      "line": 4,
+      "relation": "datetime"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/market_service.py",
+      "line": 5,
+      "relation": "statistics"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/market_service.py",
+      "line": 7,
+      "relation": "construction_intelligence_mcp.models.market"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/market_service.py",
+      "line": 16,
+      "relation": "construction_intelligence_mcp.models.project"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/market_service.py",
+      "line": 17,
+      "relation": "construction_intelligence_mcp.services.project_service"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+      "line": 1,
+      "relation": "__future__"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+      "line": 3,
+      "relation": "datetime"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+      "line": 5,
+      "relation": "construction_intelligence_mcp.models.opportunity"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+      "line": 6,
+      "relation": "construction_intelligence_mcp.models.project"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/opportunity_service.py",
+      "line": 7,
+      "relation": "construction_intelligence_mcp.services.project_service"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+      "line": 1,
+      "relation": "__future__"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+      "line": 3,
+      "relation": "construction_intelligence_mcp.models.market"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+      "line": 4,
+      "relation": "construction_intelligence_mcp.models.project"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+      "line": 5,
+      "relation": "construction_intelligence_mcp.models.project_intelligence"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+      "line": 10,
+      "relation": "construction_intelligence_mcp.services.market_service"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+      "line": 11,
+      "relation": "construction_intelligence_mcp.services.opportunity_service"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_intelligence_service.py",
+      "line": 15,
+      "relation": "construction_intelligence_mcp.services.project_service"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_scope_classifier.py",
+      "line": 1,
+      "relation": "__future__"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_scope_classifier.py",
+      "line": 4,
+      "relation": "dataclasses"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_scope_classifier.py",
+      "line": 6,
+      "relation": "construction_intelligence_mcp.models.project"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_scope_classifier.py",
+      "line": 7,
+      "relation": "construction_intelligence_mcp.models.scope"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_service.py",
+      "line": 1,
+      "relation": "__future__"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_service.py",
+      "line": 3,
+      "relation": "datetime"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_service.py",
+      "line": 4,
+      "relation": "pathlib"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_service.py",
+      "line": 5,
+      "relation": "typing"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_service.py",
+      "line": 7,
+      "relation": "construction_intelligence_mcp.adapters.duckdb_adapter"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_service.py",
+      "line": 8,
+      "relation": "construction_intelligence_mcp.models.project"
+    },
+    {
+      "classification": "production_candidate",
+      "file": "src/construction_intelligence_mcp/services/project_service.py",
+      "line": 13,
+      "relation": "construction_intelligence_mcp.services.project_scope_classifier"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_market_service.py",
+      "line": 1,
+      "relation": "datetime"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_market_service.py",
+      "line": 3,
+      "relation": "construction_intelligence_mcp.models.market"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_market_service.py",
+      "line": 4,
+      "relation": "construction_intelligence_mcp.models.project"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_market_service.py",
+      "line": 5,
+      "relation": "construction_intelligence_mcp.services.market_service"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_opportunity_service.py",
+      "line": 1,
+      "relation": "datetime"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_opportunity_service.py",
+      "line": 4,
+      "relation": "pydantic"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_opportunity_service.py",
+      "line": 6,
+      "relation": "construction_intelligence_mcp.models.opportunity"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_opportunity_service.py",
+      "line": 7,
+      "relation": "construction_intelligence_mcp.models.project"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_opportunity_service.py",
+      "line": 8,
+      "relation": "construction_intelligence_mcp.services.opportunity_service"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_intelligence_mcp.py",
+      "line": 1,
+      "relation": "construction_intelligence_mcp.models.project_intelligence"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_intelligence_mcp.py",
+      "line": 2,
+      "relation": "construction_intelligence_mcp.server"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_intelligence_mcp.py",
+      "line": 4,
+      "relation": "test_project_intelligence_service"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_intelligence_service.py",
+      "line": 1,
+      "relation": "datetime"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_intelligence_service.py",
+      "line": 3,
+      "relation": "construction_intelligence_mcp.models.market"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_intelligence_service.py",
+      "line": 11,
+      "relation": "construction_intelligence_mcp.models.opportunity"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_intelligence_service.py",
+      "line": 12,
+      "relation": "construction_intelligence_mcp.models.project"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_intelligence_service.py",
+      "line": 13,
+      "relation": "construction_intelligence_mcp.models.project_intelligence"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_intelligence_service.py",
+      "line": 14,
+      "relation": "construction_intelligence_mcp.services.project_intelligence_service"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_intelligence_service.py",
+      "line": 17,
+      "relation": "construction_intelligence_mcp.services.project_scope_classifier"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_scope_classifier.py",
+      "line": 1,
+      "relation": "__future__"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_scope_classifier.py",
+      "line": 5,
+      "relation": "construction_intelligence_mcp.models.project"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_scope_classifier.py",
+      "line": 6,
+      "relation": "construction_intelligence_mcp.models.scope"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_scope_classifier.py",
+      "line": 12,
+      "relation": "construction_intelligence_mcp.services.project_scope_classifier"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_service.py",
+      "line": 1,
+      "relation": "datetime"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_service.py",
+      "line": 2,
+      "relation": "pathlib"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_service.py",
+      "line": 6,
+      "relation": "pydantic"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_service.py",
+      "line": 8,
+      "relation": "construction_intelligence_mcp.models.project"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_service.py",
+      "line": 13,
+      "relation": "construction_intelligence_mcp.models.scope"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_service.py",
+      "line": 18,
+      "relation": "construction_intelligence_mcp.services.project_service"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_service_integration.py",
+      "line": 2,
+      "relation": "pathlib"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_service_integration.py",
+      "line": 6,
+      "relation": "construction_intelligence_mcp.models.project"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_project_service_integration.py",
+      "line": 7,
+      "relation": "construction_intelligence_mcp.services.project_service"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_reverse_engineer_executive_pipeline.py",
+      "line": 3,
+      "relation": "pathlib"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_reverse_engineer_executive_pipeline.py",
+      "line": 20,
+      "relation": "raw"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_reverse_engineer_executive_warehouse.py",
+      "line": 1,
+      "relation": "__future__"
+    },
+    {
+      "classification": "test_fixture",
+      "file": "tests/test_reverse_engineer_executive_warehouse.py",
+      "line": 4,
+      "relation": "pathlib"
+    }
+  ],
+  "sql_operations": [
+    {
+      "classification": "test_fixture",
+      "context": "CREATE TABLE ci_market_state (",
+      "file": "tests/test_project_service.py",
+      "line": 27,
+      "operation": "create_table",
+      "relation": "ci_market_state"
+    },
+    {
+      "classification": "test_fixture",
+      "context": "\"INSERT INTO ci_market_state VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\",",
+      "file": "tests/test_project_service.py",
+      "line": 43,
+      "operation": "insert_into",
+      "relation": "ci_market_state"
+    },
+    {
+      "classification": "test_fixture",
+      "context": "connection.execute(\"CREATE TABLE ci_market_state (unrelated VARCHAR)\")",
+      "file": "tests/test_project_service.py",
+      "line": 170,
+      "operation": "create_table",
+      "relation": "ci_market_state"
+    },
+    {
+      "classification": "test_fixture",
+      "context": "(tmp_path / \"pipeline.py\").write_text('sql = \"CREATE TABLE executive_section AS SELECT * FROM raw\"\\n')",
+      "file": "tests/test_reverse_engineer_executive_pipeline.py",
+      "line": 20,
+      "operation": "create_table",
+      "relation": "executive_section"
+    },
+    {
+      "classification": "test_fixture",
+      "context": "(tests / \"test_fixture.py\").write_text('sql = \"CREATE TABLE governed_finding (id INT)\"\\n')",
+      "file": "tests/test_reverse_engineer_executive_pipeline.py",
+      "line": 23,
+      "operation": "create_table",
+      "relation": "governed_finding"
+    },
+    {
+      "classification": "test_fixture",
+      "context": "connection.execute(\"CREATE TABLE oddly_named (artifact_id INTEGER, governed_finding VARCHAR)\")",
+      "file": "tests/test_reverse_engineer_executive_warehouse.py",
+      "line": 23,
+      "operation": "create_table",
+      "relation": "oddly_named"
+    },
+    {
+      "classification": "test_fixture",
+      "context": "connection.execute(\"INSERT INTO oddly_named VALUES (1, 'Finding'), (2, NULL)\")",
+      "file": "tests/test_reverse_engineer_executive_warehouse.py",
+      "line": 24,
+      "operation": "insert_into",
+      "relation": "oddly_named"
+    },
+    {
+      "classification": "test_fixture",
+      "context": "connection.execute(\"CREATE TABLE documents (artifact_id INTEGER, source_document VARCHAR)\")",
+      "file": "tests/test_reverse_engineer_executive_warehouse.py",
+      "line": 25,
+      "operation": "create_table",
+      "relation": "documents"
+    },
+    {
+      "classification": "test_fixture",
+      "context": "connection.execute(\"INSERT INTO documents VALUES (1, 'Plan'), (2, 'Plan')\")",
+      "file": "tests/test_reverse_engineer_executive_warehouse.py",
+      "line": 26,
+      "operation": "insert_into",
+      "relation": "documents"
+    }
+  ]
+}
