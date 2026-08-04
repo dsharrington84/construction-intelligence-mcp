@@ -13,7 +13,10 @@ class DuckDBAdapter:
     def __init__(self, database: str | Path) -> None:
         self.database = Path(database).expanduser()
         if not self.database.is_file():
-            raise FileNotFoundError(f"DuckDB database not found: {self.database}")
+            raise FileNotFoundError(
+                f"DuckDB database not found at '{self.database}'. "
+                "Set CI_DATABASE to the readable source DuckDB file."
+            )
 
     @contextmanager
     def connect(self) -> Iterator[duckdb.DuckDBPyConnection]:
@@ -23,22 +26,30 @@ class DuckDBAdapter:
         finally:
             connection.close()
 
-    def table_exists(self, table_name: str) -> bool:
+    def resolve_table(self, table_name: str) -> str | None:
         with self.connect() as connection:
-            value = connection.execute(
+            rows = connection.execute(
                 """
-                SELECT COUNT(*)
+                SELECT table_schema, table_name
                 FROM information_schema.tables
                 WHERE table_name = ?
+                ORDER BY CASE WHEN table_schema = 'main' THEN 0 ELSE 1 END, table_schema
                 """,
                 [table_name],
-            ).fetchone()
-        return bool(value and value[0])
+            ).fetchall()
+        if not rows:
+            return None
+        schema, name = rows[0]
+        return f"{self.quote_identifier(str(schema))}.{self.quote_identifier(str(name))}"
 
-    def columns(self, table_name: str) -> list[str]:
+    def columns(self, qualified_table: str) -> list[str]:
         with self.connect() as connection:
-            rows = connection.execute(f'DESCRIBE "{table_name}"').fetchall()
+            rows = connection.execute(f"DESCRIBE {qualified_table}").fetchall()
         return [str(row[0]) for row in rows]
+
+    @staticmethod
+    def quote_identifier(identifier: str) -> str:
+        return '"' + identifier.replace('"', '""') + '"'
 
     def fetch_all(
         self,
@@ -48,10 +59,7 @@ class DuckDBAdapter:
         with self.connect() as connection:
             cursor = connection.execute(sql, list(parameters or []))
             names = [str(column[0]) for column in cursor.description]
-            return [
-                dict(zip(names, row, strict=True))
-                for row in cursor.fetchall()
-            ]
+            return [dict(zip(names, row, strict=True)) for row in cursor.fetchall()]
 
     def fetch_one(
         self,

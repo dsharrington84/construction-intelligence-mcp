@@ -35,15 +35,30 @@ _FIELD_CANDIDATES: dict[str, tuple[str, ...]] = {
 }
 
 _SCOPE_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
-    ("Bridge Rehabilitation", ("bridge rehab", "rehabilitate bridge", "deck replacement", "seismic retrofit")),
+    (
+        "Bridge Rehabilitation",
+        ("bridge rehab", "rehabilitate bridge", "deck replacement", "seismic retrofit"),
+    ),
     ("Bridge Replacement", ("replace bridge", "bridge replacement", "new bridge")),
-    ("Pavement Rehabilitation", ("rehabilitate pavement", "pavement rehab", "cold plane", "overlay", "resurface")),
-    ("Roadway Reconstruction", ("reconstruct roadway", "roadway reconstruction", "full depth", "widen roadway")),
+    (
+        "Pavement Rehabilitation",
+        ("rehabilitate pavement", "pavement rehab", "cold plane", "overlay", "resurface"),
+    ),
+    (
+        "Roadway Reconstruction",
+        ("reconstruct roadway", "roadway reconstruction", "full depth", "widen roadway"),
+    ),
     ("Interchange Improvements", ("interchange", "ramp improvement", "ramp widening")),
     ("Drainage Improvements", ("drainage", "culvert", "stormwater", "storm drain")),
     ("Safety Improvements", ("safety improvement", "median barrier", "guardrail", "rumble strip")),
-    ("Traffic / ITS / Electrical", ("traffic signal", "lighting", "electrical", "its", "intelligent transportation")),
-    ("Complete Streets / Active Transportation", ("complete streets", "bike lane", "bicycle", "pedestrian", "sidewalk")),
+    (
+        "Traffic / ITS / Electrical",
+        ("traffic signal", "lighting", "electrical", "its", "intelligent transportation"),
+    ),
+    (
+        "Complete Streets / Active Transportation",
+        ("complete streets", "bike lane", "bicycle", "pedestrian", "sidewalk"),
+    ),
 )
 
 
@@ -52,15 +67,28 @@ class ProjectService:
 
     def __init__(self, database: str | Path) -> None:
         self.adapter = DuckDBAdapter(database)
-        if not self.adapter.table_exists(STATE_TABLE):
-            raise RuntimeError(f"Missing required canonical table: {STATE_TABLE}")
-        self._columns = set(self.adapter.columns(STATE_TABLE))
+        self.source_table = self.adapter.resolve_table(STATE_TABLE)
+        if self.source_table is None:
+            raise RuntimeError(
+                f"Missing canonical table '{STATE_TABLE}' in DuckDB database "
+                f"'{self.adapter.database}'."
+            )
+        self._columns = set(self.adapter.columns(self.source_table))
         self._fields = {
             concept: next((field for field in candidates if field in self._columns), None)
             for concept, candidates in _FIELD_CANDIDATES.items()
         }
-        if self._fields["project_id"] is None:
-            raise RuntimeError("No project identifier field found in ci_market_state")
+        required = ("project_id", "description")
+        unresolved = [field for field in required if self._fields[field] is None]
+        if unresolved:
+            candidates = "; ".join(
+                f"{field}: {', '.join(_FIELD_CANDIDATES[field])}" for field in unresolved
+            )
+            raise RuntimeError(
+                f"Canonical table '{STATE_TABLE}' has unresolved required fields: "
+                f"{', '.join(unresolved)}. Expected candidates: {candidates}. "
+                f"Available columns: {', '.join(sorted(self._columns)) or '(none)'}"
+            )
 
     @property
     def resolved_fields(self) -> dict[str, str | None]:
@@ -89,7 +117,7 @@ class ProjectService:
             where.append(f'TRY_CAST("{date_field}" AS DATE) >= ?')
             parameters.append(request.advertisement_start)
         if request.advertisement_end and date_field:
-            where.append(f'TRY_CAST("{date_field}" AS DATE) < ?')
+            where.append(f'TRY_CAST("{date_field}" AS DATE) <= ?')
             parameters.append(request.advertisement_end)
 
         if request.text:
@@ -99,7 +127,9 @@ class ProjectService:
                 if self._fields[name]
             ]
             if searchable:
-                haystack = " || ' ' || ".join(f"COALESCE(CAST(\"{field}\" AS VARCHAR), '')" for field in searchable)
+                haystack = " || ' ' || ".join(
+                    f"COALESCE(CAST(\"{field}\" AS VARCHAR), '')" for field in searchable
+                )
                 where.append(f"LOWER({haystack}) LIKE ?")
                 parameters.append(f"%{request.text.lower()}%")
 
@@ -107,7 +137,7 @@ class ProjectService:
         order_sql = " ORDER BY programmed_value DESC NULLS LAST, project_id"
         parameters.append(request.limit)
         rows = self.adapter.fetch_all(
-            f"SELECT {select_sql} FROM \"{STATE_TABLE}\"{where_sql}{order_sql} LIMIT ?",
+            f"SELECT {select_sql} FROM {self.source_table}{where_sql}{order_sql} LIMIT ?",
             parameters,
         )
         return [self._to_summary(row) for row in rows]
@@ -115,13 +145,34 @@ class ProjectService:
     def fetch_project(self, project_id: str) -> ProjectDetail | None:
         identifier = self._fields["project_id"]
         row = self.adapter.fetch_one(
-            f'SELECT * FROM "{STATE_TABLE}" WHERE CAST("{identifier}" AS VARCHAR) = ? LIMIT 1',
+            f'SELECT * FROM {self.source_table} WHERE CAST("{identifier}" AS VARCHAR) = ? LIMIT 1',
             [project_id],
         )
         if row is None:
             return None
         summary = self._to_summary(self._project_row(row))
         return ProjectDetail(**summary.model_dump(), raw_record=row)
+
+    def count_projects(self, districts: list[int] | None = None) -> int:
+        """Count canonical projects, optionally constrained to Caltrans districts."""
+        request = ProjectSearchRequest(districts=districts)
+        district_field = self._fields["district"]
+        if request.districts and district_field is None:
+            return 0
+        where_sql = ""
+        parameters: list[Any] = []
+        if request.districts:
+            placeholders = ", ".join("?" for _ in request.districts)
+            where_sql = (
+                " WHERE TRY_CAST(REGEXP_REPLACE(CAST("
+                f"\"{district_field}\" AS VARCHAR), '[^0-9]', '', 'g') AS INTEGER) "
+                f"IN ({placeholders})"
+            )
+            parameters.extend(request.districts)
+        row = self.adapter.fetch_one(
+            f"SELECT COUNT(*) AS project_count FROM {self.source_table}{where_sql}", parameters
+        )
+        return int(row["project_count"]) if row else 0
 
     def _select_projection(self) -> str:
         expressions: list[str] = []
@@ -152,7 +203,9 @@ class ProjectService:
     def _project_row(self, row: dict[str, Any]) -> dict[str, Any]:
         projected: dict[str, Any] = {}
         for alias, field in self._fields.items():
-            projected["raw_project_type" if alias == "project_type" else alias] = row.get(field) if field else None
+            projected["raw_project_type" if alias == "project_type" else alias] = (
+                row.get(field) if field else None
+            )
         return projected
 
     def _to_summary(self, row: dict[str, Any]) -> ProjectSummary:
@@ -160,7 +213,9 @@ class ProjectService:
         description = self._clean(row.get("description"))
         title = self._clean(row.get("title")) or description or f"Project {project_id}"
         raw_project_type = self._clean(row.get("raw_project_type"))
-        primary_scope = self._classify_scope(" ".join(filter(None, [title, description, raw_project_type])))
+        primary_scope = self._classify_scope(
+            " ".join(filter(None, [title, description, raw_project_type]))
+        )
         value = self._float_or_none(row.get("programmed_value"))
         district = self._int_or_none(row.get("district"))
         reasons = ["Advertises within selected window"]

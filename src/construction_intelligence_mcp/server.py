@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import argparse
+import json
 import os
 from pathlib import Path
 
@@ -23,8 +25,24 @@ mcp = FastMCP(
 
 
 def _service() -> ProjectService:
-    database = Path(os.environ.get("CI_DATABASE", str(DEFAULT_DATABASE)))
+    configured = os.environ.get("CI_DATABASE")
+    database = Path(configured) if configured else DEFAULT_DATABASE
     return ProjectService(database)
+
+
+def smoke_test() -> None:
+    """Print source resolution and a small Southern California project sample."""
+    service = _service()
+    districts = [7, 8, 11, 12]
+    samples = service.search_projects(ProjectSearchRequest(districts=districts, limit=5))
+    fields = service.resolved_fields
+    print(f"Resolved source table: {service.source_table}")
+    print(f"Resolved project identifier field: {fields['project_id']}")
+    print(f"Resolved description field: {fields['description']}")
+    print(f"Total Southern California projects: {service.count_projects(districts)}")
+    print("Five sample projects:")
+    for project in samples:
+        print(json.dumps(project.model_dump(mode="json"), sort_keys=True))
 
 
 @mcp.tool
@@ -56,6 +74,12 @@ def fetch_project(project_id: str) -> dict | None:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Construction Intelligence MCP server")
+    parser.add_argument("command", nargs="?", choices=("serve", "smoke-test"), default="serve")
+    args = parser.parse_args()
+    if args.command == "smoke-test":
+        smoke_test()
+        return
     host = os.environ.get("CI_MCP_HOST", "0.0.0.0")
     port = int(os.environ.get("CI_MCP_PORT", "8000"))
     transport = os.environ.get("CI_MCP_TRANSPORT", "sse")
