@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "evidence_status": "not_generated",
+    "reason": "No CI_DATABASE or DuckDB file was available in the execution environment.",
+    "read_only": true
+  },
+  "relations": []
+}
