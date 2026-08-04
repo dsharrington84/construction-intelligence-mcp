@@ -9,8 +9,9 @@ from fastmcp import FastMCP
 
 from construction_intelligence_mcp.models.opportunity import OpportunitySearchRequest
 from construction_intelligence_mcp.models.project import ProjectSearchRequest
-from construction_intelligence_mcp.services.opportunity_service import OpportunityService
+from construction_intelligence_mcp.services.cost_service import CostService
 from construction_intelligence_mcp.services.market_service import MarketService
+from construction_intelligence_mcp.services.opportunity_service import OpportunityService
 from construction_intelligence_mcp.services.project_intelligence_service import (
     ProjectIntelligenceService,
 )
@@ -38,6 +39,10 @@ def _service() -> ProjectService:
 
 def _opportunity_service() -> OpportunityService:
     return OpportunityService(_service())
+
+
+def _cost_service() -> CostService:
+    return CostService(_service())
 
 
 def _project_intelligence_service() -> ProjectIntelligenceService:
@@ -97,6 +102,13 @@ def fetch_project_intelligence(project_id: str) -> dict | None:
     """Fetch all governed intelligence currently known for one project."""
     intelligence = _project_intelligence_service().fetch_project_intelligence(project_id)
     return None if intelligence is None else intelligence.model_dump(mode="json")
+
+
+@mcp.tool
+def fetch_cost_context(project_id: str) -> dict | None:
+    """Fetch the governed historical market cost baseline for one project."""
+    context = _cost_service().fetch_cost_context(project_id)
+    return None if context is None else context.model_dump(mode="json")
 
 
 @mcp.tool

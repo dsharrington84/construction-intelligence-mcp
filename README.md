@@ -58,4 +58,6 @@ To select the transport or listener explicitly:
 CI_MCP_TRANSPORT=sse CI_MCP_HOST=127.0.0.1 CI_MCP_PORT=8000 construction-intelligence-mcp serve
 ```
 
-The MCP tools are `search_projects` and `fetch_project`.
+The MCP tools include project and opportunity discovery plus
+`fetch_cost_context(project_id)`, which returns an evidence-only historical market
+baseline. Cost context does not forecast costs or apply production assumptions.
