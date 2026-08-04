@@ -1,0 +1,230 @@
+from __future__ import annotations
+
+import re
+from datetime import date
+from pathlib import Path
+from typing import Any
+
+from construction_intelligence_mcp.adapters.duckdb_adapter import DuckDBAdapter
+from construction_intelligence_mcp.models.project import (
+    ProjectDetail,
+    ProjectSearchRequest,
+    ProjectSummary,
+)
+
+STATE_TABLE = "ci_market_state"
+
+_FIELD_CANDIDATES: dict[str, tuple[str, ...]] = {
+    "project_id": ("project_id", "market_state_id"),
+    "title": ("project_title", "project_name", "title", "project_description"),
+    "description": (
+        "project_description",
+        "description",
+        "project_scope",
+        "scope_description",
+        "work_description",
+    ),
+    "district": ("district",),
+    "county": ("county", "counties"),
+    "route": ("route", "route_number", "state_route"),
+    "location": ("location", "project_location", "location_description"),
+    "project_type": ("project_type", "work_type"),
+    "programmed_value": ("programmed_amount", "programmed_value", "total_programmed_amount"),
+    "advertisement_date": ("advertisement_date", "planned_advertisement_date"),
+    "advertisement_fiscal_year": ("advertisement_fiscal_year", "fiscal_year"),
+}
+
+_SCOPE_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("Bridge Rehabilitation", ("bridge rehab", "rehabilitate bridge", "deck replacement", "seismic retrofit")),
+    ("Bridge Replacement", ("replace bridge", "bridge replacement", "new bridge")),
+    ("Pavement Rehabilitation", ("rehabilitate pavement", "pavement rehab", "cold plane", "overlay", "resurface")),
+    ("Roadway Reconstruction", ("reconstruct roadway", "roadway reconstruction", "full depth", "widen roadway")),
+    ("Interchange Improvements", ("interchange", "ramp improvement", "ramp widening")),
+    ("Drainage Improvements", ("drainage", "culvert", "stormwater", "storm drain")),
+    ("Safety Improvements", ("safety improvement", "median barrier", "guardrail", "rumble strip")),
+    ("Traffic / ITS / Electrical", ("traffic signal", "lighting", "electrical", "its", "intelligent transportation")),
+    ("Complete Streets / Active Transportation", ("complete streets", "bike lane", "bicycle", "pedestrian", "sidewalk")),
+)
+
+
+class ProjectService:
+    """Business-facing access to canonical project intelligence."""
+
+    def __init__(self, database: str | Path) -> None:
+        self.adapter = DuckDBAdapter(database)
+        if not self.adapter.table_exists(STATE_TABLE):
+            raise RuntimeError(f"Missing required canonical table: {STATE_TABLE}")
+        self._columns = set(self.adapter.columns(STATE_TABLE))
+        self._fields = {
+            concept: next((field for field in candidates if field in self._columns), None)
+            for concept, candidates in _FIELD_CANDIDATES.items()
+        }
+        if self._fields["project_id"] is None:
+            raise RuntimeError("No project identifier field found in ci_market_state")
+
+    @property
+    def resolved_fields(self) -> dict[str, str | None]:
+        return dict(self._fields)
+
+    def search_projects(self, request: ProjectSearchRequest) -> list[ProjectSummary]:
+        select_sql = self._select_projection()
+        where: list[str] = []
+        parameters: list[Any] = []
+
+        district_field = self._fields["district"]
+        if request.districts and district_field:
+            placeholders = ", ".join("?" for _ in request.districts)
+            where.append(
+                f"TRY_CAST(REGEXP_REPLACE(CAST(\"{district_field}\" AS VARCHAR), '[^0-9]', '', 'g') AS INTEGER) IN ({placeholders})"
+            )
+            parameters.extend(request.districts)
+
+        value_field = self._fields["programmed_value"]
+        if request.minimum_programmed_value is not None and value_field:
+            where.append(f'TRY_CAST("{value_field}" AS DOUBLE) >= ?')
+            parameters.append(request.minimum_programmed_value)
+
+        date_field = self._fields["advertisement_date"]
+        if request.advertisement_start and date_field:
+            where.append(f'TRY_CAST("{date_field}" AS DATE) >= ?')
+            parameters.append(request.advertisement_start)
+        if request.advertisement_end and date_field:
+            where.append(f'TRY_CAST("{date_field}" AS DATE) < ?')
+            parameters.append(request.advertisement_end)
+
+        if request.text:
+            searchable = [
+                self._fields[name]
+                for name in ("title", "description", "location", "route", "county", "project_type")
+                if self._fields[name]
+            ]
+            if searchable:
+                haystack = " || ' ' || ".join(f"COALESCE(CAST(\"{field}\" AS VARCHAR), '')" for field in searchable)
+                where.append(f"LOWER({haystack}) LIKE ?")
+                parameters.append(f"%{request.text.lower()}%")
+
+        where_sql = " WHERE " + " AND ".join(where) if where else ""
+        order_sql = " ORDER BY programmed_value DESC NULLS LAST, project_id"
+        parameters.append(request.limit)
+        rows = self.adapter.fetch_all(
+            f"SELECT {select_sql} FROM \"{STATE_TABLE}\"{where_sql}{order_sql} LIMIT ?",
+            parameters,
+        )
+        return [self._to_summary(row) for row in rows]
+
+    def fetch_project(self, project_id: str) -> ProjectDetail | None:
+        identifier = self._fields["project_id"]
+        row = self.adapter.fetch_one(
+            f'SELECT * FROM "{STATE_TABLE}" WHERE CAST("{identifier}" AS VARCHAR) = ? LIMIT 1',
+            [project_id],
+        )
+        if row is None:
+            return None
+        summary = self._to_summary(self._project_row(row))
+        return ProjectDetail(**summary.model_dump(), raw_record=row)
+
+    def _select_projection(self) -> str:
+        expressions: list[str] = []
+        for alias, field in self._fields.items():
+            if alias == "project_type":
+                output_alias = "raw_project_type"
+            else:
+                output_alias = alias
+            if field is None:
+                expressions.append(f"NULL AS {output_alias}")
+                continue
+            if alias == "district":
+                expressions.append(
+                    f"TRY_CAST(REGEXP_REPLACE(CAST(\"{field}\" AS VARCHAR), '[^0-9]', '', 'g') AS INTEGER) AS district"
+                )
+            elif alias == "programmed_value":
+                expressions.append(f'TRY_CAST("{field}" AS DOUBLE) AS programmed_value')
+            elif alias == "advertisement_date":
+                expressions.append(f'TRY_CAST("{field}" AS DATE) AS advertisement_date')
+            elif alias == "advertisement_fiscal_year":
+                expressions.append(
+                    f"TRY_CAST(REGEXP_EXTRACT(CAST(\"{field}\" AS VARCHAR), '(20[0-9]{{2}})', 1) AS INTEGER) AS advertisement_fiscal_year"
+                )
+            else:
+                expressions.append(f'CAST("{field}" AS VARCHAR) AS {output_alias}')
+        return ", ".join(expressions)
+
+    def _project_row(self, row: dict[str, Any]) -> dict[str, Any]:
+        projected: dict[str, Any] = {}
+        for alias, field in self._fields.items():
+            projected["raw_project_type" if alias == "project_type" else alias] = row.get(field) if field else None
+        return projected
+
+    def _to_summary(self, row: dict[str, Any]) -> ProjectSummary:
+        project_id = str(row.get("project_id") or "")
+        description = self._clean(row.get("description"))
+        title = self._clean(row.get("title")) or description or f"Project {project_id}"
+        raw_project_type = self._clean(row.get("raw_project_type"))
+        primary_scope = self._classify_scope(" ".join(filter(None, [title, description, raw_project_type])))
+        value = self._float_or_none(row.get("programmed_value"))
+        district = self._int_or_none(row.get("district"))
+        reasons = ["Advertises within selected window"]
+        if district in {7, 8, 11, 12}:
+            reasons.append(f"Southern California District {district}")
+        if value is not None and value >= 25_000_000:
+            reasons.append("Large programmed value")
+        if primary_scope != "Unclassified Project":
+            reasons.append(primary_scope)
+
+        return ProjectSummary(
+            project_id=project_id,
+            title=title,
+            description=description,
+            district=district,
+            county=self._clean(row.get("county")),
+            route=self._clean(row.get("route")),
+            location=self._clean(row.get("location")),
+            primary_scope=primary_scope,
+            programmed_value=value,
+            advertisement_date=self._date_or_none(row.get("advertisement_date")),
+            advertisement_fiscal_year=self._int_or_none(row.get("advertisement_fiscal_year")),
+            why_it_surfaced=reasons,
+            source_fields=self.resolved_fields,
+        )
+
+    @staticmethod
+    def _classify_scope(text: str) -> str:
+        normalized = re.sub(r"\s+", " ", text.lower()).strip()
+        for label, terms in _SCOPE_RULES:
+            if any(term in normalized for term in terms):
+                return label
+        if "pavement" in normalized:
+            return "Pavement"
+        if "bridge" in normalized:
+            return "Bridge"
+        return "Unclassified Project"
+
+    @staticmethod
+    def _clean(value: Any) -> str | None:
+        if value is None:
+            return None
+        text = str(value).strip()
+        return text or None
+
+    @staticmethod
+    def _float_or_none(value: Any) -> float | None:
+        try:
+            return None if value is None else float(value)
+        except (TypeError, ValueError):
+            return None
+
+    @staticmethod
+    def _int_or_none(value: Any) -> int | None:
+        try:
+            return None if value is None else int(value)
+        except (TypeError, ValueError):
+            return None
+
+    @staticmethod
+    def _date_or_none(value: Any) -> date | None:
+        if value is None or isinstance(value, date):
+            return value
+        try:
+            return date.fromisoformat(str(value)[:10])
+        except ValueError:
+            return None
