@@ -46,6 +46,7 @@ class Knowledge:
 
 
 def finding(evidence_id: str, **values) -> ExecutiveKnowledgeRecord:
+    refined_status = values.pop("refined_status", "USABLE")
     return ExecutiveKnowledgeRecord(
         evidence_id=evidence_id,
         source_document="2028 State Highway Plan",
@@ -53,7 +54,7 @@ def finding(evidence_id: str, **values) -> ExecutiveKnowledgeRecord:
         source_section_id=f"section-{evidence_id}",
         source_heading="Investment priorities",
         governed_finding=f"Certified finding {evidence_id}",
-        refined_status="certified",
+        refined_status=refined_status,
         **values,
     )
 
@@ -93,7 +94,14 @@ def test_district_and_scope_theme_alignment_are_supporting_and_deterministic() -
 
 def test_statewide_only_is_limited_and_no_evidence_is_explicit_none() -> None:
     contextual = service(
-        [finding("state", geographic_applicability="statewide", strategic_themes=["Resilience"])]
+        [
+            finding(
+                "state",
+                refined_status="CONTEXT_ONLY",
+                geographic_applicability="statewide",
+                strategic_themes=["Resilience"],
+            )
+        ]
     ).fetch_strategic_context("P-1")
     empty = service([]).fetch_strategic_context("P-1")
 
@@ -127,3 +135,17 @@ def test_mcp_serializes_governed_context(monkeypatch) -> None:
     assert response is not None
     assert response["strategic_context_id"] == "strategic-context:P-1"
     assert response["evidence"][0]["evidence_strength"] == "DIRECT"
+
+
+def test_context_only_cannot_create_direct_match_and_excluded_statuses_are_ignored() -> None:
+    result = service(
+        [
+            finding("context-direct", refined_status="CONTEXT_ONLY", project_id="P-1"),
+            finding("review", refined_status="REVIEW_REQUIRED", project_id="P-1"),
+            finding("excluded", refined_status="EXCLUDED", districts=[7]),
+        ]
+    ).fetch_strategic_context("P-1")
+
+    assert result is not None
+    assert result.evidence == []
+    assert result.source_confidence == SourceConfidence.NONE

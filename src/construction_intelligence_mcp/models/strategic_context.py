@@ -28,6 +28,7 @@ class StrategicEvidence(BaseModel):
     source_excerpt: str
     relationship_to_project: str
     evidence_strength: EvidenceStrength
+    source_lineage: dict[str, str] = Field(default_factory=dict)
 
 
 class StrategicConclusion(BaseModel):

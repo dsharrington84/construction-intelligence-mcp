@@ -70,13 +70,31 @@ def smoke_test() -> None:
     districts = [7, 8, 11, 12]
     samples = service.search_projects(ProjectSearchRequest(districts=districts, limit=5))
     fields = service.resolved_fields
+    executive_adapter = ExecutiveKnowledgeAdapter(service.adapter)
+    strategic_service = StrategicContextService(service, executive_adapter)
     print(f"Resolved source table: {service.source_table}")
     print(f"Resolved project identifier field: {fields['project_id']}")
     print(f"Resolved description field: {fields['description']}")
+    print(f"Resolved executive relation: {executive_adapter.source_relation or '(none)'}")
+    print(
+        "Resolved executive lineage fields: "
+        + (", ".join(executive_adapter.lineage_fields) or "(none)")
+    )
+    status_counts = executive_adapter.eligible_record_counts_by_status()
+    print(f"Eligible executive records by refined status: {json.dumps(status_counts)}")
     print(f"Total Southern California projects: {service.count_projects(districts)}")
     print("Five sample projects:")
     for project in samples:
         print(json.dumps(project.model_dump(mode="json"), sort_keys=True))
+        context = strategic_service.fetch_strategic_context(project.project_id)
+        strength_counts = {"DIRECT": 0, "SUPPORTING": 0, "CONTEXTUAL": 0}
+        if context:
+            for evidence in context.evidence:
+                strength_counts[evidence.evidence_strength.value] += 1
+        print(
+            f"Strategic evidence for {project.project_id}: "
+            f"{json.dumps(strength_counts, sort_keys=True)}"
+        )
 
 
 @mcp.tool

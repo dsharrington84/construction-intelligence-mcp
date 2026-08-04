@@ -1,0 +1,65 @@
+from pathlib import Path
+
+import duckdb
+
+from construction_intelligence_mcp.adapters.duckdb_adapter import DuckDBAdapter
+from construction_intelligence_mcp.adapters.executive_knowledge_adapter import (
+    ExecutiveKnowledgeAdapter,
+)
+
+
+def create_refined_relation(database: Path, version: int) -> None:
+    connection = duckdb.connect(str(database))
+    connection.execute(
+        f"""
+        CREATE TABLE ci_executive_knowledge_section_refined_v{version} (
+            executive_knowledge_section_id VARCHAR,
+            document_title VARCHAR,
+            document_year INTEGER,
+            section_lineage_id VARCHAR,
+            section_heading VARCHAR,
+            refined_section_summary VARCHAR,
+            program_alignment VARCHAR,
+            district_numbers VARCHAR,
+            geographic_applicability VARCHAR,
+            refinement_status VARCHAR,
+            source_page_number INTEGER
+        )
+        """
+    )
+    connection.close()
+
+
+def test_resolves_newest_refined_relation_and_actual_status_contract(tmp_path: Path) -> None:
+    database = tmp_path / "executive.duckdb"
+    create_refined_relation(database, 3)
+    create_refined_relation(database, 4)
+    connection = duckdb.connect(str(database))
+    connection.executemany(
+        """
+        INSERT INTO ci_executive_knowledge_section_refined_v4
+        VALUES (?, 'Plan', 2025, ?, 'Heading', ?, '["SHOPP"]', '[7]', 'statewide', ?, 12)
+        """,
+        [
+            ("usable", "lineage-1", "Usable governed finding", "USABLE"),
+            ("limited", "lineage-2", "Limited governed finding", "USABLE_WITH_LIMITATION"),
+            ("context", "lineage-3", "Context governed finding", "CONTEXT_ONLY"),
+            ("review", "lineage-4", "Unreviewed finding", "REVIEW_REQUIRED"),
+            ("excluded", "lineage-5", "Excluded finding", "EXCLUDED"),
+        ],
+    )
+    connection.close()
+
+    adapter = ExecutiveKnowledgeAdapter(DuckDBAdapter(database))
+    records = adapter.fetch_records()
+
+    assert adapter.source_relation == '"main"."ci_executive_knowledge_section_refined_v4"'
+    assert [record.evidence_id for record in records] == ["usable", "limited", "context"]
+    assert records[0].programs == ["SHOPP"]
+    assert records[0].districts == [7]
+    assert records[0].source_lineage["source_page_number"] == "12"
+    assert adapter.eligible_record_counts_by_status() == {
+        "CONTEXT_ONLY": 1,
+        "USABLE": 1,
+        "USABLE_WITH_LIMITATION": 1,
+    }

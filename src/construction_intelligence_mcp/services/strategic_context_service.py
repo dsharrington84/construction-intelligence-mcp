@@ -68,6 +68,7 @@ class StrategicContextService:
                     source_excerpt=record.governed_finding,
                     relationship_to_project=relationship,
                     evidence_strength=strength,
+                    source_lineage=record.source_lineage,
                 ),
             )
             for field_name in conclusions:
@@ -100,12 +101,15 @@ class StrategicContextService:
     def _match(
         cls, project: ProjectDetail, record: ExecutiveKnowledgeRecord
     ) -> tuple[EvidenceStrength, str] | None:
-        if record.refined_status and record.refined_status.casefold() not in {
-            "certified",
-            "refined",
-            "approved",
-            "published",
-        }:
+        if record.refined_status in {"REVIEW_REQUIRED", "EXCLUDED"}:
+            return None
+        if record.refined_status == "CONTEXT_ONLY":
+            if (record.geographic_applicability or "").casefold() in {
+                "statewide",
+                "california",
+                "state highway system",
+            }:
+                return EvidenceStrength.CONTEXTUAL, "Provides statewide strategic context"
             return None
         if record.project_id:
             return (
