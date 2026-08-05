@@ -49,9 +49,7 @@ def governed_market() -> MarketSummary:
         districts_included=[7],
         overall=metrics,
         by_district=[
-            DistrictMarketSummary(
-                district=7, project_count=1, total_programmed_value=42_000_000
-            )
+            DistrictMarketSummary(district=7, project_count=1, total_programmed_value=42_000_000)
         ],
         by_work_type=[
             WorkTypeMarketSummary(

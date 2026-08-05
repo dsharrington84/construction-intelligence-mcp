@@ -42,6 +42,21 @@ class DuckDBAdapter:
         schema, name = rows[0]
         return f"{self.quote_identifier(str(schema))}.{self.quote_identifier(str(name))}"
 
+    def relations(self) -> list[str]:
+        with self.connect() as connection:
+            rows = connection.execute(
+                """
+                SELECT table_schema, table_name
+                FROM information_schema.tables
+                WHERE table_type IN ('BASE TABLE', 'VIEW')
+                ORDER BY table_schema, table_name
+                """
+            ).fetchall()
+        return [
+            f"{self.quote_identifier(str(schema))}.{self.quote_identifier(str(name))}"
+            for schema, name in rows
+        ]
+
     def columns(self, qualified_table: str) -> list[str]:
         with self.connect() as connection:
             rows = connection.execute(f"DESCRIBE {qualified_table}").fetchall()
