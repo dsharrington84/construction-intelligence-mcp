@@ -29,6 +29,7 @@ The platform is governed by the following philosophy:
 - Platform layers must remain independently replaceable.
 - Implementation choices must serve the architecture, not redefine it.
 - Governance must be explicit before capability expansion begins.
+- The platform shall optimize for correctness before convenience, understanding before automation, and long-term architectural integrity before short-term implementation speed.
 
 ## Four Layer Architecture
 

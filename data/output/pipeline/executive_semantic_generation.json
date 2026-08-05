@@ -3,7 +3,7 @@
     "artifact_id": [
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 101
       },
       {
@@ -185,22 +185,22 @@
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 101
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 140
       },
       {
         "classification": "documentation",
-        "file": "docs/warehouse/010A-executive-lineage-graph.md",
+        "file": "docs/research/010A-executive-lineage-graph.md",
         "line": 24
       },
       {
         "classification": "documentation",
-        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "file": "docs/research/010A-executive-warehouse-reverse-engineering.md",
         "line": 44
       },
       {
@@ -867,7 +867,7 @@
     "expected_outcome": [
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 101
       },
       {
@@ -879,27 +879,27 @@
     "governed_finding": [
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 13
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 99
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 148
       },
       {
         "classification": "documentation",
-        "file": "docs/warehouse/010A-executive-lineage-graph.md",
+        "file": "docs/research/010A-executive-lineage-graph.md",
         "line": 23
       },
       {
         "classification": "documentation",
-        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "file": "docs/research/010A-executive-warehouse-reverse-engineering.md",
         "line": 82
       },
       {
@@ -941,7 +941,7 @@
     "knowledge_record_id": [
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 102
       },
       {
@@ -1003,17 +1003,17 @@
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 100
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 139
       },
       {
         "classification": "documentation",
-        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "file": "docs/research/010A-executive-warehouse-reverse-engineering.md",
         "line": 44
       },
       {
@@ -1030,7 +1030,7 @@
     "policy_driver": [
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 100
       },
       {
@@ -1097,22 +1097,22 @@
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 100
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 139
       },
       {
         "classification": "documentation",
-        "file": "docs/warehouse/010A-executive-lineage-graph.md",
+        "file": "docs/research/010A-executive-lineage-graph.md",
         "line": 24
       },
       {
         "classification": "documentation",
-        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "file": "docs/research/010A-executive-warehouse-reverse-engineering.md",
         "line": 44
       },
       {
@@ -1504,7 +1504,7 @@
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 101
       },
       {
@@ -1806,12 +1806,12 @@
     "region": [
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 101
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 140
       },
       {
@@ -1833,62 +1833,62 @@
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-dag.md",
+        "file": "docs/research/010B-executive-processing-dag.md",
         "line": 21
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-erd.md",
+        "file": "docs/research/010B-executive-processing-erd.md",
         "line": 16
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 21
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 63
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 102
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 140
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 147
       },
       {
         "classification": "documentation",
-        "file": "docs/warehouse/010A-executive-lineage-graph.md",
+        "file": "docs/research/010A-executive-lineage-graph.md",
         "line": 23
       },
       {
         "classification": "documentation",
-        "file": "docs/warehouse/010A-executive-warehouse-erd.md",
+        "file": "docs/research/010A-executive-warehouse-erd.md",
         "line": 21
       },
       {
         "classification": "documentation",
-        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "file": "docs/research/010A-executive-warehouse-reverse-engineering.md",
         "line": 43
       },
       {
         "classification": "documentation",
-        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "file": "docs/research/010A-executive-warehouse-reverse-engineering.md",
         "line": 76
       },
       {
         "classification": "documentation",
-        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "file": "docs/research/010A-executive-warehouse-reverse-engineering.md",
         "line": 77
       },
       {
@@ -1930,7 +1930,7 @@
     "source_document": [
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 100
       },
       {
@@ -1952,7 +1952,7 @@
     "source_heading": [
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 100
       },
       {
@@ -1964,17 +1964,17 @@
     "theme": [
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 100
       },
       {
         "classification": "documentation",
-        "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+        "file": "docs/research/010B-executive-processing-pipeline.md",
         "line": 139
       },
       {
         "classification": "documentation",
-        "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+        "file": "docs/research/010A-executive-warehouse-reverse-engineering.md",
         "line": 44
       },
       {

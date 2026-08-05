@@ -10,12 +10,12 @@
     "backlog/006-contractor-intelligence-service-v1.md",
     "backlog/007-cost-intelligence-service-v1.md",
     "backlog/README.md",
-    "docs/pipeline/010B-executive-processing-dag.md",
-    "docs/pipeline/010B-executive-processing-erd.md",
-    "docs/pipeline/010B-executive-processing-pipeline.md",
-    "docs/warehouse/010A-executive-lineage-graph.md",
-    "docs/warehouse/010A-executive-warehouse-erd.md",
-    "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+    "docs/research/010B-executive-processing-dag.md",
+    "docs/research/010B-executive-processing-erd.md",
+    "docs/research/010B-executive-processing-pipeline.md",
+    "docs/research/010A-executive-lineage-graph.md",
+    "docs/research/010A-executive-warehouse-erd.md",
+    "docs/research/010A-executive-warehouse-reverse-engineering.md",
     "scripts/warehouse/reverse_engineer_executive_warehouse.py",
     "src/construction_intelligence_mcp/__init__.py",
     "src/construction_intelligence_mcp/adapters/__init__.py",
@@ -82,121 +82,121 @@
     },
     {
       "classification": "documentation",
-      "file": "docs/pipeline/010B-executive-processing-dag.md",
+      "file": "docs/research/010B-executive-processing-dag.md",
       "line": 11,
       "relation": "inventory"
     },
     {
       "classification": "documentation",
-      "file": "docs/pipeline/010B-executive-processing-erd.md",
+      "file": "docs/research/010B-executive-processing-erd.md",
       "line": 14,
       "relation": "production"
     },
     {
       "classification": "documentation",
-      "file": "docs/pipeline/010B-executive-processing-erd.md",
+      "file": "docs/research/010B-executive-processing-erd.md",
       "line": 32,
       "relation": "the"
     },
     {
       "classification": "documentation",
-      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "file": "docs/research/010B-executive-processing-pipeline.md",
       "line": 12,
       "relation": "this"
     },
     {
       "classification": "documentation",
-      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "file": "docs/research/010B-executive-processing-pipeline.md",
       "line": 15,
       "relation": "source"
     },
     {
       "classification": "documentation",
-      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "file": "docs/research/010B-executive-processing-pipeline.md",
       "line": 16,
       "relation": "an"
     },
     {
       "classification": "documentation",
-      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "file": "docs/research/010B-executive-processing-pipeline.md",
       "line": 28,
       "relation": "production"
     },
     {
       "classification": "documentation",
-      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "file": "docs/research/010B-executive-processing-pipeline.md",
       "line": 48,
       "relation": "inventory"
     },
     {
       "classification": "documentation",
-      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "file": "docs/research/010B-executive-processing-pipeline.md",
       "line": 59,
       "relation": "catalog"
     },
     {
       "classification": "documentation",
-      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "file": "docs/research/010B-executive-processing-pipeline.md",
       "line": 127,
       "relation": "this"
     },
     {
       "classification": "documentation",
-      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "file": "docs/research/010B-executive-processing-pipeline.md",
       "line": 132,
       "relation": "from"
     },
     {
       "classification": "documentation",
-      "file": "docs/pipeline/010B-executive-processing-pipeline.md",
+      "file": "docs/research/010B-executive-processing-pipeline.md",
       "line": 148,
       "relation": "a"
     },
     {
       "classification": "documentation",
-      "file": "docs/warehouse/010A-executive-lineage-graph.md",
+      "file": "docs/research/010A-executive-lineage-graph.md",
       "line": 16,
       "relation": "has"
     },
     {
       "classification": "documentation",
-      "file": "docs/warehouse/010A-executive-warehouse-erd.md",
+      "file": "docs/research/010A-executive-warehouse-erd.md",
       "line": 15,
       "relation": "inventory"
     },
     {
       "classification": "documentation",
-      "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+      "file": "docs/research/010A-executive-warehouse-reverse-engineering.md",
       "line": 26,
       "relation": "candidates"
     },
     {
       "classification": "documentation",
-      "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+      "file": "docs/research/010A-executive-warehouse-reverse-engineering.md",
       "line": 51,
       "relation": "value"
     },
     {
       "classification": "documentation",
-      "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+      "file": "docs/research/010A-executive-warehouse-reverse-engineering.md",
       "line": 54,
       "relation": "Matrix"
     },
     {
       "classification": "documentation",
-      "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+      "file": "docs/research/010A-executive-warehouse-reverse-engineering.md",
       "line": 56,
       "relation": "inventory"
     },
     {
       "classification": "documentation",
-      "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+      "file": "docs/research/010A-executive-warehouse-reverse-engineering.md",
       "line": 62,
       "relation": "coverage"
     },
     {
       "classification": "documentation",
-      "file": "docs/warehouse/010A-executive-warehouse-reverse-engineering.md",
+      "file": "docs/research/010A-executive-warehouse-reverse-engineering.md",
       "line": 62,
       "relation": "the"
     },
