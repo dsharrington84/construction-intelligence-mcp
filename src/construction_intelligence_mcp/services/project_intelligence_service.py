@@ -8,6 +8,9 @@ from construction_intelligence_mcp.models.project_intelligence import (
     ProjectMarketIntelligence,
 )
 from construction_intelligence_mcp.services.market_service import MarketService
+from construction_intelligence_mcp.services.contractor_intelligence_service import (
+    ContractorIntelligenceService,
+)
 from construction_intelligence_mcp.services.opportunity_service import (
     _OPPORTUNITY_ID_PREFIX,
     OpportunityService,
@@ -23,10 +26,12 @@ class ProjectIntelligenceService:
         project_service: ProjectService,
         market_service: MarketService,
         opportunity_service: OpportunityService,
+        contractor_service: ContractorIntelligenceService | None = None,
     ) -> None:
         self.project_service = project_service
         self.market_service = market_service
         self.opportunity_service = opportunity_service
+        self.contractor_service = contractor_service
 
     def fetch_project_intelligence(self, project_id: str) -> ProjectIntelligence | None:
         project = self.project_service.fetch_project(project_id)
@@ -45,6 +50,11 @@ class ProjectIntelligenceService:
         market = self.market_service.summarize_market(market_request)
         opportunity = self.opportunity_service.fetch_opportunity(
             f"{_OPPORTUNITY_ID_PREFIX}{project.project_id}"
+        )
+        contractor_context = (
+            self.contractor_service.fetch_contractor_context(project.project_id)
+            if self.contractor_service is not None
+            else None
         )
 
         return ProjectIntelligence(
@@ -71,6 +81,7 @@ class ProjectIntelligenceService:
                 market_trend=market.period.prior_period_change,
             ),
             opportunity=opportunity,
+            contractor_context=contractor_context,
         )
 
     @staticmethod
