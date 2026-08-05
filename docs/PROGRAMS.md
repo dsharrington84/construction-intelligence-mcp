@@ -40,16 +40,20 @@ Current repository evidence:
 
 ## Program 200 — Contractor Intelligence
 
-Status: BLOCKED
+Status: ACTIVE
 
-Reason: Program 100 must complete its review gate before Program 200 implementation begins.
+Planning state: Program 200 planning is active after certification of the Construction Intelligence
+Platform v1.0 POC baseline and Program 100 planning progress. Production implementation remains
+dependency-gated by accepted contractor contracts and certified evidence.
 
-Program objective: explain contractor participation and historical market behavior using certified
+Program objective: provide Competitive Market Intelligence by explaining observable contractor
+participation, repeat bidding, winning, competitiveness, bidder counts, market concentration,
+district experience, project-type experience, and prime/subcontractor relationships using certified
 Contractor evidence.
 
 | Initiative | Status | Dependency |
 |---|---|---|
-| 201 Contractor Certified Data Product | BLOCKED | Program 100 certified |
+| 201 Contractor Certified Data Product | READY | Certified v1.0 baseline and Program 100 planning progress |
 | 202 Contractor Evidence Engine | BLOCKED_BY_CONTRACT | 201 accepted |
 | 203 Contractor Intelligence | BLOCKED_BY_IMPLEMENTATION | 201 accepted and 202 certified |
 

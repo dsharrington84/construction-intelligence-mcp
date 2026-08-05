@@ -1,8 +1,8 @@
 # 201 — Contractor Certified Data Product
 
-Status: BLOCKED
+Status: READY
 
-Dependency: Program 100 certified.
+Dependency: Certified v1.0 baseline and Program 100 planning progress. Initiative 201 is ready for contract-development work.
 
 ## Purpose
 
@@ -86,7 +86,7 @@ unsupported states, quality expectations, and required validation behavior.
 
 Known limitations at planning time:
 
-- Program 100 is not yet complete, so Program 200 implementation is blocked.
+- Initiative 201 is ready for contract-development work; implementation of downstream Program 200 capabilities remains blocked until this contract is accepted.
 - Contractor business grain is Pending Contract.
 - Contractor business keys are Pending Contract.
 - Contractor producer and ownership are Pending Contract.
@@ -98,7 +98,6 @@ Known limitations at planning time:
 
 Initiative 201 is done only when:
 
-- Program 100 is certified.
 - The Contractor Certified Data Product contract exists and is reviewed.
 - The contract identifies business purpose, grain, keys, producer, lineage, certification rules,
   consumer guarantees, and limitations.
