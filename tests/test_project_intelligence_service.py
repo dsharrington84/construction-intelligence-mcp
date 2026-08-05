@@ -1,5 +1,7 @@
 from datetime import date
 
+import pytest
+
 from construction_intelligence_mcp.models.market import (
     DistrictMarketSummary,
     MarketCoverage,
@@ -11,6 +13,10 @@ from construction_intelligence_mcp.models.market import (
 from construction_intelligence_mcp.models.opportunity import Opportunity
 from construction_intelligence_mcp.models.project import ProjectDetail
 from construction_intelligence_mcp.models.project_intelligence import ProjectIntelligence
+from construction_intelligence_mcp.models.strategic_context import (
+    SourceConfidence,
+    StrategicContext,
+)
 from construction_intelligence_mcp.services.project_intelligence_service import (
     ProjectIntelligenceService,
 )
@@ -100,6 +106,16 @@ class StubOpportunityService:
         return self.opportunity
 
 
+class StubStrategicContextService:
+    def __init__(self, strategic_context) -> None:
+        self.strategic_context = strategic_context
+
+    def fetch_strategic_context(self, project_id: str):
+        if self.strategic_context is not None and self.strategic_context.project_id == project_id:
+            return self.strategic_context
+        return None
+
+
 def test_existing_project_composes_all_available_intelligence() -> None:
     project = governed_project()
     market_service = StubMarketService(governed_market())
@@ -113,10 +129,17 @@ def test_existing_project_composes_all_available_intelligence() -> None:
         source_confidence="high",
     )
     opportunity_service = StubOpportunityService(opportunity)
+    strategic_context = StrategicContext(
+        project_id="P-1",
+        strategic_context_id="strategic-context:P-1",
+        source_confidence=SourceConfidence.NONE,
+        limitations=["No defensible Executive evidence matched the governed project."],
+    )
     service = ProjectIntelligenceService(
         StubProjectService(project),  # type: ignore[arg-type]
         market_service,  # type: ignore[arg-type]
         opportunity_service,  # type: ignore[arg-type]
+        StubStrategicContextService(strategic_context),  # type: ignore[arg-type]
     )
 
     result = service.fetch_project_intelligence("P-1")
@@ -142,7 +165,7 @@ def test_existing_project_composes_all_available_intelligence() -> None:
     assert result.opportunity is opportunity
     assert opportunity_service.opportunity_id == "project-opportunity:P-1"
     assert market_service.request.districts == [7]
-    assert result.strategic_context is None
+    assert result.strategic_context == strategic_context
     assert result.contractor_signals == []
     assert result.cost_signals == []
 
@@ -156,6 +179,24 @@ def test_missing_project_returns_none_without_calling_other_services() -> None:
         StubProjectService(None),  # type: ignore[arg-type]
         UnexpectedService(),  # type: ignore[arg-type]
         UnexpectedService(),  # type: ignore[arg-type]
+        UnexpectedService(),  # type: ignore[arg-type]
     )
 
     assert service.fetch_project_intelligence("missing") is None
+
+
+def test_project_intelligence_propagates_unavailable_strategic_context() -> None:
+    class FailingStrategicContextService:
+        def fetch_strategic_context(self, project_id: str):
+            raise RuntimeError("No accepted CDP-001 physical implementation mapping is configured.")
+
+    project = governed_project()
+    service = ProjectIntelligenceService(
+        StubProjectService(project),  # type: ignore[arg-type]
+        StubMarketService(governed_market()),  # type: ignore[arg-type]
+        StubOpportunityService(None),  # type: ignore[arg-type]
+        FailingStrategicContextService(),  # type: ignore[arg-type]
+    )
+
+    with pytest.raises(RuntimeError, match="No accepted CDP-001 physical implementation mapping"):
+        service.fetch_project_intelligence("P-1")

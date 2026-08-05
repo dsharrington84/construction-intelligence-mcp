@@ -103,8 +103,8 @@ class StrategicContextService:
         context_only = evidence.refinement_status == "CONTEXT_ONLY" or self._truthy(
             metadata.get("context_only")
         )
-        if explicit_projects and not context_only:
-            return EvidenceStrength.DIRECT, "explicit_project_linkage"
+        if explicit_projects:
+            return self._restricted_strength(context_only, direct=True), "explicit_project_linkage"
         if self._program_plus_attribute(project, metadata):
             return self._restricted_strength(
                 context_only
@@ -118,14 +118,10 @@ class StrategicContextService:
                 return self._restricted_strength(context_only), f"{key}_linkage"
         if self._project_type_or_asset(project, metadata):
             return self._restricted_strength(context_only), "project_type_or_asset_category_linkage"
-        if self._values(metadata, "strategic_theme", "strategic_themes"):
-            return EvidenceStrength.CONTEXTUAL, "strategic_theme_context"
         if self._truthy(metadata.get("statewide")) or self._truthy(
             metadata.get("document_context")
         ):
             return EvidenceStrength.CONTEXTUAL, "statewide_or_document_context"
-        if context_only:
-            return EvidenceStrength.CONTEXTUAL, "context_only_evidence"
         return None
 
     def _program_plus_attribute(self, project: ProjectDetail, metadata: dict[str, Any]) -> bool:
@@ -187,8 +183,10 @@ class StrategicContextService:
             return None
 
     @staticmethod
-    def _restricted_strength(context_only: bool) -> EvidenceStrength:
-        return EvidenceStrength.CONTEXTUAL if context_only else EvidenceStrength.SUPPORTING
+    def _restricted_strength(context_only: bool, *, direct: bool = False) -> EvidenceStrength:
+        if context_only:
+            return EvidenceStrength.CONTEXTUAL
+        return EvidenceStrength.DIRECT if direct else EvidenceStrength.SUPPORTING
 
     @staticmethod
     def _excerpt(text: str, limit: int = 500) -> str:

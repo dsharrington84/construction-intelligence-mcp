@@ -47,10 +47,10 @@ def _opportunity_service() -> OpportunityService:
     return OpportunityService(_service())
 
 
-def _executive_evidence_service() -> ExecutiveEvidenceService | None:
+def _executive_evidence_service() -> ExecutiveEvidenceService:
     relation = os.environ.get("CDP001_EXECUTIVE_EVIDENCE_RELATION")
     if relation is None:
-        return None
+        raise RuntimeError("No accepted CDP-001 physical implementation mapping is configured.")
     configured = os.environ.get("CI_DATABASE")
     database = Path(configured) if configured else DEFAULT_DATABASE
     return ExecutiveEvidenceService(
@@ -69,22 +69,16 @@ def _executive_evidence_service() -> ExecutiveEvidenceService | None:
     )
 
 
-def _strategic_context_service() -> StrategicContextService | None:
-    project_service = _service()
+def _strategic_context_service() -> StrategicContextService:
     executive_evidence_service = _executive_evidence_service()
-    if executive_evidence_service is None:
-        return None
+    project_service = _service()
     return StrategicContextService(project_service, executive_evidence_service)
 
 
 def _project_intelligence_service() -> ProjectIntelligenceService:
-    project_service = _service()
     executive_evidence_service = _executive_evidence_service()
-    strategic_context_service = (
-        StrategicContextService(project_service, executive_evidence_service)
-        if executive_evidence_service is not None
-        else None
-    )
+    project_service = _service()
+    strategic_context_service = StrategicContextService(project_service, executive_evidence_service)
     return ProjectIntelligenceService(
         project_service,
         MarketService(project_service),
@@ -147,8 +141,6 @@ def fetch_project_intelligence(project_id: str) -> dict | None:
 def fetch_strategic_context(project_id: str) -> dict | None:
     """Fetch governed Strategic Context for one project."""
     service = _strategic_context_service()
-    if service is None:
-        return None
     context = service.fetch_strategic_context(project_id)
     return None if context is None else context.model_dump(mode="json")
 

@@ -147,26 +147,45 @@ def test_attribute_alignment_is_supporting(metadata: dict, relationship: str) ->
     assert result.objectives[0].evidence_ids == ["E-1"]
 
 
-def test_strategic_theme_and_statewide_are_contextual() -> None:
-    result = context(
-        [
-            evidence("E-2", {"statewide": True, "policy_driver": "Safety"}),
-            evidence("E-1", {"strategic_theme": "Resilience"}),
-        ]
-    )
+def test_unrelated_strategic_theme_does_not_match() -> None:
+    result = context([evidence("E-1", {"strategic_theme": "Resilience"})])
     assert result is not None
-    assert [item.evidence_strength for item in result.evidence] == [
-        EvidenceStrength.CONTEXTUAL,
-        EvidenceStrength.CONTEXTUAL,
-    ]
-    assert result.source_confidence == SourceConfidence.LIMITED
+    assert result.evidence == []
+    assert result.source_confidence == SourceConfidence.NONE
 
 
-def test_context_only_cannot_be_supporting_or_create_conclusion() -> None:
+def test_context_only_without_relationship_does_not_match() -> None:
+    result = context([evidence("E-1", {"program": "SHOPP"}, status="CONTEXT_ONLY")])
+    assert result is not None
+    assert result.evidence == []
+    assert result.source_confidence == SourceConfidence.NONE
+
+
+def test_context_only_with_district_linkage_is_contextual_and_creates_no_conclusion() -> None:
     result = context([evidence("E-1", {"district": 7, "program": "SHOPP"}, status="CONTEXT_ONLY")])
     assert result is not None
     assert first_strength(result) == EvidenceStrength.CONTEXTUAL
+    assert result.evidence[0].relationship_to_project == "program_plus_governed_project_attribute"
     assert result.programs == []
+    assert result.source_confidence == SourceConfidence.LIMITED
+
+
+def test_statewide_context_only_may_match_as_contextual() -> None:
+    result = context(
+        [evidence("E-1", {"statewide": True, "program": "SHOPP"}, status="CONTEXT_ONLY")]
+    )
+    assert result is not None
+    assert first_strength(result) == EvidenceStrength.CONTEXTUAL
+    assert result.evidence[0].relationship_to_project == "statewide_or_document_context"
+    assert result.programs == []
+    assert result.source_confidence == SourceConfidence.LIMITED
+
+
+def test_statewide_evidence_is_contextual() -> None:
+    result = context([evidence("E-1", {"statewide": True, "policy_driver": "Safety"})])
+    assert result is not None
+    assert first_strength(result) == EvidenceStrength.CONTEXTUAL
+    assert result.policy_drivers[0].evidence_ids == ["E-1"]
     assert result.source_confidence == SourceConfidence.LIMITED
 
 

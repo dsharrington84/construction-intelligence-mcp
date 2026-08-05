@@ -1,3 +1,5 @@
+import pytest
+
 from construction_intelligence_mcp.models.project_intelligence import ProjectIntelligence
 from construction_intelligence_mcp.models.strategic_context import (
     SourceConfidence,
@@ -67,3 +69,10 @@ def test_fetch_strategic_context_mcp_response(monkeypatch) -> None:
     assert response["project_id"] == "P-1"
     assert response["source_confidence"] == "NONE"
     assert fetch_strategic_context("missing") is None
+
+
+def test_fetch_strategic_context_missing_mapping_fails_clearly(monkeypatch) -> None:
+    monkeypatch.delenv("CDP001_EXECUTIVE_EVIDENCE_RELATION", raising=False)
+
+    with pytest.raises(RuntimeError, match="No accepted CDP-001 physical implementation mapping"):
+        fetch_strategic_context("P-1")

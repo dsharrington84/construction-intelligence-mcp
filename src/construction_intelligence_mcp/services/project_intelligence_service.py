@@ -26,7 +26,7 @@ class ProjectIntelligenceService:
         project_service: ProjectService,
         market_service: MarketService,
         opportunity_service: OpportunityService,
-        strategic_context_service: StrategicContextService | None = None,
+        strategic_context_service: StrategicContextService,
     ) -> None:
         self.project_service = project_service
         self.market_service = market_service
@@ -51,10 +51,8 @@ class ProjectIntelligenceService:
         opportunity = self.opportunity_service.fetch_opportunity(
             f"{_OPPORTUNITY_ID_PREFIX}{project.project_id}"
         )
-        strategic_context = (
-            self.strategic_context_service.fetch_strategic_context(project.project_id)
-            if self.strategic_context_service is not None
-            else None
+        strategic_context = self.strategic_context_service.fetch_strategic_context(
+            project.project_id
         )
 
         return ProjectIntelligence(
