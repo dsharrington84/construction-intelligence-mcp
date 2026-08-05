@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import date
-from typing import Any
+from typing import Literal
 
 from pydantic import BaseModel, Field
 
@@ -12,6 +12,28 @@ from construction_intelligence_mcp.models.market import (
 )
 from construction_intelligence_mcp.models.opportunity import Opportunity
 from construction_intelligence_mcp.models.scope import ProjectScope
+
+
+class IntelligenceEvidence(BaseModel):
+    """A governed fact supporting an intelligence observation."""
+
+    source: str
+    statement: str
+
+
+class IntelligenceObservation(BaseModel):
+    """An evidence-backed interpretation supplied by an intelligence domain."""
+
+    category: Literal[
+        "opportunity_driver",
+        "strength",
+        "weakness",
+        "risk",
+        "reason_surfaced",
+        "portfolio_value",
+    ]
+    statement: str
+    evidence: list[IntelligenceEvidence] = Field(min_length=1)
 
 
 class IntelligenceProject(BaseModel):
@@ -45,6 +67,6 @@ class ProjectIntelligence(BaseModel):
     classification: ProjectScope
     market: ProjectMarketIntelligence
     opportunity: Opportunity | None = None
-    executive_signals: list[dict[str, Any]] = Field(default_factory=list)
-    contractor_signals: list[dict[str, Any]] = Field(default_factory=list)
-    cost_signals: list[dict[str, Any]] = Field(default_factory=list)
+    executive_signals: list[IntelligenceObservation] = Field(default_factory=list)
+    contractor_signals: list[IntelligenceObservation] = Field(default_factory=list)
+    cost_signals: list[IntelligenceObservation] = Field(default_factory=list)

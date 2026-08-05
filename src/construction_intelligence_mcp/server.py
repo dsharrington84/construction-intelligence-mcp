@@ -10,6 +10,9 @@ from fastmcp import FastMCP
 from construction_intelligence_mcp.models.opportunity import OpportunitySearchRequest
 from construction_intelligence_mcp.models.project import ProjectSearchRequest
 from construction_intelligence_mcp.services.opportunity_service import OpportunityService
+from construction_intelligence_mcp.services.opportunity_context_service import (
+    OpportunityContextService,
+)
 from construction_intelligence_mcp.services.market_service import MarketService
 from construction_intelligence_mcp.services.project_intelligence_service import (
     ProjectIntelligenceService,
@@ -47,6 +50,10 @@ def _project_intelligence_service() -> ProjectIntelligenceService:
         MarketService(project_service),
         OpportunityService(project_service),
     )
+
+
+def _opportunity_context_service() -> OpportunityContextService:
+    return OpportunityContextService(_project_intelligence_service())
 
 
 def smoke_test() -> None:
@@ -97,6 +104,13 @@ def fetch_project_intelligence(project_id: str) -> dict | None:
     """Fetch all governed intelligence currently known for one project."""
     intelligence = _project_intelligence_service().fetch_project_intelligence(project_id)
     return None if intelligence is None else intelligence.model_dump(mode="json")
+
+
+@mcp.tool
+def fetch_opportunity_context(project_id: str) -> dict | None:
+    """Explain, with governed evidence, why a project surfaced."""
+    context = _opportunity_context_service().fetch_opportunity_context(project_id)
+    return None if context is None else context.model_dump(mode="json")
 
 
 @mcp.tool
