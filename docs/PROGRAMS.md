@@ -31,20 +31,51 @@ Repository evidence as of this roadmap update:
 - 010A and 010B research documents under `docs/research/` show Executive warehouse and processing evidence is diagnostic and not certified until CDP-001 acceptance.
 - Program 100 implementation remains blocked until CDP-001 is accepted, even though Program 100 planning is ACTIVE.
 
-## Program 200 — Opportunity Intelligence
+## Program 200 — Contractor Intelligence
+
+Program objective: explain contractor participation and historical market behavior using certified
+Contractor evidence.
 
 Status: BLOCKED
 
-Program 200 remains blocked until Program 100 completes its review gate. Program 200 must not add
-bid/no-bid recommendations, opportunity scoring, pursuit portfolio recommendations, or contractor
-intelligence through Program 100 work.
+Reason: Program 100 must complete before Program 200 implementation begins. No Program 200
+initiative is READY.
 
-## Program 300 — Contractor and Cost Intelligence
+| Initiative | Status | Dependency | Unlock condition |
+|---|---|---|---|
+| 200 Contractor Intelligence Program | BLOCKED | Program 100 certified; 201, 202, and 203 | Program review gate succeeds using governed, traceable Contractor evidence |
+| 201 Contractor Certified Data Product | BLOCKED | Program 100 certified | Accepted Contractor Certified Data Product contract defines grain, keys, lineage, certification, consumer guarantees, and limitations |
+| 202 Contractor Evidence Engine | BLOCKED_BY_CONTRACT | 201 accepted | Accepted Contractor Certified Data Product makes ContractorEvidence implementation possible |
+| 203 Contractor Intelligence | BLOCKED_BY_IMPLEMENTATION | 201 accepted and 202 certified | ContractorEvidence implementation is certified and reviewed |
+
+Program review question: Can the platform explain contractor participation and historical market
+behavior using only governed contractor evidence?
+
+Program 200 preserves the Program 100 architecture:
+
+```text
+Contractor Processing Pipeline
+        ↓
+Contractor Certified Data Product
+        ↓
+Contractor Evidence Engine
+        ↓
+Contractor Intelligence
+        ↓
+Project Intelligence
+        ↓
+Applications
+```
+
+Program 200 must not add bid/no-bid recommendations, opportunity scoring, pursuit portfolio
+recommendations, cost intelligence, or application shortcuts around governed Contractor evidence.
+
+## Program 300 — Cost & Opportunity Intelligence
 
 Status: BLOCKED
 
 Program 300 remains blocked until its planned unlock condition is accepted in a future roadmap or
-backlog contract. Program 300 must not begin through Program 100 work.
+backlog contract. Program 300 must not begin through Program 100 or Program 200 work.
 # Platform Programs
 
 This document records the platform roadmap at the Program level. It does not define implementation details.
@@ -71,7 +102,9 @@ Status: Not Started
 - 202 Contractor Evidence Engine
 - 203 Contractor Intelligence
 
-Status: Not Started
+Status: BLOCKED
+
+Reason: Program 100 must complete before implementation begins.
 
 ---
 
