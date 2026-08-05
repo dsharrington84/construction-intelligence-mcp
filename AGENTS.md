@@ -37,6 +37,8 @@ Opportunity Pipeline and other consumers
 
 Work as a production software engineer.
 
+Before implementing any intelligence capability, read `docs/000-CONSTITUTION.md` and the relevant Certified Data Product contract.
+
 - Inspect the repository before changing code.
 - Make the smallest coherent change that completes the assigned objective.
 - Do not redesign settled architecture unless the task explicitly requires it.

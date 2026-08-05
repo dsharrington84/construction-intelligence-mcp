@@ -15,6 +15,11 @@ Intelligence Platform. It reads the canonical `ci_market_state` table from DuckD
 read-only mode and returns Pydantic business objects rather than DataFrames. Consumers
 use service methods or MCP tools and do not need SQL.
 
+
+## Certified Data Products
+
+- [Executive Knowledge Certified Data Product](docs/data-products/100-executive-certified-data-product.md)
+
 ## Install
 
 Python 3.12 or newer is required.
