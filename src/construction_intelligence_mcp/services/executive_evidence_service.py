@@ -2,9 +2,11 @@ from __future__ import annotations
 
 from collections import Counter
 from pathlib import Path
-from typing import Any
+import os
+from typing import Any, Sequence
 
 from construction_intelligence_mcp.adapters.executive_evidence_adapter import (
+    CdpPhysicalImplementationMapping,
     ExecutiveEvidenceAdapter,
 )
 from construction_intelligence_mcp.models.executive_evidence import (
@@ -21,8 +23,14 @@ REJECTED_STATUSES = {"EXCLUDED", "REVIEW_REQUIRED"}
 class ExecutiveEvidenceService:
     """Governed Executive Evidence Engine for CDP-001."""
 
-    def __init__(self, database: str | Path) -> None:
-        self.adapter = ExecutiveEvidenceAdapter(database)
+    def __init__(
+        self,
+        database: str | Path,
+        mappings: Sequence[CdpPhysicalImplementationMapping] | None = None,
+    ) -> None:
+        self.adapter = ExecutiveEvidenceAdapter(
+            database, mappings or self._mappings_from_environment()
+        )
 
     def fetch_executive_evidence(self, *, limit: int | None = None) -> ExecutiveEvidenceResult:
         rows = self.adapter.fetch_evidence_rows()
@@ -171,3 +179,23 @@ class ExecutiveEvidenceService:
         if status == "CONTEXT_ONLY" and not limitations:
             limitations.append("Certified for contextual evidence use only")
         return limitations
+
+    @staticmethod
+    def _mappings_from_environment() -> list[CdpPhysicalImplementationMapping]:
+        relation = os.environ.get("CDP001_EXECUTIVE_EVIDENCE_RELATION")
+        if relation is None:
+            return []
+        return [
+            CdpPhysicalImplementationMapping(
+                product_identifier="CDP-001",
+                relation=relation,
+                certification_status=os.environ.get(
+                    "CDP001_EXECUTIVE_EVIDENCE_STATUS",
+                    "",
+                ),
+                relation_role=os.environ.get(
+                    "CDP001_EXECUTIVE_EVIDENCE_RELATION_ROLE",
+                    "certified_current",
+                ),
+            )
+        ]

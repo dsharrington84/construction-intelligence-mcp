@@ -1,8 +1,8 @@
 # 102 — Executive Evidence Engine
 
-Status: BLOCKED_BY_CONTRACT
+Status: IN_REVIEW
 
-Dependency: 101 accepted.
+Dependency: 101 accepted and explicit CDP-001 physical implementation mapping configured.
 
 ## Purpose
 
@@ -32,7 +32,9 @@ The Evidence Engine:
 ## Inputs
 
 Only inputs guaranteed by accepted CDP-001 are valid inputs. Do not consume undocumented physical
-Executive relations, diagnostic profiler output, or candidate fields as certified contract.
+Executive relations, diagnostic profiler output, or candidate fields as certified contract. Runtime
+consumption must use exactly one explicit accepted schema-qualified CDP-001 physical implementation
+mapping supplied by application composition/configuration, never relation-name discovery.
 
 ## Output
 
