@@ -10,8 +10,8 @@ from construction_intelligence_mcp.services.executive_evidence_service import (
 DATABASE = Path(os.environ["CI_DATABASE"]).expanduser() if os.environ.get("CI_DATABASE") else None
 
 pytestmark = pytest.mark.skipif(
-    DATABASE is None or not DATABASE.is_file(),
-    reason="CI_DATABASE is not set to an available source DuckDB",
+    True,
+    reason="CDP-001 is IN REVIEW; no Executive relation is certified for Initiative 102 consumption",
 )
 
 
