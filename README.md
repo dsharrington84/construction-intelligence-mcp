@@ -1,5 +1,15 @@
 # Construction Intelligence MCP
 
+## Platform Governance
+
+Every contributor should begin with the platform governance documents before reading implementation documentation:
+
+1. [Constitution](docs/000-CONSTITUTION.md)
+2. [AGENTS](AGENTS.md)
+3. [PROGRAMS](docs/PROGRAMS.md)
+
+The Constitution is the highest authority for platform architecture. Repository guidance, roadmap documentation, and implementation work must align with it.
+
 `ProjectService` is the governed project-discovery interface for the Construction
 Intelligence Platform. It reads the canonical `ci_market_state` table from DuckDB in
 read-only mode and returns Pydantic business objects rather than DataFrames. Consumers
