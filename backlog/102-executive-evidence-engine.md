@@ -6,15 +6,15 @@ Dependency: 101 accepted.
 
 ## Purpose
 
-Implement the translation boundary between the Executive Knowledge Certified Data Product and
+Plan and implement the translation boundary between the Executive Certified Data Product and
 downstream intelligence.
 
-The engine must consume the certified CDP contract and produce canonical ExecutiveEvidence
+The planned engine must consume the certified CDP contract and produce canonical ExecutiveEvidence
 objects. It must not produce Strategic Context.
 
 ## Objective
 
-Implement an Executive Evidence Engine that returns certified, normalized, lineage-preserving
+Implement, after CDP-001 acceptance, an Executive Evidence Engine that returns certified, normalized, lineage-preserving
 ExecutiveEvidence objects.
 
 ## Architectural Responsibility

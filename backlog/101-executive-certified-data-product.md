@@ -1,10 +1,10 @@
-# 101 — Executive Knowledge Certified Data Product
+# 101 — Executive Certified Data Product
 
-Status: READY
+Status: IN_REVIEW
 
 ## Purpose
 
-Define and certify the governed business contract for Executive Knowledge.
+Define and certify the governed business contract for the Executive Certified Data Product.
 
 This initiative is contract-first. It does not implement intelligence, services, adapters, MCP
 tools, tests, or warehouse relations.
@@ -17,8 +17,8 @@ Create or complete:
 docs/data-products/100-executive-certified-data-product.md
 ```
 
-The document is CDP-001 for Executive Knowledge. It is the authoritative consumer contract for
-Initiative 102.
+The document is CDP-001 for ExecutiveEvidence. PR #14 is the current review vehicle. Once
+accepted, CDP-001 becomes the authoritative consumer contract for Initiative 102.
 
 ## Inputs
 
@@ -59,9 +59,9 @@ CDP-001 must define the business contract for:
 ExecutiveEvidence
 ```
 
-The contract must not require a physical field named `governed_finding`. It must not relabel raw
-source text as `governed_finding`. If a finding-like business value exists, CDP-001 must identify
-its certified source, grain, lineage, and limitations.
+The contract must define ExecutiveEvidence through CDP-001. It must not depend on undocumented
+physical field names or relabel raw source text as governed evidence. Any evidence content must
+have a certified source, grain, lineage, and limitation contract.
 
 ## Eligibility Contract
 
