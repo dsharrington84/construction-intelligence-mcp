@@ -2,7 +2,11 @@ from __future__ import annotations
 
 import sys
 
-from construction_intelligence_mcp.runtime.validate import main
+from construction_intelligence_mcp.runtime.health import main as health_main
+from construction_intelligence_mcp.runtime.validate import main as validate_main
 
 if __name__ == "__main__":
-    sys.exit(main())
+    arguments = sys.argv[1:]
+    if arguments[:1] == ["health"]:
+        sys.exit(health_main(arguments))
+    sys.exit(validate_main(arguments))
