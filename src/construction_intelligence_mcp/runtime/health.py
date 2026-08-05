@@ -254,7 +254,13 @@ def _overall_status(
 
 
 def _strategic_context_status(overall_status: HealthStatus) -> HealthStatus:
-    return HealthStatus.PASS if overall_status is HealthStatus.READY else HealthStatus.UNKNOWN
+    if overall_status is HealthStatus.READY:
+        return HealthStatus.PASS
+    if overall_status is HealthStatus.NOT_READY:
+        return HealthStatus.NOT_CERTIFIED
+    if overall_status is HealthStatus.BLOCKED:
+        return HealthStatus.BLOCKED
+    return HealthStatus.UNKNOWN
 
 
 def _document_status(repository_root: Path, relative_path: str) -> HealthStatus:

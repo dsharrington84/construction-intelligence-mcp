@@ -94,6 +94,7 @@ def test_health_report_blocked_when_runtime_validator_fails(tmp_path: Path) -> N
     assert "CI_DATABASE...................BLOCKED" in output
     assert "Program 100...................BLOCKED" in output
     assert "Program 100 Demonstration.....BLOCKED" in output
+    assert "Strategic Context.............BLOCKED" in output
     assert "Platform Status...............BLOCKED" in output
 
 
@@ -112,6 +113,7 @@ def test_health_report_blocked_when_program_100_certification_failed(
     assert report.overall_status is HealthStatus.BLOCKED
     assert "Program 100...................BLOCKED" in output
     assert "Program 100 Demonstration.....BLOCKED" in output
+    assert "Strategic Context.............BLOCKED" in output
     assert "Platform Status...............BLOCKED" in output
 
 
@@ -130,6 +132,7 @@ def test_health_report_not_ready_when_program_100_certification_blocked(
     assert report.overall_status is HealthStatus.NOT_READY
     assert "Program 100...................NOT READY" in output
     assert "Program 100 Demonstration.....NOT CERTIFIED" in output
+    assert "Strategic Context.............NOT CERTIFIED" in output
     assert "Platform Status...............NOT READY" in output
 
 
