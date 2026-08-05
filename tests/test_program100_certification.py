@@ -5,10 +5,13 @@ from pathlib import Path
 
 import duckdb
 
-from construction_intelligence_mcp.runtime.certify_program100 import run_certification
+from construction_intelligence_mcp.runtime.certify_program100 import (
+    BLOCKED_PROJECT_LINKAGE_MESSAGE,
+    run_certification,
+)
 
 
-def _create_certification_database(path: Path, *, include_matching_evidence: bool = True) -> None:
+def _create_certification_database(path: Path, *, include_evidence: bool = True) -> None:
     connection = duckdb.connect(str(path))
     connection.execute(
         """
@@ -42,6 +45,19 @@ def _create_certification_database(path: Path, *, include_matching_evidence: boo
             42000000,
             DATE '2027-03-15',
             2027
+        ),
+        (
+            '01-100001',
+            'Northern California roadway project',
+            'Roadway work outside Southern California.',
+            1,
+            'Mendocino',
+            '1',
+            'Mendocino',
+            'Roadway',
+            99000000,
+            DATE '2027-01-15',
+            2027
         )
         """
     )
@@ -55,7 +71,6 @@ def _create_certification_database(path: Path, *, include_matching_evidence: boo
             source_section_id VARCHAR,
             source_text VARCHAR,
             refinement_status VARCHAR,
-            district VARCHAR,
             program VARCHAR,
             objective VARCHAR,
             policy_driver VARCHAR,
@@ -69,32 +84,30 @@ def _create_certification_database(path: Path, *, include_matching_evidence: boo
         )
         """
     )
-    district = "7" if include_matching_evidence else "1"
-    connection.execute(
-        """
-        INSERT INTO certified.executive_evidence VALUES
-        (
-            'E-100',
-            'objective',
-            'Caltrans Executive Plan',
-            'SEC-7',
-            'Caltrans prioritizes bridge reliability investments in District 7.',
-            'USABLE',
-            ?,
-            'SHOPP',
-            'Improve bridge reliability',
-            'Asset condition',
-            'Reduced bridge risk',
-            'State highway preservation',
-            'DOC-1',
-            'ASSET-1',
-            'REF-1',
-            'executive-pipeline',
-            '1.0'
+    if include_evidence:
+        connection.execute(
+            """
+            INSERT INTO certified.executive_evidence VALUES
+            (
+                'E-100',
+                'objective',
+                'Caltrans Executive Plan',
+                'SEC-7',
+                'Caltrans prioritizes bridge reliability investments in Southern California.',
+                'USABLE',
+                'SHOPP',
+                'Improve bridge reliability',
+                'Asset condition',
+                'Reduced bridge risk',
+                'State highway preservation',
+                'DOC-1',
+                'ASSET-1',
+                'REF-1',
+                'executive-pipeline',
+                '1.0'
+            )
+            """
         )
-        """,
-        [district],
-    )
     connection.close()
 
 
@@ -107,7 +120,9 @@ def _environment(database: Path) -> dict[str, str]:
     }
 
 
-def test_certification_command_runs_runtime_and_generates_business_report(tmp_path: Path) -> None:
+def test_certification_command_runs_runtime_first_and_reports_blocked_certification(
+    tmp_path: Path,
+) -> None:
     database = tmp_path / "certification.duckdb"
     _create_certification_database(database)
     output = StringIO()
@@ -115,15 +130,10 @@ def test_certification_command_runs_runtime_and_generates_business_report(tmp_pa
     exit_code = run_certification(environment=_environment(database), stdout=output)
 
     report = output.getvalue()
-    assert exit_code == 0
+    assert exit_code == 1
     assert "PASS ExecutiveEvidence returns rows" in report
-    assert "Certification result: PASS" in report
-    assert "Project ID: 07-100001" in report
-    assert "fetch_project() returned" in report
-    assert "fetch_strategic_context() returned eligible Executive evidence" in report
-    assert "fetch_project_intelligence() integrated Strategic Context" in report
-    assert "Evidence ID: E-100" in report
-    assert "Improve bridge reliability" in report
+    assert "Certification result: BLOCKED" in report
+    assert BLOCKED_PROJECT_LINKAGE_MESSAGE in report
 
 
 def test_certification_command_stops_when_runtime_validation_fails() -> None:
@@ -138,18 +148,74 @@ def test_certification_command_stops_when_runtime_validation_fails() -> None:
     assert "Governed Southern California project" not in report
 
 
-def test_certification_command_fails_without_matching_southern_california_evidence(
-    tmp_path: Path,
-) -> None:
+def test_certification_command_selects_southern_california_project(tmp_path: Path) -> None:
+    database = tmp_path / "southern.duckdb"
+    _create_certification_database(database)
+    output = StringIO()
+
+    run_certification(environment=_environment(database), stdout=output)
+
+    report = output.getvalue()
+    assert "Project ID: 07-100001" in report
+    assert "District: 7" in report
+    assert "Project ID: 01-100001" not in report
+
+
+def test_certification_command_reports_no_defensible_matching_evidence(tmp_path: Path) -> None:
     database = tmp_path / "no_match.duckdb"
-    _create_certification_database(database, include_matching_evidence=False)
+    _create_certification_database(database)
     output = StringIO()
 
     exit_code = run_certification(environment=_environment(database), stdout=output)
 
     report = output.getvalue()
     assert exit_code == 1
+    assert BLOCKED_PROJECT_LINKAGE_MESSAGE in report
+    assert "Evidence count: 0" in report
+    assert "No defensible Executive evidence matched the governed project." in report
+
+
+def test_certification_report_is_deterministic(tmp_path: Path) -> None:
+    database = tmp_path / "deterministic.duckdb"
+    _create_certification_database(database)
+    first = StringIO()
+    second = StringIO()
+
+    first_exit_code = run_certification(environment=_environment(database), stdout=first)
+    second_exit_code = run_certification(environment=_environment(database), stdout=second)
+
+    assert first_exit_code == second_exit_code == 1
+    assert first.getvalue() == second.getvalue()
+
+
+def test_certification_report_includes_evidence_and_lineage_output(tmp_path: Path) -> None:
+    database = tmp_path / "lineage.duckdb"
+    _create_certification_database(database)
+    output = StringIO()
+
+    run_certification(environment=_environment(database), stdout=output)
+
+    report = output.getvalue()
+    assert "Accepted Executive evidence diagnostics" in report
+    assert 'Selected relation: "certified"."executive_evidence"' in report
+    assert "Evidence ID: E-100" in report
+    assert "Source document: Caltrans Executive Plan" in report
+    assert "Source section: SEC-7" in report
+    assert "Source keys: {'evidence_id': 'E-100'" in report
     assert (
-        "No Southern California governed project received defensible eligible Executive evidence"
+        "Semantic metadata keys: ['expected_outcome', 'objective', 'policy_driver', 'program', 'strategic_theme']"
         in report
     )
+
+
+def test_certification_runtime_validation_requires_nonempty_evidence(tmp_path: Path) -> None:
+    database = tmp_path / "empty.duckdb"
+    _create_certification_database(database, include_evidence=False)
+    output = StringIO()
+
+    exit_code = run_certification(environment=_environment(database), stdout=output)
+
+    report = output.getvalue()
+    assert exit_code == 1
+    assert "FAIL ExecutiveEvidence returns rows" in report
+    assert "Business certification" not in report

@@ -140,17 +140,6 @@ class ExecutiveEvidenceService:
                 "objective",
                 "policy_driver",
                 "expected_outcome",
-                "project_id",
-                "district",
-                "county",
-                "route",
-                "project_type",
-                "asset_category",
-                "statewide",
-                "document_context",
-                "applicable_start_date",
-                "applicable_end_date",
-                "context_only",
             )
             if (value := self._clean(row.get(key)))
         }
