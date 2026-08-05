@@ -9,12 +9,19 @@ from fastmcp import FastMCP
 
 from construction_intelligence_mcp.models.opportunity import OpportunitySearchRequest
 from construction_intelligence_mcp.models.project import ProjectSearchRequest
+from construction_intelligence_mcp.adapters.executive_evidence_adapter import (
+    CdpPhysicalImplementationMapping,
+)
+from construction_intelligence_mcp.services.executive_evidence_service import (
+    ExecutiveEvidenceService,
+)
 from construction_intelligence_mcp.services.opportunity_service import OpportunityService
 from construction_intelligence_mcp.services.market_service import MarketService
 from construction_intelligence_mcp.services.project_intelligence_service import (
     ProjectIntelligenceService,
 )
 from construction_intelligence_mcp.services.project_service import ProjectService
+from construction_intelligence_mcp.services.strategic_context_service import StrategicContextService
 
 DEFAULT_DATABASE = Path(
     "/mnt/c/Users/dshar/Desktop/Caltrans_Pricing_Data/database/caltrans_pricing.duckdb"
@@ -40,12 +47,43 @@ def _opportunity_service() -> OpportunityService:
     return OpportunityService(_service())
 
 
-def _project_intelligence_service() -> ProjectIntelligenceService:
+def _executive_evidence_service() -> ExecutiveEvidenceService:
+    relation = os.environ.get("CDP001_EXECUTIVE_EVIDENCE_RELATION")
+    if relation is None:
+        raise RuntimeError("No accepted CDP-001 physical implementation mapping is configured.")
+    configured = os.environ.get("CI_DATABASE")
+    database = Path(configured) if configured else DEFAULT_DATABASE
+    return ExecutiveEvidenceService(
+        database,
+        [
+            CdpPhysicalImplementationMapping(
+                product_identifier="CDP-001",
+                relation=relation,
+                certification_status=os.environ.get("CDP001_EXECUTIVE_EVIDENCE_STATUS", ""),
+                relation_role=os.environ.get(
+                    "CDP001_EXECUTIVE_EVIDENCE_RELATION_ROLE",
+                    "certified_current",
+                ),
+            )
+        ],
+    )
+
+
+def _strategic_context_service() -> StrategicContextService:
+    executive_evidence_service = _executive_evidence_service()
     project_service = _service()
+    return StrategicContextService(project_service, executive_evidence_service)
+
+
+def _project_intelligence_service() -> ProjectIntelligenceService:
+    executive_evidence_service = _executive_evidence_service()
+    project_service = _service()
+    strategic_context_service = StrategicContextService(project_service, executive_evidence_service)
     return ProjectIntelligenceService(
         project_service,
         MarketService(project_service),
         OpportunityService(project_service),
+        strategic_context_service,
     )
 
 
@@ -97,6 +135,14 @@ def fetch_project_intelligence(project_id: str) -> dict | None:
     """Fetch all governed intelligence currently known for one project."""
     intelligence = _project_intelligence_service().fetch_project_intelligence(project_id)
     return None if intelligence is None else intelligence.model_dump(mode="json")
+
+
+@mcp.tool
+def fetch_strategic_context(project_id: str) -> dict | None:
+    """Fetch governed Strategic Context for one project."""
+    service = _strategic_context_service()
+    context = service.fetch_strategic_context(project_id)
+    return None if context is None else context.model_dump(mode="json")
 
 
 @mcp.tool

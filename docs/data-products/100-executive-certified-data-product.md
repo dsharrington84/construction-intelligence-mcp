@@ -5,7 +5,7 @@
 | Product name | Executive Knowledge Certified Data Product |
 | Product identifier | CDP-001 |
 | Version | 0.1 |
-| Status | IN REVIEW |
+| Status | ACCEPTED |
 | Layer | Certified Data Product |
 | Owner | Construction Intelligence Platform |
 | Initial implementation scope | Caltrans executive documents |
@@ -17,11 +17,11 @@ The Executive Knowledge Certified Data Product is the governed business contract
 
 This product provides governed executive evidence. It does **not** provide Strategic Context, strategic conclusions, pursuit recommendations, bid/no-bid recommendations, or portfolio decisions.
 
-This Program 100 Initiative 101 contract defines the authoritative Certified Data Product boundary for Executive Intelligence. It incorporates Phase 0 governance and the Executive reverse-engineering artifacts while marking unresolved implementation facts as **Pending Certification** rather than inferring them. It is under active review and is not yet Accepted or Certified 1.0.
+This Program 100 Initiative 101 contract defines the authoritative Certified Data Product boundary for Executive Intelligence. It incorporates Phase 0 governance and the Executive reverse-engineering artifacts while preserving unresolved implementation facts as limitations rather than inferring them. It is accepted as the storage-independent CDP-001 business contract.
 
 ## 2. Constitutional Alignment
 
-CDP-001 directly implements the governance model defined by `docs/000-CONSTITUTION.md`. This contract is the Program 100 Initiative 101 business contract that must be accepted before Initiative 102, the Executive Evidence Engine, consumes executive evidence.
+CDP-001 directly implements the governance model defined by `docs/000-CONSTITUTION.md`. This contract is the accepted Program 100 Initiative 101 business contract consumed by Initiative 102, the Executive Evidence Engine.
 
 | Principle | CDP-001 alignment |
 |---|---|
@@ -126,7 +126,7 @@ No versioning behavior is evidenced. Versioned relation names without a certifie
 
 ### Approved consumers
 
-The only approved direct downstream consumer is **Initiative 102: Executive Evidence Engine**. Strategic Context consumes `ExecutiveEvidence` through the Executive Evidence Engine; it does not consume the Certified Data Product directly. Other intelligence engines may not consume CDP-001 unless a future accepted contract explicitly authorizes that path.
+The approved direct downstream consumer boundary is **Initiative 102: Executive Evidence Engine**. Strategic Context consumes the `ExecutiveEvidence` consumer contract produced by that engine; it does not consume CDP-001 physical storage or mappings directly. Other intelligence engines may not consume CDP-001 unless a future accepted contract explicitly authorizes that path.
 
 ```text
 Executive Knowledge Certified Data Product (CDP-001 / Initiative 101)
@@ -448,4 +448,4 @@ CDP-001 may move from IN REVIEW to Certified 1.0 only after the Program 100 revi
 
 The recommended next initiative is the **Executive Evidence Engine**.
 
-It may begin only after this Program 100 Initiative 101 contract is reviewed and accepted. That initiative should consume the CDP-001 business contract, return ExecutiveEvidence business objects, expose lineage and limitations, and reject uncertified or ineligible evidence. It must not implement Strategic Context, make pursuit recommendations, or query physical Executive warehouse tables outside the certified contract.
+Initiative 102 consumes the CDP-001 business contract, returns ExecutiveEvidence business objects, exposes lineage and limitations, and rejects uncertified or ineligible evidence. Runtime access is through exactly one explicit accepted/current schema-qualified physical implementation mapping; the mapping is not the business contract. The engine must not implement Strategic Context, make pursuit recommendations, or query physical Executive warehouse tables outside the certified contract.
