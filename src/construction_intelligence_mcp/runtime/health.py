@@ -7,6 +7,11 @@ from pathlib import Path
 import sys
 from typing import Callable, TextIO
 
+from construction_intelligence_mcp.runtime.certify_program100 import (
+    CertificationResult,
+    CertificationStatus,
+    certify_program100,
+)
 from construction_intelligence_mcp.runtime.validate import run_validation
 
 PLATFORM_VERSION = "1.0"
@@ -69,15 +74,17 @@ class HealthReport:
 def build_health_report(
     *,
     validator: Callable[..., int] = run_validation,
+    certifier: Callable[[], CertificationResult] = certify_program100,
     repository_root: Path = _REPOSITORY_ROOT,
 ) -> HealthReport:
     """Build health by consuming the Runtime Validator and installed platform docs."""
 
     validation = _run_runtime_validator(validator)
     runtime_passed = validation.exit_code == 0
-    program_100_demonstration = _program_100_demonstration_status(validation, runtime_passed)
-    program_100_status = _program_100_status(runtime_passed, program_100_demonstration)
-    overall_status = _overall_status(runtime_passed, program_100_demonstration)
+    certification = certifier() if runtime_passed else None
+    program_100_demonstration = _program_100_demonstration_status(runtime_passed, certification)
+    program_100_status = _program_100_status(runtime_passed, certification)
+    overall_status = _overall_status(runtime_passed, certification)
 
     return HealthReport(
         version=PLATFORM_VERSION,
@@ -128,7 +135,7 @@ def build_health_report(
                     ),
                 ),
             ),
-            HealthLine("Strategic Context", HealthStatus.UNKNOWN),
+            HealthLine("Strategic Context", _strategic_context_status(overall_status)),
         ),
         programs=(
             HealthLine("Program 100", program_100_status),
@@ -205,41 +212,49 @@ def _status_for_any(
 
 
 def _program_100_demonstration_status(
-    validation: RuntimeValidationResult, runtime_passed: bool
+    runtime_passed: bool, certification: CertificationResult | None
 ) -> HealthStatus:
     if not runtime_passed:
         return HealthStatus.BLOCKED
-    statuses = [
-        validation.checks.get("Program 100 Business Certification"),
-        validation.checks.get("Program 100 Demonstration"),
-    ]
-    if HealthStatus.BLOCKED in statuses:
-        return HealthStatus.BLOCKED
-    if HealthStatus.WARNING in statuses:
-        return HealthStatus.WARNING
-    if HealthStatus.PASS in statuses:
+    if certification is None:
+        return HealthStatus.UNKNOWN
+    if certification.status is CertificationStatus.PASS:
         return HealthStatus.PASS
-    return HealthStatus.NOT_CERTIFIED
+    if certification.status is CertificationStatus.BLOCKED:
+        return HealthStatus.NOT_CERTIFIED
+    return HealthStatus.BLOCKED
 
 
 def _program_100_status(
-    runtime_passed: bool, program_100_demonstration: HealthStatus
+    runtime_passed: bool, certification: CertificationResult | None
 ) -> HealthStatus:
     if not runtime_passed:
         return HealthStatus.BLOCKED
-    if program_100_demonstration is HealthStatus.PASS:
+    if certification is None:
+        return HealthStatus.UNKNOWN
+    if certification.status is CertificationStatus.PASS:
         return HealthStatus.READY
-    if program_100_demonstration is HealthStatus.NOT_CERTIFIED:
-        return HealthStatus.NOT_CERTIFIED
-    return program_100_demonstration
+    if certification.status is CertificationStatus.BLOCKED:
+        return HealthStatus.NOT_READY
+    return HealthStatus.BLOCKED
 
 
-def _overall_status(runtime_passed: bool, program_100_demonstration: HealthStatus) -> HealthStatus:
+def _overall_status(
+    runtime_passed: bool, certification: CertificationResult | None
+) -> HealthStatus:
     if not runtime_passed:
         return HealthStatus.BLOCKED
-    if program_100_demonstration is HealthStatus.PASS:
+    if certification is None:
+        return HealthStatus.UNKNOWN
+    if certification.status is CertificationStatus.PASS:
         return HealthStatus.READY
-    return HealthStatus.NOT_READY
+    if certification.status is CertificationStatus.BLOCKED:
+        return HealthStatus.NOT_READY
+    return HealthStatus.BLOCKED
+
+
+def _strategic_context_status(overall_status: HealthStatus) -> HealthStatus:
+    return HealthStatus.PASS if overall_status is HealthStatus.READY else HealthStatus.UNKNOWN
 
 
 def _document_status(repository_root: Path, relative_path: str) -> HealthStatus:
