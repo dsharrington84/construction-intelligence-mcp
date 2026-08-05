@@ -47,6 +47,17 @@ _FIELD_CANDIDATES: dict[str, tuple[str, ...]] = {
     "objective": ("objective",),
     "policy_driver": ("policy_driver",),
     "expected_outcome": ("expected_outcome",),
+    "project_id": ("project_id", "project_ids"),
+    "district": ("district", "districts"),
+    "county": ("county", "counties"),
+    "route": ("route", "routes"),
+    "project_type": ("project_type", "project_types"),
+    "asset_category": ("asset_category", "asset_categories"),
+    "statewide": ("statewide",),
+    "document_context": ("document_context",),
+    "applicable_start_date": ("applicable_start_date",),
+    "applicable_end_date": ("applicable_end_date",),
+    "context_only": ("context_only",),
 }
 
 

@@ -2,7 +2,16 @@ from __future__ import annotations
 
 import sys
 
-from construction_intelligence_mcp.runtime.validate import main
+from construction_intelligence_mcp.runtime.certify_program100 import run_certification
+from construction_intelligence_mcp.runtime.validate import main as validate_main
+
+
+def main(argv: list[str] | None = None) -> int:
+    arguments = list(sys.argv[1:] if argv is None else argv)
+    if arguments == ["certify-program100"]:
+        return run_certification()
+    return validate_main(arguments)
+
 
 if __name__ == "__main__":
     sys.exit(main())
