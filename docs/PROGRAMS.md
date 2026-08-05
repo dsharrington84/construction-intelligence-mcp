@@ -42,9 +42,9 @@ Current repository evidence:
 
 Status: ACTIVE
 
-Planning state: Program 200 planning is active after certification of the Construction Intelligence
-Platform v1.0 POC baseline and Program 100 planning progress. Production implementation remains
-dependency-gated by accepted contractor contracts and certified evidence.
+Planning state: Program 200 planning is ACTIVE following certification of the Construction
+Intelligence Platform v1.0 POC and the Program 100 reference implementation. Production
+implementation remains dependency-gated by accepted contractor contracts and certified evidence.
 
 Program objective: provide Competitive Market Intelligence by explaining observable contractor
 participation, repeat bidding, winning, competitiveness, bidder counts, market concentration,
@@ -53,7 +53,7 @@ Contractor evidence.
 
 | Initiative | Status | Dependency |
 |---|---|---|
-| 201 Contractor Certified Data Product | READY | Certified v1.0 baseline and Program 100 planning progress |
+| 201 Contractor Certified Data Product | READY | Certified Construction Intelligence Platform v1.0 POC and certified Program 100 reference implementation |
 | 202 Contractor Evidence Engine | BLOCKED_BY_CONTRACT | 201 accepted |
 | 203 Contractor Intelligence | BLOCKED_BY_IMPLEMENTATION | 201 accepted and 202 certified |
 

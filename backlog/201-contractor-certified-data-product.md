@@ -2,7 +2,7 @@
 
 Status: READY
 
-Dependency: Certified v1.0 baseline and Program 100 planning progress. Initiative 201 is ready for contract-development work.
+Dependency: Certified Construction Intelligence Platform v1.0 POC and certified Program 100 reference implementation. Initiative 201 is ready for contract-development work.
 
 ## Purpose
 

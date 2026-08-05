@@ -2,9 +2,10 @@
 
 Status: ACTIVE
 
-Planning state: Program 200 planning is ACTIVE after certification of the Construction Intelligence
-Platform v1.0 POC baseline and Program 100 planning progress. Implementation remains dependency-gated
-by the accepted Contractor Certified Data Product and certified Contractor Evidence Engine.
+Planning state: Program 200 planning is ACTIVE following certification of the Construction
+Intelligence Platform v1.0 POC and the Program 100 reference implementation. Implementation remains
+dependency-gated by the accepted Contractor Certified Data Product and certified Contractor Evidence
+Engine.
 
 ## Program Purpose
 
@@ -66,9 +67,9 @@ Program 200 follows the platform vocabulary and boundaries required by the Const
 - Consumers must not depend on physical processing internals or storage-specific structures.
 
 The Constitution is authoritative for Program 200. These planning documents align with Phase 0
-governance, the certified Construction Intelligence Platform v1.0 POC baseline, Program 100
-planning progress, and the accepted platform decision that Certified Data Products form the
-contractual boundary between processing and intelligence.
+governance, the certified Construction Intelligence Platform v1.0 POC, the certified Program
+100 reference implementation, and the accepted platform decision that Certified Data Products form
+the contractual boundary between processing and intelligence.
 
 ## Constitutional Separation and Information Flow
 
@@ -132,7 +133,7 @@ Applications
 
 | Initiative | Status | Dependency | Unlock condition | Output | Review gate |
 |---|---|---|---|---|---|
-| 201 Contractor Certified Data Product | READY | Certified v1.0 baseline and Program 100 planning progress | Contract-development work may begin | Pending Contractor Certified Data Product contract | Contract review confirms grain, keys, lineage, certification, consumer guarantees, and limitations |
+| 201 Contractor Certified Data Product | READY | Certified Construction Intelligence Platform v1.0 POC and certified Program 100 reference implementation | Contract-development work may begin | Pending Contractor Certified Data Product contract | Contract review confirms grain, keys, lineage, certification, consumer guarantees, and limitations |
 | 202 Contractor Evidence Engine | BLOCKED_BY_CONTRACT | 201 accepted | Accepted Contractor Certified Data Product makes ContractorEvidence implementation possible | Canonical ContractorEvidence objects and diagnostics | Engine review confirms eligible evidence, lineage preservation, diagnostics, validation, and governed failure behavior |
 | 203 Contractor Intelligence | BLOCKED_BY_IMPLEMENTATION | 201 accepted and 202 certified | ContractorEvidence implementation is certified and reviewed | Competitive Market Intelligence context suitable for Project Intelligence consumption | Business review proves competitive-market context uses only governed contractor evidence |
 
