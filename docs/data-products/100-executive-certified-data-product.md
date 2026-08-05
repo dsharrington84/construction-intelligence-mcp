@@ -352,14 +352,23 @@ Physical storage may change without changing the business contract. Consumers de
 
 | Physical area | Current mapping | Role | Contract rule |
 |---|---|---|---|
-| Current relations | None certified. | Not consumable. | Must be identified by certification metadata or accepted current alias. |
-| Producer scripts | None found for production Executive warehouse materialization. | Pending producer. | Producer must be the Executive Processing Pipeline, not DuckDB. |
+| Accepted implementation mapping | Supplied explicitly to the Executive Evidence Engine as a schema-qualified relation with CDP-001 product identifier, accepted/current certification status, and certified-current role. | Runtime implementation boundary. | Exactly one accepted/current mapping is required; absence, duplicates, non-schema-qualified relations, missing relations, or prohibited roles must fail governed validation. |
+| Configuration source | `CDP001_EXECUTIVE_EVIDENCE_RELATION`, `CDP001_EXECUTIVE_EVIDENCE_STATUS`, and optional `CDP001_EXECUTIVE_EVIDENCE_RELATION_ROLE`, or an equivalent application-composition dependency. | Mapping mechanism. | These values identify storage only for adapters; they do not change the storage-independent CDP-001 business contract. |
+| Producer scripts | None found for production Executive warehouse materialization in this repository. | Pending producer evidence. | Producer must be the Executive Processing Pipeline, not DuckDB. |
 | Diagnostic warehouse profiler | `scripts/warehouse/reverse_engineer_executive_warehouse.py`. | Read-only discovery. | Cannot certify business meaning by itself. |
 | Diagnostic pipeline scanner | `scripts/pipeline/reverse_engineer_executive_pipeline.py`. | Static repository scan. | Cannot produce warehouse truth. |
-| Supported joins | None certified. | Pending lineage. | Joins require measured overlap, coverage, cardinality, and declared lineage intent. |
-| Unsupported/rejected relations | All unprofiled, staging, candidate, exception, and name-only relations. | Not consumable. | Exclude unless certified. |
-| Version selection | None evidenced. | Pending promotion rule. | Consumers must not choose by latest suffix alone. |
-| Candidate/staging/exception relations | None classified. | Not consumable. | Never expose as certified output without promotion. |
+| Supported joins | None certified for multi-relation assembly. | Pending lineage. | Joins require measured overlap, coverage, cardinality, and declared lineage intent. |
+| Unsupported/rejected relations | Staging, candidate, history, archive, quarantine, diagnostic, temporary, exception, and name-only relations. | Not consumable. | Exclude unless promoted through an accepted/current CDP-001 implementation mapping with certified-current role. |
+| Version selection | Governed by the explicit accepted/current mapping. | Runtime selection rule. | Consumers must not choose by latest suffix or relation-name similarity. |
+
+### Runtime Mapping Boundary
+
+The CDP-001 business contract remains independent of DuckDB schemas and table names. The
+Executive Evidence Engine may use physical storage only after application composition supplies
+exactly one accepted/current implementation mapping for product `CDP-001`. The mapping must name a
+schema-qualified relation and a non-prohibited certified-current role. The adapter validates that
+relation exists and that the required ExecutiveEvidence concepts resolve before projecting
+canonical evidence rows. Relation-name similarity is never certification evidence.
 
 ## 16. Consumer Guarantees
 
