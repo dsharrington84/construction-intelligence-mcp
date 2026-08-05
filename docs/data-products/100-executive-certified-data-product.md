@@ -5,7 +5,7 @@
 | Product name | Executive Knowledge Certified Data Product |
 | Product identifier | CDP-001 |
 | Version | 0.1 |
-| Status | Draft |
+| Status | IN REVIEW |
 | Layer | Certified Data Product |
 | Owner | Construction Intelligence Platform |
 | Initial implementation scope | Caltrans executive documents |
@@ -17,25 +17,30 @@ The Executive Knowledge Certified Data Product is the governed business contract
 
 This product provides governed executive evidence. It does **not** provide Strategic Context, strategic conclusions, pursuit recommendations, bid/no-bid recommendations, or portfolio decisions.
 
-The current authoritative artifacts prove an important boundary: this repository has diagnostic discovery tooling and documentation, but it does not contain an evidence-backed Executive warehouse build pipeline, certified Executive relation inventory, certified lineage graph, or certified semantic field mapping. Therefore this Draft 0.1 contract defines the required governed contract and marks unresolved implementation facts as **Pending Certification** rather than inferring them.
+This Program 100 Initiative 101 contract defines the authoritative Certified Data Product boundary for Executive Intelligence. It incorporates Phase 0 governance and the Executive reverse-engineering artifacts while marking unresolved implementation facts as **Pending Certification** rather than inferring them. It is under active review and is not yet Accepted or Certified 1.0.
 
 ## 2. Constitutional Alignment
 
-The Constitution file requested for this task, `docs/000-CONSTITUTION.md`, is not present in this checkout. The following alignment uses the constitutional principles named in the initiative and the repository operating rules. Formal article numbers are **Pending Certification** until the Constitution file is restored or supplied.
+CDP-001 directly implements the governance model defined by `docs/000-CONSTITUTION.md`. This contract is the Program 100 Initiative 101 business contract that must be accepted before Initiative 102, the Executive Evidence Engine, consumes executive evidence.
 
 | Principle | CDP-001 alignment |
 |---|---|
-| Processing Pipelines create truth | CDP-001 treats an Executive Processing Pipeline as the only acceptable producer of certified executive evidence. The current repository does not contain that production pipeline, so production truth remains Pending Certification. |
+| Processing creates truth | CDP-001 treats an Executive Processing Pipeline as the only acceptable producer of certified executive evidence. The current repository does not contain that production pipeline, so production truth remains Pending Certification. |
 | Certified Data Products preserve truth | CDP-001 defines the preservation contract: stable evidence identity, lineage, status eligibility, semantic metadata boundaries, and consumer guarantees. |
 | Intelligence explains truth | Future Executive Evidence and Strategic Context engines may explain certified evidence; they may not invent missing evidence or replace this contract with direct warehouse queries. |
-| Applications present truth | Applications and dashboards are prohibited direct consumers of this product. They must receive intelligence through approved engines and services. |
+| Applications present intelligence | Applications and dashboards are prohibited direct consumers of this product. They present intelligence produced by approved engines and services, not raw Certified Data Product records. |
 | Evidence precedes conclusions | Strategic conclusions and pursuit recommendations are explicitly outside this product. Downstream conclusions must cite eligible ExecutiveEvidence records first. |
 | Lineage is mandatory | Every certified evidence object must preserve enough lineage to identify source document, source asset or artifact, page when available, source section, refined section, producing pipeline, source relation, and source key values. |
 | Business contracts precede implementation | This document is a contract-first artifact. It intentionally does not implement Strategic Context, adapters, services, warehouse tables, or pipeline redesign. |
 
+
+## Program Alignment
+
+CDP-001 belongs to **Program 100 — Executive Intelligence** as **Initiative 101 — Executive Certified Data Product**. Its purpose is to establish the contractual boundary consumed by **Initiative 102 — Executive Evidence Engine**. It does not implement Initiative 102 or Initiative 103, and it does not expand into other program domains except to preserve architectural consistency.
+
 ## 3. Business Purpose
 
-CDP-001 is responsible for defining the owner-agnostic business meaning, eligibility, lineage, and consumer guarantees for governed executive knowledge derived from Caltrans executive documents.
+CDP-001 is Program 100 Initiative 101. It is responsible for defining the owner-agnostic business meaning, eligibility, lineage, and consumer guarantees for governed executive knowledge derived from Caltrans executive documents.
 
 ### Owns
 
@@ -121,12 +126,19 @@ No versioning behavior is evidenced. Versioned relation names without a certifie
 
 ### Approved consumers
 
+The only approved direct downstream consumer is **Initiative 102: Executive Evidence Engine**. Strategic Context consumes `ExecutiveEvidence` through the Executive Evidence Engine; it does not consume the Certified Data Product directly. Other intelligence engines may not consume CDP-001 unless a future accepted contract explicitly authorizes that path.
+
 ```text
-Executive Knowledge Certified Data Product
+Executive Knowledge Certified Data Product (CDP-001 / Initiative 101)
         |
-        +--> Executive Evidence Engine
-        +--> Strategic Context Engine (after its contract is accepted)
-        `--> Other intelligence engines only when their contract explicitly permits executive evidence
+        v
+Executive Evidence Engine (Initiative 102)
+        |
+        v
+Strategic Context Engine / future approved intelligence engines
+        |
+        v
+Applications and dashboards present intelligence only
 ```
 
 ### Prohibited consumers
@@ -141,7 +153,7 @@ Executive Knowledge Certified Data Product
 
 Prohibited consumers include applications, dashboards, direct end-user interfaces, and ad hoc warehouse queries presented as intelligence.
 
-Consumers depend on the business contract, not table names, physical columns, version suffixes, or storage-specific behavior.
+Consumers depend on the Certified Data Product business contract. Consumers do not depend on DuckDB, relation names, column names, version suffixes, or storage-specific behavior.
 
 ## 7. Business Grain
 
@@ -154,9 +166,9 @@ Consumers depend on the business contract, not table names, physical columns, ve
 | Refined section | Required lineage target, but no certified refined-section relation is available. | Candidate canonical / Pending Certification |
 | Semantic record | Semantic concepts are name evidence only in the current artifacts. | Unsupported for certified consumption |
 
-The canonical grain for Draft 0.1 is: **one ExecutiveEvidence object representing one eligible refined executive evidence record with source-section lineage**.
+The **Proposed Canonical Grain — Pending Certification** is: **one ExecutiveEvidence object representing one eligible refined executive evidence record with source-section lineage**.
 
-This grain is **Pending Certification** because 010A could not inspect a warehouse and 010B found no production pipeline or certified output relation. It is selected as the contract target because it is the smallest business grain that can preserve source text, refinement status, evidence type, source-section lineage, and semantic metadata without mixing document-level and semantic-record-level facts.
+This grain remains **Pending Certification** until Program 100 review certifies the producer relation, row identity, lineage path, and join cardinalities. It is selected as the contract target because it is the smallest business grain that can preserve source text, refinement status, evidence type, source-section lineage, and semantic metadata without mixing document-level and semantic-record-level facts.
 
 Risks of mixing grains:
 
@@ -180,7 +192,7 @@ Risks of mixing grains:
 | Page identifiers | Page number or page-level source ID. | Page extraction stage. | Page. | Pending Certification. | Pending Certification. | Locates evidence when page is available. | Contextual. | Page availability is not certified. |
 | Section identifiers | Heading, section ID, section key, or section path. | Section creation stage. | Source section. | Pending Certification. | Pending Certification. | Locates source text within document. | Required lineage concept. | Specific fields and uniqueness are not certified. |
 
-No key is fully certified in Draft 0.1. A key may become canonical only when the producer proves uniqueness, stability, grain, and lineage role.
+No key is fully certified in the Initiative 101 review contract. A key may become canonical only when the producer proves uniqueness, stability, grain, and lineage role.
 
 ## 9. Lineage Contract
 
@@ -268,20 +280,20 @@ Distinctions:
 | `DOCUMENT_CONTEXT` | Document-level context. | Document registration/context processing. | Contextual evidence only. | Risk of over-applying document facts to sections. |
 | `SEMANTIC_RECORD` | Semantic metadata record attached to evidence. | Semantic assembly. | Metadata enrichment only when grain and joins are certified. | No semantic-generation code evidenced. |
 
-These types are contract candidates supported by the documented requested pipeline vocabulary and 010A/010B diagnostic concepts. None is certified for production consumption in Draft 0.1.
+These types are a **proposed vocabulary** for Program 100 review. None is certified for production consumption until 010A/010B evidence proves the producing stages, grains, lineage, and eligibility behavior.
 
 ## 12. Status and Eligibility Contract
 
-No actual status values were observed in warehouse data because the warehouse inventory was not generated. The statuses below are the governed eligibility vocabulary required by this contract. Their physical source fields and observed distributions are **Pending Certification**.
+The current Executive refinement model has observed status values `USABLE`, `USABLE_WITH_LIMITATION`, `CONTEXT_ONLY`, `REVIEW_REQUIRED`, and `EXCLUDED`. Observation does not equal certification: the meanings, physical source fields, distributions, and enforcement checks remain **Pending Certification** until Program 100 review accepts them. Unknown or additional statuses are not certified.
 
-| Status | Meaning | Direct evidence | Supporting evidence | Contextual evidence | Exclusion |
-|---|---|---:|---:|---:|---:|
-| `USABLE` | Evidence is eligible without known limitation. | Yes | Yes | Yes | No |
-| `USABLE_WITH_LIMITATION` | Evidence is eligible with explicit limitations. | Yes, with limitations | Yes | Yes | No |
-| `CONTEXT_ONLY` | Evidence provides context but is not direct proof. | No | No | Yes | No |
-| `REVIEW_REQUIRED` | Evidence requires human or governed review before use. | No | No | No | Yes |
-| `EXCLUDED` | Evidence is rejected from certified output. | No | No | No | Yes |
-| Unknown/additional | Any status not in the certified vocabulary. | No | No | No | Yes until certified |
+| Status | Observation status | Certification status | Meaning | Direct evidence | Supporting evidence | Contextual evidence | Exclusion |
+|---|---|---|---|---:|---:|---:|---:|
+| `USABLE` | Observed | Pending Certification | Evidence is eligible without known limitation when certified. | Yes | Yes | Yes | No |
+| `USABLE_WITH_LIMITATION` | Observed | Pending Certification | Evidence is eligible with explicit limitations when certified. | Yes, with limitations | Yes | Yes | No |
+| `CONTEXT_ONLY` | Observed | Pending Certification | Evidence provides context but is not direct proof. | No | No | Yes | No |
+| `REVIEW_REQUIRED` | Observed | Pending Certification | Evidence requires human or governed review before use. | No | No | No | Yes |
+| `EXCLUDED` | Observed | Pending Certification | Evidence is rejected from certified output. | No | No | No | Yes |
+| Unknown/additional | Unknown | Not certified | Any status not in the certified vocabulary. | No | No | No | Yes until certified |
 
 Unknown statuses must not be silently classified. They must fail certification or be routed to a governed exception path.
 
@@ -315,7 +327,7 @@ Explicit rejection conditions:
 
 ## 14. Semantic Metadata Contract
 
-No semantic concept has a certified source relation or field in Draft 0.1. The warehouse semantic map is empty and not generated; 010B found concept occurrences but no producer/transformation/output column contract.
+No semantic concept has a certified source relation or field in the Initiative 101 review contract. The warehouse semantic map is empty and not generated; 010B found concept occurrences but no producer/transformation/output column contract.
 
 | Concept | Source relation | Source field | Producer | Grain | Coverage | Confidence or limitation | Status |
 |---|---|---|---|---|---|---|---|
@@ -336,7 +348,7 @@ Unsupported concepts must be null or absent. They must not be invented from docu
 
 ## 15. Physical Implementation Mapping
 
-Physical storage may change without changing the business contract. Schema compatibility and certified lineage take precedence over version suffixes.
+Physical storage may change without changing the business contract. Consumers depend on the Certified Data Product contract; they do not depend on DuckDB, relation names, column names, or version suffixes. Schema compatibility and certified lineage take precedence over version suffixes.
 
 | Physical area | Current mapping | Role | Contract rule |
 |---|---|---|---|
@@ -351,7 +363,7 @@ Physical storage may change without changing the business contract. Schema compa
 
 ## 16. Consumer Guarantees
 
-When CDP-001 reaches certification, downstream consumers may safely assume:
+When CDP-001 reaches certification through the Program 100 review gate, the Executive Evidence Engine may safely assume:
 
 - Evidence IDs are stable within the certified product version.
 - Source-document lineage is preserved.
@@ -375,7 +387,6 @@ Consumers may not assume:
 
 ## 17. Known Limitations
 
-- `docs/000-CONSTITUTION.md` is absent from this checkout, so formal article citations are Pending Certification.
 - The Executive Warehouse was unavailable for 010A; relation, join, semantic, ERD, topology, and lineage evidence are not generated.
 - 010B found no production Executive warehouse build pipeline in this repository.
 - No current or certified Executive relation is identified.
@@ -399,14 +410,14 @@ Consumers may not assume:
 | What is the canonical evidence identity? | Required for stable consumer references. | Candidate keys named in task; none certified. | Prove uniqueness and stability for `evidence_id` or `refined_section_key`. | Executive Processing Pipeline |
 | Which fields carry source text or excerpt? | Direct evidence requires non-null content. | `governed_finding` is not certified; source text fields are unresolved. | Certify source-text field, null behavior, and excerpt rules. | Executive Processing Pipeline |
 | Which lineage keys identify document and source section? | Evidence without lineage cannot support conclusions. | Required concepts are documented, but no certified source fields. | Certify source-document and source-section keys and lineage path. | Executive Processing Pipeline |
-| Which statuses are actually observed? | Eligibility depends on status values. | Status vocabulary is contract-defined, not data-observed. | Profile status fields and certify allowed values. | CDP-001 certification |
+| Which observed statuses are certified and how are they enforced? | Eligibility depends on governed status meanings and rejection behavior. | `USABLE`, `USABLE_WITH_LIMITATION`, `CONTEXT_ONLY`, `REVIEW_REQUIRED`, and `EXCLUDED` are observed in the current Executive refinement model. | Certify source fields, observed distributions, enforcement checks, and exception handling. | Program 100 Initiative 101 review |
 | Which semantic concepts are supported? | Prevents invented metadata. | Name evidence only; semantic map not generated. | Certify source relation, field, grain, coverage, and limitations per concept. | Executive Processing Pipeline |
 | How is current/certified promotion performed? | Consumers must avoid staging/candidate data. | No promotion command or metadata found. | Define and implement certification command and current alias/rule. | Executive Processing Pipeline |
 | Is actual `CI_DATABASE` evidence population nonzero? | Certified product must expose real evidence. | No database was available to 010A. | Validate against configured `CI_DATABASE` read-only. | CDP-001 certification |
 
 ## 19. Acceptance Criteria for Version 1.0
 
-CDP-001 may move from Draft 0.1 to Certified 1.0 only when all criteria are met:
+CDP-001 may move from IN REVIEW to Certified 1.0 only after the Program 100 review gate confirms all criteria are met:
 
 - Canonical business grain is certified.
 - Canonical evidence identity is certified.
@@ -428,4 +439,4 @@ CDP-001 may move from Draft 0.1 to Certified 1.0 only when all criteria are met:
 
 The recommended next initiative is the **Executive Evidence Engine**.
 
-It may begin only after this Draft 0.1 contract is reviewed and accepted. That initiative should consume the CDP-001 business contract, return ExecutiveEvidence business objects, expose lineage and limitations, and reject uncertified or ineligible evidence. It must not implement Strategic Context, make pursuit recommendations, or query physical Executive warehouse tables outside the certified contract.
+It may begin only after this Program 100 Initiative 101 contract is reviewed and accepted. That initiative should consume the CDP-001 business contract, return ExecutiveEvidence business objects, expose lineage and limitations, and reject uncertified or ineligible evidence. It must not implement Strategic Context, make pursuit recommendations, or query physical Executive warehouse tables outside the certified contract.
