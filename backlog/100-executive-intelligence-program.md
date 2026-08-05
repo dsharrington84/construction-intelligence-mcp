@@ -55,17 +55,17 @@ Applications
 
 | Initiative | Status | Dependency | Unlock condition | Output | Review gate |
 |---|---|---|---|---|---|
-| 101 Executive Certified Data Product | IN_REVIEW | Phase 0 governance, Constitution, 010A, 010B, and warehouse inspection evidence | CDP-001 is reviewed and accepted | Pending accepted Executive Certified Data Product contract | Contract review confirms grain, lineage, eligibility, and consumer guarantees |
-| 102 Executive Evidence Engine | BLOCKED_BY_CONTRACT | 101 accepted | CDP-001 acceptance makes the engine contract implementable | Canonical ExecutiveEvidence objects and diagnostics | Engine review confirms eligible evidence, lineage preservation, and governed failure behavior |
-| 103 Strategic Context Intelligence | BLOCKED_BY_IMPLEMENTATION | 101 accepted and 102 certified | ExecutiveEvidence implementation is certified and reviewed | StrategicContext object integrated with Project Intelligence and MCP serialization | Business demonstration proves project-specific context uses only governed evidence |
+| 101 Executive Certified Data Product | COMPLETE | Phase 0 governance, Constitution, 010A, 010B, and warehouse inspection evidence | CDP-001 accepted | Accepted Executive Certified Data Product contract | Contract review confirmed grain, lineage, eligibility, and consumer guarantees |
+| 102 Executive Evidence Engine | COMPLETE | 101 accepted | Explicit accepted/current CDP-001 mapping required | Canonical ExecutiveEvidence objects and diagnostics | Engine review confirmed eligible evidence, lineage preservation, and governed failure behavior |
+| 103 Strategic Context Intelligence | IN_REVIEW | 101 complete and 102 complete | StrategicContext implementation is under review | StrategicContext object integrated with Project Intelligence and MCP serialization | Business demonstration proves project-specific context uses only governed evidence |
 
 ## Current Status
 
 Repository evidence supports the following status:
 
-- 101 is IN_REVIEW because CDP-001 exists as PR #14 and is pending acceptance.
-- 102 is BLOCKED_BY_CONTRACT because no accepted Executive CDP contract is available to this branch.
-- 103 is BLOCKED_BY_IMPLEMENTATION because it depends on both CDP-001 acceptance and a certified Executive Evidence Engine.
+- 101 is COMPLETE because CDP-001 was accepted as the Program 100 Initiative 101 business contract.
+- 102 is COMPLETE because the Executive Evidence Engine and certification repair were merged and accepted; runtime consumption requires exactly one explicit accepted/current schema-qualified CDP-001 mapping.
+- 103 is IN_REVIEW because Strategic Context implementation is beginning from the completed CDP-001 and ExecutiveEvidence contracts.
 
 Older Project Intelligence behavior, including empty executive signal placeholders, does not make
 Program 100 complete. No initiative is complete until its current review gate is satisfied.

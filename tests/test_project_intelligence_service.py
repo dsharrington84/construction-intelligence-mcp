@@ -142,7 +142,7 @@ def test_existing_project_composes_all_available_intelligence() -> None:
     assert result.opportunity is opportunity
     assert opportunity_service.opportunity_id == "project-opportunity:P-1"
     assert market_service.request.districts == [7]
-    assert result.executive_signals == []
+    assert result.strategic_context is None
     assert result.contractor_signals == []
     assert result.cost_signals == []
 

@@ -28,15 +28,15 @@ Executive evidence.
 |---|---|---|---|
 | 100 Executive Intelligence Program | ACTIVE | 101, 102, and 103 | Program review gate succeeds for a Southern California project using governed, traceable Executive evidence |
 | 101 Executive Certified Data Product | COMPLETE | Phase 0 governance, Constitution, 010A, 010B, and warehouse inspection evidence | CDP-001 accepted |
-| 102 Executive Evidence Engine | IN_REVIEW | 101 accepted and explicit CDP-001 mapping | ExecutiveEvidence implementation and certification repair are reviewed and merged |
-| 103 Strategic Context Intelligence | BLOCKED_BY_IMPLEMENTATION | 101 accepted and 102 certified | ExecutiveEvidence implementation is certified and reviewed |
+| 102 Executive Evidence Engine | COMPLETE | 101 accepted and explicit CDP-001 mapping | ExecutiveEvidence implementation and certification repair reviewed and merged |
+| 103 Strategic Context Intelligence | IN_REVIEW | 101 accepted and 102 complete | StrategicContext implementation is under review |
 
 Current repository evidence:
 
 - CDP-001 was accepted through PR #14.
 - 010A and 010B remain diagnostic research inputs and do not replace the accepted CDP-001 contract.
-- Program 100 Initiative 102 is in review and must use exactly one explicit accepted, current, schema-qualified CDP-001 physical implementation mapping.
-- Initiative 103 remains blocked until the Initiative 102 repair is reviewed and merged.
+- Program 100 Initiative 102 is complete; the merged engine and certification repair require exactly one explicit accepted, current, schema-qualified CDP-001 physical implementation mapping.
+- Initiative 103 is in review and consumes ExecutiveEvidence through the Executive Evidence Engine.
 
 ## Program 200 — Contractor Intelligence
 

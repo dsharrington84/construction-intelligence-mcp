@@ -1,11 +1,11 @@
 # 103 — Strategic Context Intelligence
 
-Status: BLOCKED_BY_IMPLEMENTATION
+Status: IN_REVIEW
 
 Dependencies:
 
-- 101 accepted.
-- 102 certified.
+- 101 COMPLETE.
+- 102 COMPLETE.
 
 ## Purpose
 

@@ -1,6 +1,6 @@
 # 101 — Executive Certified Data Product
 
-Status: IN_REVIEW
+Status: COMPLETE
 
 ## Purpose
 
@@ -17,8 +17,7 @@ Create or complete:
 docs/data-products/100-executive-certified-data-product.md
 ```
 
-The document is CDP-001 for ExecutiveEvidence. PR #14 is the current review vehicle. Once
-accepted, CDP-001 becomes the authoritative consumer contract for Initiative 102.
+The document is CDP-001 for ExecutiveEvidence. CDP-001 was accepted as the Program 100 Initiative 101 business contract and is the authoritative consumer contract for Initiative 102.
 
 ## Inputs
 
@@ -80,7 +79,7 @@ unless CDP-001 explicitly defines a controlled handling rule.
 
 ## Deliverables
 
-- Accepted CDP-001 contract.
+- Accepted CDP-001 contract preserving storage independence.
 - Certified business grain.
 - Certified key map.
 - Certified lineage path.
@@ -110,4 +109,4 @@ Initiative 101 is done when:
 
 ## Unlock Condition
 
-102 becomes READY only when CDP-001 is reviewed and accepted.
+102 is complete in this branch; CDP-001 remains the accepted storage-independent business contract and does not claim unsupported warehouse coverage.

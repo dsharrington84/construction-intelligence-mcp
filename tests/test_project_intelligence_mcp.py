@@ -1,5 +1,9 @@
 from construction_intelligence_mcp.models.project_intelligence import ProjectIntelligence
-from construction_intelligence_mcp.server import fetch_project_intelligence
+from construction_intelligence_mcp.models.strategic_context import (
+    SourceConfidence,
+    StrategicContext,
+)
+from construction_intelligence_mcp.server import fetch_project_intelligence, fetch_strategic_context
 
 from test_project_intelligence_service import (
     governed_market,
@@ -33,5 +37,33 @@ def test_fetch_project_intelligence_mcp_response(monkeypatch) -> None:
     assert response is not None
     assert response["project"]["project_id"] == "P-1"
     assert response["classification"]["primary_scope"] == "Bridge Replacement"
-    assert response["executive_signals"] == []
+    assert response["strategic_context"] is None
     assert fetch_project_intelligence("missing") is None
+
+
+class StubStrategicContextService:
+    def __init__(self, context: StrategicContext) -> None:
+        self.context = context
+
+    def fetch_strategic_context(self, project_id: str) -> StrategicContext | None:
+        return self.context if project_id == self.context.project_id else None
+
+
+def test_fetch_strategic_context_mcp_response(monkeypatch) -> None:
+    strategic_context = StrategicContext(
+        project_id="P-1",
+        strategic_context_id="strategic-context:P-1",
+        source_confidence=SourceConfidence.NONE,
+        limitations=["No defensible Executive evidence matched the governed project."],
+    )
+    monkeypatch.setattr(
+        "construction_intelligence_mcp.server._strategic_context_service",
+        lambda: StubStrategicContextService(strategic_context),
+    )
+
+    response = fetch_strategic_context("P-1")
+
+    assert response is not None
+    assert response["project_id"] == "P-1"
+    assert response["source_confidence"] == "NONE"
+    assert fetch_strategic_context("missing") is None

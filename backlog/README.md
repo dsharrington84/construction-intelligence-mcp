@@ -31,9 +31,9 @@ Program 100 establishes the dependency-gated queue for explaining why Caltrans i
 | Backlog | Status | Dependency |
 |---|---|---|
 | [100 Executive Intelligence Program](100-executive-intelligence-program.md) | ACTIVE | 101, 102, and 103 review gates |
-| [101 Executive Certified Data Product](101-executive-certified-data-product.md) | IN_REVIEW | Phase 0 governance, Constitution, 010A, 010B, and warehouse inspection evidence |
-| [102 Executive Evidence Engine](102-executive-evidence-engine.md) | BLOCKED_BY_CONTRACT | 101 accepted |
-| [103 Strategic Context Intelligence](103-strategic-context-intelligence.md) | BLOCKED_BY_IMPLEMENTATION | 101 accepted and 102 certified |
+| [101 Executive Certified Data Product](101-executive-certified-data-product.md) | COMPLETE | Phase 0 governance, Constitution, 010A, 010B, and warehouse inspection evidence |
+| [102 Executive Evidence Engine](102-executive-evidence-engine.md) | COMPLETE | 101 accepted |
+| [103 Strategic Context Intelligence](103-strategic-context-intelligence.md) | IN_REVIEW | 101 complete and 102 complete |
 
 Historical Executive research remains in:
 
