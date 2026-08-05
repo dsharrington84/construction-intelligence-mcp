@@ -11,6 +11,7 @@ from construction_intelligence_mcp.models.market import (
 from construction_intelligence_mcp.models.opportunity import Opportunity
 from construction_intelligence_mcp.models.project import ProjectDetail
 from construction_intelligence_mcp.models.project_intelligence import ProjectIntelligence
+from construction_intelligence_mcp.models.strategic_context import StrategicContext
 from construction_intelligence_mcp.services.project_intelligence_service import (
     ProjectIntelligenceService,
 )
@@ -49,9 +50,7 @@ def governed_market() -> MarketSummary:
         districts_included=[7],
         overall=metrics,
         by_district=[
-            DistrictMarketSummary(
-                district=7, project_count=1, total_programmed_value=42_000_000
-            )
+            DistrictMarketSummary(district=7, project_count=1, total_programmed_value=42_000_000)
         ],
         by_work_type=[
             WorkTypeMarketSummary(
@@ -102,6 +101,14 @@ class StubOpportunityService:
         return self.opportunity
 
 
+class StubStrategicContextService:
+    def fetch_strategic_context(self, project_id: str) -> StrategicContext:
+        return StrategicContext(
+            project_id=project_id,
+            strategic_context_id=f"strategic-context:{project_id}",
+        )
+
+
 def test_existing_project_composes_all_available_intelligence() -> None:
     project = governed_project()
     market_service = StubMarketService(governed_market())
@@ -119,6 +126,7 @@ def test_existing_project_composes_all_available_intelligence() -> None:
         StubProjectService(project),  # type: ignore[arg-type]
         market_service,  # type: ignore[arg-type]
         opportunity_service,  # type: ignore[arg-type]
+        StubStrategicContextService(),  # type: ignore[arg-type]
     )
 
     result = service.fetch_project_intelligence("P-1")
@@ -145,6 +153,7 @@ def test_existing_project_composes_all_available_intelligence() -> None:
     assert opportunity_service.opportunity_id == "project-opportunity:P-1"
     assert market_service.request.districts == [7]
     assert result.executive_signals == []
+    assert result.strategic_context.project_id == "P-1"
     assert result.contractor_signals == []
     assert result.cost_signals == []
 
@@ -156,6 +165,7 @@ def test_missing_project_returns_none_without_calling_other_services() -> None:
 
     service = ProjectIntelligenceService(
         StubProjectService(None),  # type: ignore[arg-type]
+        UnexpectedService(),  # type: ignore[arg-type]
         UnexpectedService(),  # type: ignore[arg-type]
         UnexpectedService(),  # type: ignore[arg-type]
     )

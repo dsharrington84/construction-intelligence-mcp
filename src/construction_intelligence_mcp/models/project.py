@@ -37,6 +37,8 @@ class ProjectSummary(BaseModel):
     route: str | None = None
     location: str | None = None
     project_type: str | None = None
+    asset_class: str | None = None
+    source_asset_title: str | None = None
     primary_scope: str
     classified_scope: ProjectScope | None = None
     programmed_value: float | None = None

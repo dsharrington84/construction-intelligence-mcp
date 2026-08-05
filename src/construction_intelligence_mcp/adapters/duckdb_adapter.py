@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from collections.abc import Iterator, Sequence
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Iterator, Sequence
+from typing import Any
 
 import duckdb
 
@@ -41,6 +42,21 @@ class DuckDBAdapter:
             return None
         schema, name = rows[0]
         return f"{self.quote_identifier(str(schema))}.{self.quote_identifier(str(name))}"
+
+    def find_tables(self, name_prefix: str) -> list[tuple[str, str]]:
+        """Return schema/name pairs for relations beginning with a governed prefix."""
+        with self.connect() as connection:
+            rows = connection.execute(
+                """
+                SELECT table_schema, table_name
+                FROM information_schema.tables
+                WHERE table_name LIKE ? ESCAPE '\\'
+                ORDER BY table_name DESC, CASE WHEN table_schema = 'main' THEN 0 ELSE 1 END,
+                         table_schema
+                """,
+                [name_prefix.replace("_", "\\_").replace("%", "\\%") + "%"],
+            ).fetchall()
+        return [(str(schema), str(name)) for schema, name in rows]
 
     def columns(self, qualified_table: str) -> list[str]:
         with self.connect() as connection:

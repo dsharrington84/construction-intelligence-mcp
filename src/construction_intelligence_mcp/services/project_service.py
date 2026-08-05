@@ -29,10 +29,13 @@ _FIELD_CANDIDATES: dict[str, tuple[str, ...]] = {
     "route": ("route", "route_number", "state_route"),
     "location": ("location", "project_location", "location_description"),
     "project_type": ("project_type", "work_type"),
+    "asset_class": ("asset_class",),
+    "source_asset_title": ("source_asset_title",),
     "programmed_value": ("programmed_amount", "programmed_value", "total_programmed_amount"),
     "advertisement_date": ("advertisement_date", "planned_advertisement_date"),
     "advertisement_fiscal_year": ("advertisement_fiscal_year", "fiscal_year"),
 }
+
 
 class ProjectService:
     """Business-facing access to canonical project intelligence."""
@@ -51,7 +54,7 @@ class ProjectService:
             concept: next((field for field in candidates if field in self._columns), None)
             for concept, candidates in _FIELD_CANDIDATES.items()
         }
-        required = ("project_id", "description")
+        required = ("project_id",)
         unresolved = [field for field in required if self._fields[field] is None]
         if unresolved:
             candidates = "; ".join(
@@ -96,7 +99,16 @@ class ProjectService:
         if request.text:
             searchable = [
                 self._fields[name]
-                for name in ("title", "description", "location", "route", "county", "project_type")
+                for name in (
+                    "title",
+                    "description",
+                    "location",
+                    "route",
+                    "county",
+                    "project_type",
+                    "asset_class",
+                    "source_asset_title",
+                )
                 if self._fields[name]
             ]
             if searchable:
@@ -202,6 +214,8 @@ class ProjectService:
             route=self._clean(row.get("route")),
             location=self._clean(row.get("location")),
             project_type=raw_project_type,
+            asset_class=self._clean(row.get("asset_class")),
+            source_asset_title=self._clean(row.get("source_asset_title")),
             primary_scope="Other",
             programmed_value=value,
             advertisement_date=self._date_or_none(row.get("advertisement_date")),
