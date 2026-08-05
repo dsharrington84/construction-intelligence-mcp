@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
+from dataclasses import dataclass
+from enum import StrEnum
+from io import StringIO
 import os
 import sys
 from pathlib import Path
@@ -33,45 +37,78 @@ BLOCKED_PROJECT_LINKAGE_MESSAGE = (
 )
 
 
-def run_certification(
+class CertificationStatus(StrEnum):
+    """Explicit Program 100 certification status for platform health consumers."""
+
+    PASS = "PASS"
+    BLOCKED = "BLOCKED"
+    FAILED = "FAILED"
+
+
+@dataclass(frozen=True)
+class CertificationResult:
+    """Typed immutable Program 100 certification result."""
+
+    status: CertificationStatus
+    exit_code: int
+    report: str
+    reason: str | None = None
+    limitations: tuple[str, ...] = ()
+
+
+def certify_program100(
     *,
-    environment: dict[str, str] | None = None,
-    stdout: TextIO = sys.stdout,
-) -> int:
-    """Run Program 100 Business Certification after mandatory runtime validation."""
+    environment: Mapping[str, str] | None = None,
+) -> CertificationResult:
+    """Run typed Program 100 certification without printing."""
 
     env = dict(os.environ if environment is None else environment)
-    stdout.write("Program 100 Business Certification Report\n")
-    stdout.write("=========================================\n\n")
-    stdout.write("Runtime validation\n")
-    stdout.write("------------------\n")
-    validation_exit_code = run_validation(environment=env, stdout=stdout)
+    validation_output = StringIO()
+    validation_exit_code = run_validation(environment=env, stdout=validation_output)
     if validation_exit_code != 0:
-        stdout.write("\nCERTIFICATION FAILED\n")
-        stdout.write("Runtime validation failed; intelligence execution was not attempted.\n")
-        return validation_exit_code
+        reason = "Runtime validation failed; intelligence execution was not attempted."
+        return CertificationResult(
+            status=CertificationStatus.FAILED,
+            exit_code=validation_exit_code,
+            report=_format_failed_report(
+                validation_output=validation_output.getvalue(),
+                reason=reason,
+            ),
+            reason=reason,
+            limitations=(reason,),
+        )
 
     try:
-        result = _build_business_report(env)
-    except Exception as exc:  # noqa: BLE001 - command must report governed failure to operators.
-        stdout.write("\nCERTIFICATION FAILED\n")
-        stdout.write(f"{exc}\n")
-        return 1
+        return _build_business_report(env, validation_output.getvalue())
+    except Exception as exc:  # noqa: BLE001 - typed result must preserve governed failure.
+        reason = str(exc)
+        return CertificationResult(
+            status=CertificationStatus.FAILED,
+            exit_code=1,
+            report=_format_failed_report(
+                validation_output=validation_output.getvalue(),
+                reason=reason,
+            ),
+            reason=reason,
+            limitations=(reason,),
+        )
 
-    stdout.write("\n")
+
+def run_certification(
+    *,
+    environment: Mapping[str, str] | None = None,
+    stdout: TextIO = sys.stdout,
+) -> int:
+    """CLI wrapper for Program 100 Business Certification."""
+
+    result = certify_program100(environment=environment)
     stdout.write(result.report)
     return result.exit_code
 
 
-class CertificationResult:
-    """Business report plus command exit code."""
-
-    def __init__(self, *, report: str, exit_code: int) -> None:
-        self.report = report
-        self.exit_code = exit_code
-
-
-def _build_business_report(environment: dict[str, str]) -> CertificationResult:
+def _build_business_report(
+    environment: Mapping[str, str], validation_output: str
+) -> CertificationResult:
     database = Path(_required(environment, "CI_DATABASE")).expanduser()
     mapping = CdpPhysicalImplementationMapping(
         product_identifier="CDP-001",
@@ -110,17 +147,23 @@ def _build_business_report(environment: dict[str, str]) -> CertificationResult:
         selected_intelligence = intelligence
         if context is not None and intelligence is not None and context.evidence:
             return CertificationResult(
+                status=CertificationStatus.PASS,
+                exit_code=0,
                 report=_format_passing_report(
+                    validation_output=validation_output,
                     database=database,
                     mapping=mapping,
                     intelligence=intelligence,
                     context=context,
                 ),
-                exit_code=0,
             )
 
+    limitations = _blocked_limitations(selected_context)
     return CertificationResult(
+        status=CertificationStatus.BLOCKED,
+        exit_code=1,
         report=_format_blocked_report(
+            validation_output=validation_output,
             database=database,
             mapping=mapping,
             selected_project=selected_project,
@@ -128,22 +171,27 @@ def _build_business_report(environment: dict[str, str]) -> CertificationResult:
             intelligence=selected_intelligence,
             evidence_result=evidence_result,
         ),
-        exit_code=1,
+        reason=BLOCKED_PROJECT_LINKAGE_MESSAGE,
+        limitations=limitations,
     )
 
 
 def _format_passing_report(
     *,
+    validation_output: str,
     database: Path,
     mapping: CdpPhysicalImplementationMapping,
     intelligence: ProjectIntelligence,
     context: StrategicContext,
 ) -> str:
     project = intelligence.project
-    lines = _report_header(
-        result="PASS",
-        database=database,
-        mapping=mapping,
+    lines = _runtime_validation_lines(validation_output)
+    lines.extend(
+        _report_header(
+            result=CertificationStatus.PASS.value,
+            database=database,
+            mapping=mapping,
+        )
     )
     lines.extend(_project_lines(project))
     lines.extend(_executed_chain_lines())
@@ -153,6 +201,7 @@ def _format_passing_report(
 
 def _format_blocked_report(
     *,
+    validation_output: str,
     database: Path,
     mapping: CdpPhysicalImplementationMapping,
     selected_project: ProjectSummary,
@@ -160,10 +209,13 @@ def _format_blocked_report(
     intelligence: ProjectIntelligence | None,
     evidence_result: ExecutiveEvidenceResult,
 ) -> str:
-    lines = _report_header(
-        result="BLOCKED",
-        database=database,
-        mapping=mapping,
+    lines = _runtime_validation_lines(validation_output)
+    lines.extend(
+        _report_header(
+            result=CertificationStatus.BLOCKED.value,
+            database=database,
+            mapping=mapping,
+        )
     )
     lines.append(BLOCKED_PROJECT_LINKAGE_MESSAGE)
     lines.extend(_project_lines(selected_project))
@@ -184,6 +236,40 @@ def _format_blocked_report(
     )
     lines.extend(_executive_evidence_lines(evidence_result))
     return "\n".join(lines)
+
+
+def _format_failed_report(*, validation_output: str, reason: str) -> str:
+    lines = _runtime_validation_lines(validation_output)
+    lines.extend(
+        [
+            "",
+            "Business certification",
+            "----------------------",
+            f"Certification result: {CertificationStatus.FAILED.value}",
+            "CERTIFICATION FAILED",
+            reason,
+        ]
+    )
+    return "\n".join(lines)
+
+
+def _runtime_validation_lines(validation_output: str) -> list[str]:
+    return [
+        "Program 100 Business Certification Report",
+        "=========================================",
+        "",
+        "Runtime validation",
+        "------------------",
+        validation_output.rstrip(),
+        "",
+    ]
+
+
+def _blocked_limitations(context: StrategicContext | None) -> tuple[str, ...]:
+    limitations = [BLOCKED_PROJECT_LINKAGE_MESSAGE]
+    if context is not None:
+        limitations.extend(context.limitations)
+    return tuple(limitations)
 
 
 def _report_header(
