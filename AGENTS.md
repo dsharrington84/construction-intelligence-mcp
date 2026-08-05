@@ -1,5 +1,22 @@
 # AGENTS.md
 
+## Engineering Workflow
+
+Before implementing any capability:
+
+1. Read `docs/000-CONSTITUTION.md`.
+2. Identify the Program.
+3. Identify the Certified Data Product.
+4. Verify Constitutional alignment.
+
+If implementation conflicts with the Constitution:
+
+STOP.
+
+Document the conflict.
+
+Do not implement around the architecture.
+
 ## Mission
 
 Build and maintain the Construction Intelligence service layer that exposes governed construction business objects to applications, MCP clients, and future APIs.
