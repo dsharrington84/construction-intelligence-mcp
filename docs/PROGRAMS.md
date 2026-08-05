@@ -24,19 +24,19 @@ Status: ACTIVE
 Program objective: explain why Caltrans is investing in a governed project using certified
 Executive evidence.
 
-| Initiative | Status | Dependency |
-|---|---|---|
-| 101 Executive Certified Data Product | IN_REVIEW | Phase 0 governance, Constitution, 010A, 010B, and warehouse inspection evidence |
-| 102 Executive Evidence Engine | BLOCKED_BY_CONTRACT | 101 accepted |
-| 103 Strategic Context Intelligence | BLOCKED_BY_IMPLEMENTATION | 101 accepted and 102 certified |
+| Initiative | Status | Dependency | Unlock condition |
+|---|---|---|---|
+| 100 Executive Intelligence Program | ACTIVE | 101, 102, and 103 | Program review gate succeeds for a Southern California project using governed, traceable Executive evidence |
+| 101 Executive Certified Data Product | COMPLETE | Phase 0 governance, Constitution, 010A, 010B, and warehouse inspection evidence | CDP-001 accepted |
+| 102 Executive Evidence Engine | IN_REVIEW | 101 accepted and explicit CDP-001 mapping | ExecutiveEvidence implementation and certification repair are reviewed and merged |
+| 103 Strategic Context Intelligence | BLOCKED_BY_IMPLEMENTATION | 101 accepted and 102 certified | ExecutiveEvidence implementation is certified and reviewed |
 
 Current repository evidence:
 
-- CDP-001 exists as PR #14 and remains pending acceptance for this branch.
-- 010A and 010B research documents under `docs/research/` show Executive warehouse and processing
-  evidence is diagnostic and not certified until CDP-001 acceptance.
-- Program 100 implementation remains blocked until CDP-001 is accepted, even though Program 100
-  planning is ACTIVE.
+- CDP-001 was accepted through PR #14.
+- 010A and 010B remain diagnostic research inputs and do not replace the accepted CDP-001 contract.
+- Program 100 Initiative 102 is in review and must use exactly one explicit accepted, current, schema-qualified CDP-001 physical implementation mapping.
+- Initiative 103 remains blocked until the Initiative 102 repair is reviewed and merged.
 
 ## Program 200 — Contractor Intelligence
 
