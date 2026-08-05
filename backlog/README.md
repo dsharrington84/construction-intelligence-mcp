@@ -46,6 +46,19 @@ Historical Executive research remains in:
 
 No historical Strategic Context backlog document is present in this checkout. Any prior Strategic Context plan that queries physical Executive relations directly is SUPERSEDED by the CDP → Evidence Engine → Intelligence Engine architecture.
 
+## Program 200 — Contractor Intelligence
+
+Program 200 establishes the dependency-gated queue for explaining contractor participation and historical market behavior using certified Contractor evidence. Program 200 is planning-only and remains blocked until Program 100 completes its review gate.
+
+| Backlog | Status | Dependency |
+|---|---|---|
+| [200 Contractor Intelligence Program](200-contractor-intelligence-program.md) | BLOCKED | Program 100 certified; 201, 202, and 203 review gates |
+| [201 Contractor Certified Data Product](201-contractor-certified-data-product.md) | BLOCKED | Program 100 certified |
+| [202 Contractor Evidence Engine](202-contractor-evidence-engine.md) | BLOCKED_BY_CONTRACT | 201 accepted |
+| [203 Contractor Intelligence](203-contractor-intelligence.md) | BLOCKED_BY_IMPLEMENTATION | 201 accepted and 202 certified |
+
+No Program 200 initiative is READY. Contractor contracts, evidence, and intelligence must remain distinct from applications, opportunity scoring, pursuit recommendations, and cost intelligence.
+
 ## Initial sequence
 
 1. Opportunity Service V1
