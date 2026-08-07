@@ -1,8 +1,21 @@
-# Contract Identity Unifier — Constitutional Alignment Review
+# ADR-002: Contract Identity Unifier Governance Prerequisites
 
-Status: **BLOCKED_BY_CONTRACT**
+Status: **PROPOSED — GOVERNANCE ONLY**
+
+Implementation disposition: **BLOCKED_BY_CONTRACT**
 
 Date: 2026-08-07
+
+## Record Scope
+
+This proposed Architecture Decision Record documents a governance blocker. It is not an accepted
+Certified Data Product contract, a governed physical mapping, or a contract-spine implementation.
+It produces no reconciliation output and provides no authorization for competition, cost-history,
+or bid-item analysis.
+
+This record must not be represented or merged as completed unifier work. The implementation must be
+delivered separately, after the contracts and mappings listed below are accepted. Until this ADR is
+accepted, it records a proposed disposition rather than a permanent architectural decision.
 
 ## Requested Initial Scope
 
@@ -56,7 +69,7 @@ analyses:
 Physical warehouse relations, pull-request observations, and numeric profiling results cannot fill
 these contract gaps because physical storage is not the certified boundary.
 
-## Constitutional Alignment
+## Proposed Decision and Constitutional Alignment
 
 The requested operational safeguards align with the Constitution: certified inputs only,
 read-only access, preserved limitations, explicit reconciliation, explainable exclusions, and no
@@ -69,6 +82,10 @@ contracts do not make, and make implementation details the architectural authori
 
 Per the Constitution and repository engineering workflow, implementation stops at this review. No
 adapter, model, service, SQL, MCP tool, UI, or warehouse mutation is authorized by this document.
+
+If this ADR is accepted, the decision is to keep the unifier implementation blocked until every
+governance prerequisite below is accepted. Acceptance of this ADR would acknowledge the blocker; it
+would not accept any of the missing data-product contracts or complete the unifier.
 
 ## Required Governance to Unblock Implementation
 
