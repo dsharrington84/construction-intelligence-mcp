@@ -25,7 +25,7 @@ contracts and mappings before an implementation may rely on them.
 
 ## Program Identification
 
-This scope crosses two current programs:
+This scope crosses three current programs:
 
 - **Program 100 — Executive Intelligence**, whose Executive Certified Data Product is accepted.
 - **Program 200 — Contractor Intelligence**, which owns competition evidence but whose Contractor
